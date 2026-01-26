@@ -4,6 +4,9 @@ build
 # VS code files
 .vscode
 
+# Macos files
+.DS_Store
+
 # Prerequisites
 *.d
 
