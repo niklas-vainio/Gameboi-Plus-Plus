@@ -33,7 +33,7 @@ SDL_CMAKE_FLAGS += -DCMAKE_OSX_ARCHITECTURES=$(SDL_ARCHS)
 endif
 
 # ---- Flags ----
-CXXFLAGS := -std=c++20 -Wall -Wextra -Wpedantic -O2
+CXXFLAGS := -std=c++20 -Wall -Wextra -O2
 CXXFLAGS += -I$(SRC_DIR)
 CXXFLAGS += -I$(SDL_DIR)/include -I$(SDL_BUILD_DIR)/include
 
