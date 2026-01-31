@@ -28,7 +28,8 @@
 #define LogDebug(fmt, ...)                                                     \
     do                                                                         \
     {                                                                          \
-        std::printf(ANSI_GRAY "[DEBUG] %s:%d    " fmt "\n", __FILE_NAME__,     \
+        std::printf(ANSI_GRAY "[DEBUG] %s:%d    " fmt "\n",                    \
+                    __FILE_NAME__,                                             \
                     __LINE__ __VA_OPT__(, ) __VA_ARGS__);                      \
     } while (0)
 
@@ -38,7 +39,8 @@
 #define LogInfo(fmt, ...)                                                      \
     do                                                                         \
     {                                                                          \
-        std::printf(ANSI_WHITE "[INFO] %s:%d    " fmt "\n", __FILE_NAME__,     \
+        std::printf(ANSI_WHITE "[INFO] %s:%d    " fmt "\n",                    \
+                    __FILE_NAME__,                                             \
                     __LINE__ __VA_OPT__(, ) __VA_ARGS__);                      \
     } while (0)
 
@@ -48,7 +50,8 @@
 #define LogWarning(fmt, ...)                                                   \
     do                                                                         \
     {                                                                          \
-        std::printf(ANSI_YELLOW "[WARNING] %s:%d    " fmt "\n", __FILE_NAME__, \
+        std::printf(ANSI_YELLOW "[WARNING] %s:%d    " fmt "\n",                \
+                    __FILE_NAME__,                                             \
                     __LINE__ __VA_OPT__(, ) __VA_ARGS__);                      \
     } while (0)
 
@@ -58,6 +61,7 @@
 #define LogError(fmt, ...)                                                     \
     do                                                                         \
     {                                                                          \
-        std::printf(ANSI_RED "[ERROR] %s:%d    " fmt "\n", __FILE_NAME__,      \
+        std::printf(ANSI_RED "[ERROR] %s:%d    " fmt "\n",                     \
+                    __FILE_NAME__,                                             \
                     __LINE__ __VA_OPT__(, ) __VA_ARGS__);                      \
     } while (0)

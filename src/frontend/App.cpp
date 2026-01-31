@@ -6,28 +6,16 @@
  * @date   2026-01-26
  */
 
-#include "frontend/App.hpp"
+#include "App.hpp"
 #include "common/logging.hpp"
+#include "sdl/abort.hpp"
+#include "sdl/events.hpp"
+#include "sdl/graphics.hpp"
+#include "sdl/time.hpp"
 
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
-
-/**
- * Helper macro to evaluate \p `expr` and log an error if the result failed.
- */
-#define AbortOnSdlError(expr)                                                  \
-    [&]()                                                                      \
-    {                                                                          \
-        const auto result = expr;                                              \
-        if (!result)                                                           \
-        {                                                                      \
-            LogError("Call %s failed: %s\n", #expr, SDL_GetError());           \
-            SDL_Quit();                                                        \
-            std::exit(1);                                                      \
-        }                                                                      \
-        return result;                                                         \
-    }();
 
 namespace Gbpp::Frontend
 {
@@ -37,20 +25,16 @@ bool App::init()
     /*
      * Get SDL version.
      */
-    const int v = SDL_GetVersion();
-    const int maj = SDL_VERSIONNUM_MAJOR(v);
-    const int min = SDL_VERSIONNUM_MINOR(v);
-    const int pat = SDL_VERSIONNUM_MICRO(v);
-    LogDebug("SDL version: %d.%d.%d", maj, min, pat);
+    const auto version = SDL::get_version();
+    LogDebug(
+        "SDL version: %d.%d.%d", version.major, version.minor, version.patch);
 
     /*
-     * Create window and renderer.
+     * Initialize SDL context
      */
-    AbortOnSdlError(SDL_Init(SDL_INIT_VIDEO));
-    window = AbortOnSdlError(SDL_CreateWindow("SDL3 Hello", 800, 450, 0));
-    renderer = AbortOnSdlError(SDL_CreateRenderer(window, nullptr));
+    sdl_context = SDL::init(window_title, screen_width, screen_height, 0);
 
-    start_time = SDL_GetTicks();
+    // start_time = SDL_GetTicks();
 
     return true;
 }
@@ -59,41 +43,48 @@ bool App::run_frame()
 {
     auto running = true;
 
-    /*
-     * Poll events.
-     */
-    SDL_Event e;
-    while (SDL_PollEvent(&e))
-    {
-        if (e.type == SDL_EVENT_QUIT)
+    SDL::handle_events(
+        [&](const SDL_Event &event)
         {
-            running = false;
-        }
-    }
+            if (event.type == SDL_EVENT_QUIT)
+            {
+                running = false;
+            }
+            if (event.type == SDL_EVENT_KEY_DOWN)
+            {
+                if (event.key.key == SDLK_SPACE)
+                {
+                    LogWarning("Don't you dare press space :O");
+                }
+            }
+        });
 
     /*
      * Color screen based on elapsed time.
      */
-    const float t = (SDL_GetTicks() - start_time) / 1000.0f;
+    // const float t = (SDL_GetTicks() - start_time) / 1000.0f;
 
-    auto to_u8 = [](float x)
-    {
-        // x expected in [0,1]
-        int v = (int)(x * 255.0f + 0.5f);
-        if (v < 0)
-            v = 0;
-        if (v > 255)
-            v = 255;
-        return (uint8_t)v;
-    };
+    // auto to_u8 = [](float x)
+    // {
+    //     // x expected in [0,1]
+    //     int v = (int)(x * 255.0f + 0.5f);
+    //     if (v < 0)
+    //         v = 0;
+    //     if (v > 255)
+    //         v = 255;
+    //     return (uint8_t)v;
+    // };
 
-    const uint8_t r = to_u8(0.5f + 0.5f * std::sinf(t * 1.0f));
-    const uint8_t g = to_u8(0.5f + 0.5f * std::sinf(t * 1.3f + 2.0f));
-    const uint8_t b = to_u8(0.5f + 0.5f * std::sinf(t * 1.7f + 4.0f));
+    // const uint8_t r = to_u8(0.5f + 0.5f * std::sinf(t * 1.0f));
+    // const uint8_t g = to_u8(0.5f + 0.5f * std::sinf(t * 1.3f + 2.0f));
+    // const uint8_t b = to_u8(0.5f + 0.5f * std::sinf(t * 1.7f + 4.0f));
 
-    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
-    SDL_RenderClear(renderer);
-    SDL_RenderPresent(renderer);
+    SDL::fill_screen(sdl_context, SDL::BLACK);
+
+    SDL_SetRenderDrawColor(sdl_context.renderer, 255, 255, 255, 255);
+    SDL_RenderDebugText(sdl_context.renderer, 200, 200, "HELLO");
+
+    SDL::show(sdl_context);
 
     /*
      * Delay to 60 fps.
@@ -108,9 +99,7 @@ void App::quit()
     /*
      * Destroy render and window, then exit.
      */
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    SDL::quit(sdl_context);
     return;
 }
 

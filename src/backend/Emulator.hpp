@@ -8,7 +8,6 @@ class Emulator
 {
 
 public:
-
     void set_controller_inputs();
 
     void load_cartridge(const std::string &file_name);

@@ -8,8 +8,9 @@
 
 #pragma once
 
-#include <SDL3/SDL.h>
+#include "sdl/context.hpp"
 #include <cstdint>
+#include <string>
 
 namespace Gbpp::Frontend
 {
@@ -37,10 +38,21 @@ public:
     void quit();
 
 private:
-    SDL_Window *window{};
-    SDL_Renderer *renderer{};
+    /**
+     * Name of the window.
+     */
+    inline static const std::string window_title = "Gameboi-Plus-Plus";
 
-    uint64_t start_time{};
+    /**
+     * Screen dimensions.
+     */
+    static constexpr auto screen_width{800u};
+    static constexpr auto screen_height{600u};
+
+    /**
+     * Active SDL context.
+     */
+    SDL::Context sdl_context{};
 };
 
 } // namespace Gbpp::Frontend
