@@ -7,11 +7,12 @@
 
 #include "Graphics.hpp"
 #include "Font.hpp"
+#include <format>
 
 namespace Gbpp::Frontend::Graphics
 {
 
-void draw_frame(SDL::Context &sdl_context)
+void draw_frame(SDL::Context &sdl_context, const EmulatorDebugInfo &debug_info)
 {
     SDL::fill_screen(sdl_context, SDL::BLACK);
 
@@ -22,26 +23,12 @@ void draw_frame(SDL::Context &sdl_context)
                    {.x = screen_width - 256, .y = 0, .w = 256, .h = 256},
                    SDL::WHITE);
 
-    SDL::draw_text(sdl_context,
-                   "Extra Small Text here owo",
-                   {20.0, 20.0},
-                   SDL::WHITE,
-                   Font::EXTRA_SMALL);
-
-    SDL::draw_text(sdl_context,
-                   "Small Text here: 34fa",
-                   {20.0, 40.0},
-                   SDL::WHITE,
-                   Font::SMALL);
-
-    SDL::draw_text(sdl_context,
-                   "Medium Text here",
-                   {20.0, 70.0},
-                   SDL::WHITE,
-                   Font::MEDIUM);
-
     SDL::draw_text(
-        sdl_context, "Large text here", {20.0, 120.0}, SDL::WHITE, Font::LARGE);
+        sdl_context,
+        std::format("CPU: PC = {:04X}", debug_info.num_instructions_executed),
+        {20.0, 50.0},
+        SDL::WHITE,
+        Font::MEDIUM);
 
     SDL::show(sdl_context);
 }

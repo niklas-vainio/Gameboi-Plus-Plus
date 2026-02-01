@@ -38,8 +38,8 @@ void GameboiPlusPlus::go()
 
 bool GameboiPlusPlus::init()
 {
-    LogDebug("Initializing...");
-    return app.init();
+    LogInfo("Initializing...");
+    return emulator.init() && app.init();
 }
 
 bool GameboiPlusPlus::run_frame()
@@ -47,18 +47,21 @@ bool GameboiPlusPlus::run_frame()
     app.start_frame();
 
     /*
-     * Collect user inputs
+     * Handle user inputs
      */
-    const auto control_state = app.handle_inputs();
+    app.handle_inputs();
+    const auto control_state = app.get_control_state();
 
     /*
      * Dispatch the emulator for this frame.
      */
+    emulator.emulate_frame(control_state);
 
     /*
      * Render frame results.
      */
-    app.render_frame();
+    const auto debug_info = emulator.get_debug_info();
+    app.draw_frame(debug_info);
     app.wait_until_frame_over();
 
     return control_state.app_running;
@@ -66,7 +69,7 @@ bool GameboiPlusPlus::run_frame()
 
 void GameboiPlusPlus::quit()
 {
-    LogDebug("Shutting Down...");
+    LogInfo(ANSI_CYAN "Shutting Down...");
     app.quit();
 }
 

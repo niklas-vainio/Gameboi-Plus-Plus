@@ -9,6 +9,7 @@
 #pragma once
 
 #include "common/Control.hpp"
+#include "common/EmulatorDebugInfo.hpp"
 #include "sdl/context.hpp"
 #include "sdl/time.hpp"
 #include <cstdint>
@@ -40,15 +41,15 @@ public:
 
     /**
      * Handle user inputs for the current frame.
-     *
-     * @return Structure containing the current user inputs.
      */
-    const ControlState& handle_inputs();
+    void handle_inputs();
 
     /**
-     * Render the current frame to the screen, and wait
+     * Render the current frame to the screen.
+     *
+     * @param[in] debug_info    Current debug info from the backend.
      */
-    void render_frame();
+    void draw_frame(const EmulatorDebugInfo &debug_info);
 
     /**
      * Waits until the frame is over. Requires start_frame to have been called
@@ -60,6 +61,14 @@ public:
      * Exit the app.
      */
     void quit();
+
+    /**
+     * @return Structure containing the current user inputs.
+     */
+    const ControlState &get_control_state() const
+    {
+        return control_state;
+    };
 
 private:
     /**
