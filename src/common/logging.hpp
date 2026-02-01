@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <printf.h>
+#include <cstdio>
 
 /**
  * Define macros for ANSI color codes.

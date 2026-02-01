@@ -7,6 +7,7 @@
  */
 
 #include "Emulator.hpp"
+#include "Bus.hpp"
 #include "common/logging.hpp"
 
 namespace Gbpp::Backend
@@ -31,12 +32,12 @@ void Emulator::emulate_frame(const ControlState &control_state)
 
 void Emulator::emulate_instruction()
 {
-    num_instructions_executed++;
+    cpu.emulate_instruction();
 }
 
 void Emulator::update_debug_info()
 {
-    debug_info.num_instructions_executed = num_instructions_executed;
+    debug_info.cpu = cpu.get_debug_info();
 }
 
 } // namespace Gbpp::Backend

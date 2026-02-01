@@ -8,7 +8,7 @@
 #pragma once
 
 #include "App.hpp"
-#include "common/EmulatorDebugInfo.hpp"
+#include "common/DebugInfo.hpp"
 #include "sdl/graphics.hpp"
 
 namespace Gbpp::Frontend::Graphics

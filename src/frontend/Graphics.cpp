@@ -25,10 +25,16 @@ void draw_frame(SDL::Context &sdl_context, const EmulatorDebugInfo &debug_info)
 
     SDL::draw_text(
         sdl_context,
-        std::format("CPU: PC = {:04X}", debug_info.num_instructions_executed),
+        std::format("INSTRS {}", debug_info.cpu.num_instructions_executed),
         {20.0, 50.0},
         SDL::WHITE,
         Font::MEDIUM);
+
+    SDL::draw_text(sdl_context,
+                   std::format("CYCLES {}", debug_info.cpu.num_cycles_elapsed),
+                   {20.0, 80.0},
+                   SDL::WHITE,
+                   Font::MEDIUM);
 
     SDL::show(sdl_context);
 }

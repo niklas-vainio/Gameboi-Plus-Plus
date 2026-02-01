@@ -9,7 +9,7 @@
 #pragma once
 
 #include "common/Control.hpp"
-#include "common/EmulatorDebugInfo.hpp"
+#include "common/DebugInfo.hpp"
 #include "sdl/context.hpp"
 #include "sdl/time.hpp"
 #include <cstdint>

@@ -8,8 +8,10 @@
 
 #pragma once
 
+#include "Bus.hpp"
+#include "Cpu.hpp"
 #include "common/Control.hpp"
-#include "common/EmulatorDebugInfo.hpp"
+#include "common/DebugInfo.hpp"
 #include <string>
 
 namespace Gbpp::Backend
@@ -64,15 +66,22 @@ private:
     void update_debug_info();
 
     /**
-     * Information about the current state, passed to the frontend for
-     * rendering.
+     * Bus object.
      */
-    EmulatorDebugInfo debug_info{};
+    Bus bus{};
 
     /**
-     * Total number of instructions executed.
+     * CPU object, linked to the bus.
      */
-    uint64_t num_instructions_executed{};
+    Cpu cpu{bus};
+
+    /**
+     * Information about the current state, passed to the frontend for
+     * rendering.
+     *
+     * Stored locally here to keep ownership of this data within the backend.
+     */
+    EmulatorDebugInfo debug_info{};
 };
 
 } // namespace Gbpp::Backend
