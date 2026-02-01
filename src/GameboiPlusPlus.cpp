@@ -44,7 +44,24 @@ bool GameboiPlusPlus::init()
 
 bool GameboiPlusPlus::run_frame()
 {
-    return app.run_frame();
+    app.start_frame();
+
+    /*
+     * Collect user inputs
+     */
+    const auto control_state = app.handle_inputs();
+
+    /*
+     * Dispatch the emulator for this frame.
+     */
+
+    /*
+     * Render frame results.
+     */
+    app.render_frame();
+    app.wait_until_frame_over();
+
+    return control_state.app_running;
 }
 
 void GameboiPlusPlus::quit()

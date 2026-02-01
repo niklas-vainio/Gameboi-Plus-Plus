@@ -8,7 +8,9 @@
 
 #pragma once
 
+#include "common/Control.hpp"
 #include "sdl/context.hpp"
+#include "sdl/time.hpp"
 #include <cstdint>
 #include <string>
 
@@ -19,6 +21,12 @@ class App
 {
 public:
     /**
+     * Screen dimensions.
+     */
+    static constexpr auto screen_width{1200u};
+    static constexpr auto screen_height{576u};
+
+    /**
      * Initialize the app.
      *
      * @return True on success, false otherwise.
@@ -26,22 +34,32 @@ public:
     bool init();
 
     /**
-     * Process a single frame.
-     *
-     * @return True if the app should continue running, false otherwise.
+     * Start the current frame.
      */
-    bool run_frame();
+    void start_frame();
+
+    /**
+     * Handle user inputs for the current frame.
+     *
+     * @return Structure containing the current user inputs.
+     */
+    const ControlState& handle_inputs();
+
+    /**
+     * Render the current frame to the screen, and wait
+     */
+    void render_frame();
+
+    /**
+     * Waits until the frame is over. Requires start_frame to have been called
+     * previously so the starting timestamp can be logged.
+     */
+    void wait_until_frame_over();
 
     /**
      * Exit the app.
      */
     void quit();
-
-    /**
-     * Screen dimensions.
-     */
-    static constexpr auto screen_width{1200u};
-    static constexpr auto screen_height{576u};
 
 private:
     /**
@@ -52,10 +70,10 @@ private:
     /**
      * Name of the window.
      */
-    inline static const std::string window_title = "gameboi++";
+    static constexpr std::string window_title = "gameboi++";
 
     /**
-     * Framerate (set by Game Boy hardware)
+     * Framerate (matches Game Boy hardware)
      */
     static constexpr auto framerate{59.7275005696};
 
@@ -65,9 +83,14 @@ private:
     SDL::Context sdl_context{};
 
     /**
-     * Whether the app is running (run_frame returns this value).
+     * The current set of user inputs, updated each frame.
      */
-    bool running{true};
+    ControlState control_state{};
+
+    /**
+     * Timestamp of the start of the furrent frame.
+     */
+    SDL::Time frame_start{};
 
     /**
      * Number of frames processed.

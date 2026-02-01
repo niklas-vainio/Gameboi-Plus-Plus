@@ -41,42 +41,66 @@ bool App::init()
                             Font::font_file,
                             Font::size_map);
 
+    /*
+     * Make sure control state flags are correctly initialied
+     */
+    control_state.app_running = true;
+
     return true;
+}
+
+void App::start_frame()
+{
+    frame_start = SDL::get_time();
+    frame_count++;
+}
+
+const ControlState &App::handle_inputs()
+{
+    /*
+     * Clear all control state flags that look for key press events.
+     */
+    control_state.run_cpu_instruction = false;
+
+    SDL::handle_events([this](const auto &event) { handle_sdl_event(event); });
+
+    return control_state;
+}
+
+void App::render_frame()
+{
+    Graphics::draw_frame(sdl_context);
+}
+
+void App::wait_until_frame_over()
+{
+    SDL::delay_for_fps(frame_start, framerate);
 }
 
 void App::handle_sdl_event(const SDL_Event &event)
 {
+    /*
+     * Handle quitting the app.
+     */
     if (event.type == SDL_EVENT_QUIT)
     {
-        running = false;
+        control_state.app_running = false;
     }
+
     if (event.type == SDL_EVENT_KEY_DOWN)
     {
-        if (event.key.key == SDLK_SPACE)
+        /*
+         * Handle key press events.
+         */
+        switch (event.key.key)
         {
-            LogWarning("Don't you dare press space :O");
+            case SDLK_SPACE:
+                control_state.run_cpu_instruction = true;
+                break;
         }
+
+        LogInfo("User pressed key: %x", event.key.key);
     }
-}
-
-bool App::run_frame()
-{
-    const auto frame_start = SDL::get_time();
-    frame_count++;
-
-    SDL::handle_events([this](const auto &event) { handle_sdl_event(event); });
-
-    /**
-     * Draw frame.
-     */
-    Graphics::draw_frame(sdl_context);
-
-    /*
-     * Delay for required framerate.
-     */
-    SDL::delay_for_fps(frame_start, framerate);
-
-    return running;
 }
 
 void App::quit()
