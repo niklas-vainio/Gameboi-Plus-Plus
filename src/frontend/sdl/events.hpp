@@ -27,4 +27,4 @@ void handle_events(const T &callback)
     }
 };
 
-} // namespace Gbpp::Frontent
+} // namespace Gbpp::Frontend::SDL

@@ -8,9 +8,15 @@
 #pragma once
 
 #include <array>
+#include <string>
 
 namespace Gbpp::Frontend::Font
 {
+
+/**
+ * Name of the font file to use.
+ */
+inline constexpr std::string font_file = "GameBoy.ttf";
 
 /**
  * List of available font sizes.

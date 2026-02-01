@@ -37,17 +37,22 @@ public:
      */
     void quit();
 
-private:
-    /**
-     * Name of the window.
-     */
-    inline static const std::string window_title = "gameboi++";
-
     /**
      * Screen dimensions.
      */
     static constexpr auto screen_width{1200u};
     static constexpr auto screen_height{576u};
+
+private:
+    /**
+     * Main function for handling SDL events.
+     */
+    void handle_sdl_event(const SDL_Event &event);
+
+    /**
+     * Name of the window.
+     */
+    inline static const std::string window_title = "gameboi++";
 
     /**
      * Framerate (set by Game Boy hardware)
@@ -58,6 +63,11 @@ private:
      * Active SDL context.
      */
     SDL::Context sdl_context{};
+
+    /**
+     * Whether the app is running (run_frame returns this value).
+     */
+    bool running{true};
 
     /**
      * Number of frames processed.
