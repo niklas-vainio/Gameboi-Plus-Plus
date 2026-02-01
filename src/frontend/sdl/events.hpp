@@ -2,7 +2,7 @@
  * Collection of utility functions to manage events in SDL
  *
  * @author Niklas Vainio
- * @date 2026-01-30
+ * @date   2026-01-30
  */
 
 #pragma once

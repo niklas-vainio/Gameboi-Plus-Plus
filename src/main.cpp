@@ -7,12 +7,15 @@
 
 #include "GameboiPlusPlus.hpp"
 #include "common/logging.hpp"
+#include "common/unused.hpp"
 
 int main(int argc, const char **argv)
 {
     /*
      * Parse args.
      */
+    UNUSED(argc);
+    UNUSED(argv);
 
     /*
      * Instantiate app and run forever.

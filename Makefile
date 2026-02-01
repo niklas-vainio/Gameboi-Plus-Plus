@@ -20,35 +20,6 @@ TTF_DIR       := external/SDL_ttf
 TTF_BUILD_DIR := $(BUILD_DIR)/sdl3_ttf
 TTF_CONFIG    := $(TTF_BUILD_DIR)/CMakeCache.txt
 
-# ----- Locating Dynamic Libraries ----
-# Directories where dylibs may live
-DYLIB_DIRS := build/sdl3 build/sdl3_ttf
-
-# Helper: find the "best" dylib for a given base name.
-# Preference order:
-#   libNAME.<ver>.dylib (e.g. libSDL3_ttf.0.dylib)
-#   libNAME.dylib
-#   libNAME*.dylib (fallback)
-define find_dylib
-$(strip $(firstword \
-  $(wildcard $(addsuffix /lib$(1).*.dylib,$(DYLIB_DIRS))) \
-  $(wildcard $(addsuffix /lib$(1).dylib,$(DYLIB_DIRS))) \
-  $(wildcard $(addsuffix /lib$(1)*.dylib,$(DYLIB_DIRS))) \
-))
-endef
-
-SDL_DYLIB := $(call find_dylib,SDL3)
-TTF_DYLIB := $(call find_dylib,SDL3_ttf)
-
-# Fail early if not found
-ifeq ($(SDL_DYLIB),)
-  $(error Could not find libSDL3*.dylib in: $(DYLIB_DIRS))
-endif
-ifeq ($(TTF_DYLIB),)
-  $(error Could not find libSDL3_ttf*.dylib in: $(DYLIB_DIRS))
-endif
-
-
 # Override if desired:
 #   make SDL_BUILD_TYPE=Debug
 #   make SDL_ARCHS="arm64;x86_64"
@@ -88,11 +59,17 @@ DEPFLAGS = -MMD -MP -MF $(DEP_DIR)/$*.d -MT $@
 # Generate deps into build/deps, while compiling objs into build/objs
 CXXFLAGS += -MMD -MP -MF $(DEP_DIR)/$*.d
 
-# Runtime search paths so dyld can load them.
-# (Each dir is relative to the executable location.)
-DYLIB_DIRS_REL := $(patsubst $(BUILD_DIR)/%,%,$(DYLIB_DIRS))
-LDFLAGS += $(foreach d,$(DYLIB_DIRS_REL),-Wl,-rpath,@executable_path/$(d))
-LDLIBS   := $(SDL_DYLIB) $(TTF_DYLIB)
+# ---- Link against SDL dylibs in their build dirs (no filename probing) ----
+SDL_LIBDIR := $(SDL_BUILD_DIR)
+TTF_LIBDIR := $(TTF_BUILD_DIR)
+
+# Runtime search paths so dyld can load them (relative to build/ executable location).
+LDFLAGS += -Wl,-rpath,@executable_path/sdl3
+LDFLAGS += -Wl,-rpath,@executable_path/sdl3_ttf
+
+# Linker search paths + libs
+LDFLAGS += -L$(SDL_LIBDIR) -L$(TTF_LIBDIR)
+LDLIBS  := -lSDL3 -lSDL3_ttf
 
 
 # ---- Find nested sources ----
@@ -124,12 +101,17 @@ clean:
 clean-full:
 	rm -rf $(BUILD_DIR)
 
+# ---- SDL3 and SDL3_ttf stamp files ----
+SDL_BUILT := $(SDL_BUILD_DIR)/.built
+TTF_BUILT := $(TTF_BUILD_DIR)/.built
+
 # ---- Build SDL3 ----
 $(SDL_CONFIG): | $(SDL_BUILD_DIR)
 	cmake -S "$(SDL_DIR)" -B "$(SDL_BUILD_DIR)" $(SDL_CMAKE_FLAGS)
 
-$(SDL_LIB): $(SDL_CONFIG)
+$(SDL_BUILT): $(SDL_CONFIG)
 	cmake --build "$(SDL_BUILD_DIR)" --config "$(SDL_BUILD_TYPE)"
+	@touch $@
 
 $(SDL_BUILD_DIR):
 	mkdir -p "$(SDL_BUILD_DIR)"
@@ -138,15 +120,15 @@ $(SDL_BUILD_DIR):
 $(TTF_CONFIG): $(SDL_LIB) | $(TTF_BUILD_DIR)
 	cmake -S "$(TTF_DIR)" -B "$(TTF_BUILD_DIR)" $(TTF_CMAKE_FLAGS)
 
-.PHONY: build-ttf
-build-ttf: $(TTF_CONFIG)
+$(TTF_BUILT): $(TTF_CONFIG)
 	cmake --build "$(TTF_BUILD_DIR)" --config "$(SDL_BUILD_TYPE)"
+	@touch $@
 
 $(TTF_BUILD_DIR):
 	mkdir -p "$(TTF_BUILD_DIR)"
 
 # ---- Link (binary lives in build/) ----
-$(BIN): $(OBJS) $(SDL_LIB) build-ttf | $(BUILD_DIR)
+$(BIN): $(OBJS) $(SDL_BUILT) $(TTF_BUILT) | $(BUILD_DIR)
 	$(CXX) $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS)
 
 # ---- Compile (mirror src/ subdirs into build/objs and build/deps) ----

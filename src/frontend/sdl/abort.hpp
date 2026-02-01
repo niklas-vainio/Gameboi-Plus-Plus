@@ -2,7 +2,7 @@
  * Helper macros for handling and logging SDL errors.
  *
  * @author Niklas Vainio
- * @date 2026-01-30
+ * @date   2026-01-30
  */
 
 #pragma once

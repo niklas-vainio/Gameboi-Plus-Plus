@@ -1,4 +1,4 @@
-# Gameboi-Plus-Plus
+# gameboi++
 It's been 6 years... can I make a better one?
 
 This project is a lightweight Gameboy emulator designed to run as a desktop app on MacOS. This emulator is intended as a successor to the one I originally developed in 2020 (see [here](https://github.com/niklas-vainio/GameboyEmulator)), now that I have ( \* *coughs* \*) actual programming exerience.

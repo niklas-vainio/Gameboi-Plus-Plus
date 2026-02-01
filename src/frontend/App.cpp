@@ -7,6 +7,7 @@
  */
 
 #include "App.hpp"
+#include "Font.hpp"
 #include "common/logging.hpp"
 #include "sdl/abort.hpp"
 #include "sdl/events.hpp"
@@ -23,24 +24,30 @@ namespace Gbpp::Frontend
 bool App::init()
 {
     /*
-     * Get SDL version.
+     * Print out SDL version.
      */
     const auto version = SDL::get_version();
     LogDebug(
         "SDL version: %d.%d.%d", version.major, version.minor, version.patch);
 
     /*
-     * Initialize SDL context
+     * Initialize SDL context.
      */
-    sdl_context = SDL::init(window_title, screen_width, screen_height, 0);
-
-    // start_time = SDL_GetTicks();
+    sdl_context = SDL::init(window_title,
+                            screen_width,
+                            screen_height,
+                            0,
+                            "GameBoy.ttf",
+                            Font::size_map);
 
     return true;
 }
 
 bool App::run_frame()
 {
+    const auto frame_start = SDL::get_time();
+    frame_count++;
+
     auto running = true;
 
     SDL::handle_events(
@@ -59,37 +66,42 @@ bool App::run_frame()
             }
         });
 
-    /*
-     * Color screen based on elapsed time.
-     */
-    // const float t = (SDL_GetTicks() - start_time) / 1000.0f;
-
-    // auto to_u8 = [](float x)
-    // {
-    //     // x expected in [0,1]
-    //     int v = (int)(x * 255.0f + 0.5f);
-    //     if (v < 0)
-    //         v = 0;
-    //     if (v > 255)
-    //         v = 255;
-    //     return (uint8_t)v;
-    // };
-
-    // const uint8_t r = to_u8(0.5f + 0.5f * std::sinf(t * 1.0f));
-    // const uint8_t g = to_u8(0.5f + 0.5f * std::sinf(t * 1.3f + 2.0f));
-    // const uint8_t b = to_u8(0.5f + 0.5f * std::sinf(t * 1.7f + 4.0f));
-
     SDL::fill_screen(sdl_context, SDL::BLACK);
 
-    SDL_SetRenderDrawColor(sdl_context.renderer, 255, 255, 255, 255);
-    SDL_RenderDebugText(sdl_context.renderer, 200, 200, "HELLO");
+    SDL::fill_rect(
+        sdl_context, {.x = 0, .y = 0, .h = 576, .w = 640}, SDL::BLUE);
+
+    SDL::fill_rect(sdl_context,
+                   {.x = screen_width - 256, .y = 0, .w = 256, .h = 256},
+                   SDL::WHITE);
+
+    SDL::draw_text(sdl_context,
+                   "Extra Small Text here owo",
+                   {20.0, 20.0},
+                   SDL::WHITE,
+                   Font::EXTRA_SMALL);
+
+    SDL::draw_text(sdl_context,
+                   "Small Text here: 34fa",
+                   {20.0, 40.0},
+                   SDL::WHITE,
+                   Font::SMALL);
+
+    SDL::draw_text(sdl_context,
+                   "Medium Text here",
+                   {20.0, 70.0},
+                   SDL::WHITE,
+                   Font::MEDIUM);
+
+    SDL::draw_text(
+        sdl_context, "Large text here", {20.0, 120.0}, SDL::WHITE, Font::LARGE);
 
     SDL::show(sdl_context);
 
     /*
-     * Delay to 60 fps.
+     * Delay for required framerate.
      */
-    SDL_Delay(16);
+    SDL::delay_for_fps(frame_start, framerate);
 
     return running;
 }

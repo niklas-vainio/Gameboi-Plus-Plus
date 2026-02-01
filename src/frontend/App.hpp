@@ -41,18 +41,28 @@ private:
     /**
      * Name of the window.
      */
-    inline static const std::string window_title = "Gameboi-Plus-Plus";
+    inline static const std::string window_title = "gameboi++";
 
     /**
      * Screen dimensions.
      */
-    static constexpr auto screen_width{800u};
-    static constexpr auto screen_height{600u};
+    static constexpr auto screen_width{1200u};
+    static constexpr auto screen_height{576u};
+
+    /**
+     * Framerate (set by Game Boy hardware)
+     */
+    static constexpr auto framerate{59.7275005696};
 
     /**
      * Active SDL context.
      */
     SDL::Context sdl_context{};
+
+    /**
+     * Number of frames processed.
+     */
+    uint64_t frame_count{};
 };
 
 } // namespace Gbpp::Frontend
