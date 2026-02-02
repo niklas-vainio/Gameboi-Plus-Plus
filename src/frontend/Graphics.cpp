@@ -40,8 +40,8 @@ void draw_cpu_status(SDL::Context &sdl_context, const CpuDebugInfo &cpu)
     float y = Layout::padding;
     float x = Layout::debug_panel_start + Layout::padding;
 
-    SDL::draw_text(sdl_context, "CPU Status", {x, y}, SDL::WHITE, Font::MEDIUM);
-    y += Font::padding(Font::MEDIUM);
+    SDL::draw_text(sdl_context, "CPU Status", {x, y}, SDL::WHITE, Font::LARGE);
+    y += Font::padding(Font::LARGE);
 
     /*
      * Registers
@@ -158,7 +158,7 @@ void draw_cpu_status(SDL::Context &sdl_context, const CpuDebugInfo &cpu)
                    cpu.current_instruction_asm,
                    {x, y},
                    SDL::CYAN,
-                   Font::SMALL);
+                   Font::MEDIUM);
 }
 
 } // namespace Gbpp::Frontend::Graphics

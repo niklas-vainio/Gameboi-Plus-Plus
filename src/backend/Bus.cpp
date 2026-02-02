@@ -16,7 +16,7 @@ uint8_t Bus::read(const uint16_t address)
 {
     LogDebug("Read from address %02x", address);
 
-    return 0x00;
+    return address & 0x00ff;
 }
 
 void Bus::write(const uint16_t address, const uint8_t value)

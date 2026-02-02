@@ -14,6 +14,8 @@ FILE_HEADER_CPP = """\
  */
 
 #include "Cpu.hpp"
+#include "common/logging.hpp"
+#include <format>
  
 namespace Gbpp::Backend 
 {{
@@ -68,6 +70,8 @@ void Cpu::instruction_{opcode:02X}_{mnemonic}()
      * Flags: {flags}
      * Cycles: {cycles}
      */
+
+    current_instruction_asm = std::format("{mnemonic} {gb_font_operands}");
 }}
 
 """
@@ -80,6 +84,8 @@ void Cpu::instruction_CB_{opcode:02X}_{mnemonic}()
      * Flags: {flags}
      * Cycles: {cycles}
      */
+
+    current_instruction_asm = std::format("{mnemonic} {gb_font_operands}");
 }}
 
 """
@@ -88,8 +94,10 @@ ILLEGAL_FUNCTION_STUB = """\
 void Cpu::instruction_ILLEGAL() 
 {
     /*
-     * Catch-all for illegal opcodes.
+     * Catch-all for illegal opcodes. Log an error and do nothing.
      */
+    LogError("Encoutered invalid opcode 0x%02X at PC = 0x%04X", opcode, pc - 1);
+    current_instruction_asm = std::format("ILLEGAL {:02X}", opcode);
 }
 
 """
@@ -115,6 +123,7 @@ class Instruction:
     opcode: int
     mnemonic: str
     operands: str
+    gb_font_operands: str
     flags: str
     bytes: int
     cycles: int
@@ -130,7 +139,14 @@ def extract_opcodes(data: dict) -> tuple:
         Instruction(
             opcode=int(opcode, 16),
             mnemonic="ILLEGAL" if "ILLEGAL" in info["mnemonic"] else info["mnemonic"],
-            operands=", ".join(operand["name"] for operand in info.get("operands", [])),
+            operands=", ".join(
+                (operand["name"] if operand["immediate"] else "[" + operand["name"] + "]") 
+                for operand in info["operands"]
+            ),
+            gb_font_operands=", ".join(
+                (operand["name"] if operand["immediate"] else "*" + operand["name"]) 
+                for operand in info["operands"]
+            ),                                       
             flags=" ".join([info["flags"]["Z"], info["flags"]["N"], info["flags"]["H"], info["flags"]["C"]]),
             bytes=info["bytes"],
             cycles=min(info["cycles"]),
@@ -143,6 +159,7 @@ def extract_opcodes(data: dict) -> tuple:
         opcode=0xCB,
         mnemonic="ILLEGAL",
         operands="",
+        gb_font_operands="",
         flags="",
         bytes=1,
         cycles=4,
@@ -152,7 +169,14 @@ def extract_opcodes(data: dict) -> tuple:
         Instruction(
             opcode=int(opcode, 16),
             mnemonic="ILLEGAL" if "ILLEGAL" in info["mnemonic"] else info["mnemonic"],
-            operands=", ".join(operand["name"] for operand in info.get("operands", [])),
+            operands=", ".join(
+                (operand["name"] if operand["immediate"] else "[" + operand["name"] + "]") 
+                for operand in info["operands"]
+            ),
+            gb_font_operands=", ".join(
+                (operand["name"] if operand["immediate"] else "*" + operand["name"]) 
+                for operand in info["operands"]
+            ),
             flags=" ".join([info["flags"]["Z"], info["flags"]["N"], info["flags"]["H"], info["flags"]["C"]]),
             bytes=info["bytes"],
             cycles=min(info["cycles"]),

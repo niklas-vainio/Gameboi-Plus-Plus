@@ -19,19 +19,25 @@ void Cpu::emulate_instruction()
     /*
      * Fetch opcode.
      */
+    opcode = fetch_8();
 
     /*
-     * Decode the instruction, handling CB-prefixed instructions separately.
+     * Decode the instruction. Read an extra opcode byte for CB-prefixed
+     * instructions, but keep the opcode field as CB for debug info.
      */
+    const auto &instruction = (opcode == 0xCB)
+                                  ? instruction_map_cb_prefixed[read_8(pc++)]
+                                  : instruction_map[opcode];
 
     /*
-     * Execute the instruction.
+     * Execute the instruction and increase cycle counts.
      */
+    (this->*instruction.func)();
     num_instructions_executed++;
-    num_cycles_elapsed += 4;
+    num_cycles_elapsed += instruction.cycles;
 }
 
-CpuDebugInfo Cpu::get_debug_info()
+CpuDebugInfo Cpu::get_debug_info() const
 {
     return {.num_instructions_executed = num_instructions_executed,
             .num_cycles_elapsed = num_cycles_elapsed,
@@ -47,6 +53,7 @@ CpuDebugInfo Cpu::get_debug_info()
             .pc = pc,
             .sp = sp,
 
+            .opcode = opcode,
             .current_instruction_asm = current_instruction_asm};
 }
 
