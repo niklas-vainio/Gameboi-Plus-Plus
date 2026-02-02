@@ -26,6 +26,8 @@ struct CpuDebugInfo
     uint16_t pc{};
     uint16_t sp{};
 
+    uint8_t opcode{};
+
     std::string current_instruction_asm{};
 };
 

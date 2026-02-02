@@ -62,4 +62,12 @@ inline constexpr auto padding = 10u;
  */
 void draw_frame(SDL::Context &sdl_context, const EmulatorDebugInfo &debug_info);
 
+/**
+ * Draw the current status of the CPU
+ *
+ * @param[in] sdl_context   Current SDL context.
+ * @param[in] cpu           CPU debug info from the backend
+ */
+void draw_cpu_status(SDL::Context &sdl_context, const CpuDebugInfo &cpu);
+
 } // namespace Gbpp::Frontend::Graphics

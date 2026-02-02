@@ -83,7 +83,7 @@ private:
     /**
      * Assembly string representation of the current instruction.
      */
-    std::string current_instruction_asm{};
+    std::string current_instruction_asm = "???";
 
     /**
      * Prototypes of all opcode functions - included from a separate file.
