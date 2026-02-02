@@ -26,9 +26,9 @@ bool App::init()
      * Initialize SDL context.
      */
     sdl_context = SDL::init(window_title,
-                            screen_width,
-                            screen_height,
-                            0,
+                            Graphics::Layout::screen_width,
+                            Graphics::Layout::screen_height,
+                            0u,
                             Font::font_file,
                             Font::size_map);
 
@@ -71,7 +71,7 @@ void App::draw_frame(const EmulatorDebugInfo &debug_info)
 
 void App::wait_until_frame_over()
 {
-    SDL::delay_for_fps(frame_start, framerate);
+    SDL::delay_for_fps(frame_start, GameBoyConstants::framerate);
 }
 
 void App::quit()

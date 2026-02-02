@@ -9,6 +9,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 namespace Gbpp
 {
@@ -24,6 +25,8 @@ struct CpuDebugInfo
     uint8_t A{}, B{}, C{}, D{}, E{}, F{}, H{}, L{};
     uint16_t pc{};
     uint16_t sp{};
+
+    std::string current_instruction_asm{};
 };
 
 /**

@@ -9,9 +9,9 @@
 #pragma once
 
 #include "Bus.hpp"
-#include "Cpu.hpp"
 #include "common/Control.hpp"
 #include "common/DebugInfo.hpp"
+#include "cpu/Cpu.hpp"
 #include <string>
 
 namespace Gbpp::Backend

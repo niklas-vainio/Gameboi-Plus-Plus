@@ -10,6 +10,7 @@
 
 #include "common/Control.hpp"
 #include "common/DebugInfo.hpp"
+#include "common/GameBoyConstants.hpp"
 #include "sdl/context.hpp"
 #include "sdl/time.hpp"
 #include <cstdint>
@@ -21,12 +22,6 @@ namespace Gbpp::Frontend
 class App
 {
 public:
-    /**
-     * Screen dimensions.
-     */
-    static constexpr auto screen_width{1200u};
-    static constexpr auto screen_height{576u};
-
     /**
      * Initialize the app.
      *
@@ -80,11 +75,6 @@ private:
      * Name of the window.
      */
     static constexpr std::string window_title = "gameboi++";
-
-    /**
-     * Framerate (matches Game Boy hardware)
-     */
-    static constexpr auto framerate{59.7275005696};
 
     /**
      * Active SDL context.

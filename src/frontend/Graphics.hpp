@@ -9,13 +9,50 @@
 
 #include "App.hpp"
 #include "common/DebugInfo.hpp"
+#include "common/GameBoyConstants.hpp"
 #include "sdl/graphics.hpp"
 
 namespace Gbpp::Frontend::Graphics
 {
 
-inline constexpr auto screen_width = App::screen_width;
-inline constexpr auto screen_height = App::screen_height;
+/**
+ * Constants defining fixed screen positions.
+ */
+namespace Layout
+{
+
+/**
+ * Size of a Game Boy pixel in the emulator display.
+ */
+inline constexpr auto pixel_scale = 4u;
+
+/**
+ * Size of the Game Boy screen viewer.
+ */
+inline constexpr auto game_boy_viwer_width =
+    pixel_scale * GameBoyConstants::screen_width;
+inline constexpr auto game_boy_viwer_height =
+    pixel_scale * GameBoyConstants::screen_height;
+
+/**
+ * Width of the debug panel (in pixels).
+ */
+inline constexpr auto debug_panel_width = 500u;
+
+/**
+ * Overall screen dimensions.
+ */
+inline constexpr auto screen_width = game_boy_viwer_width + debug_panel_width;
+inline constexpr auto screen_height = game_boy_viwer_height;
+
+inline constexpr auto debug_panel_start = screen_width - debug_panel_width;
+
+/**
+ * Standard UI padding to use
+ */
+inline constexpr auto padding = 10u;
+
+} // namespace Layout
 
 /**
  * Draw the current frame to the screen.
