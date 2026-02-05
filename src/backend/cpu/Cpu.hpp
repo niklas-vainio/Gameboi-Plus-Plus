@@ -89,6 +89,25 @@ private:
     }
 
     /**
+     * Helper functions for pushing/popping 16-bit values to/from the stack.
+     *
+     * The stack is full-descending, meaning it grows down and SP points to the
+     * most recently pushed element. Values are stored in memory in
+     * little-endian order.
+     */
+    uint16_t pop_16()
+    {
+        const uint16_t value = read_16(sp);
+        sp += 2;
+        return value;
+    }
+    void push_16(uint16_t value)
+    {
+        sp += 2;
+        write_16(sp, value);
+    }
+
+    /**
      * Registers
      */
     uint8_t A{}, B{}, C{}, D{}, E{}, F{}, H{}, L{};
@@ -126,11 +145,6 @@ private:
     void set_C(bool C) { F = (F & ~(1 << 4)) | (C << 4); }
     // clang-format on
 
-    void set_flags(bool Z, bool N, bool H, bool C)
-    {
-        F = (Z << 7) | (N << 6) | (H << 5) | (C << 4);
-    }
-
     /**
      * Number of cycles elapsed.
      */
@@ -150,6 +164,11 @@ private:
      * Assembly string representation of the current instruction.
      */
     std::string current_instruction_asm = "???";
+
+    /**
+     * Store whether interrupts are currently enabled;
+     */
+    bool interrupts_enbled{};
 
     /**
      * Prototypes of all opcode functions - included from a separate file.

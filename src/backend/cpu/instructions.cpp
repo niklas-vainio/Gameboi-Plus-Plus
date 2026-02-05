@@ -485,8 +485,16 @@ void Cpu::instruction_20_JR()
      * Flags: - - - -
      * Cycles: 8
      */
+    const int8_t e8 = static_cast<int8_t>(fetch_8());
+    const uint16_t dest = pc + e8;
 
-    current_instruction_asm = std::format("JR NZ, e8");
+    if (!get_Z())
+    {
+        pc = dest;
+        num_cycles_elapsed += 4;
+    }
+
+    current_instruction_asm = std::format("JR NZ, {:04X}", dest);
 }
 
 void Cpu::instruction_21_LD()
@@ -710,8 +718,16 @@ void Cpu::instruction_30_JR()
      * Flags: - - - -
      * Cycles: 8
      */
+    const int8_t e8 = static_cast<int8_t>(fetch_8());
+    const uint16_t dest = pc + e8;
 
-    current_instruction_asm = std::format("JR NC, e8");
+    if (!get_C())
+    {
+        pc = dest;
+        num_cycles_elapsed += 4;
+    }
+
+    current_instruction_asm = std::format("JR NC, {:04X}", dest);
 }
 
 void Cpu::instruction_31_LD()
@@ -936,7 +952,7 @@ void Cpu::instruction_40_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    B = B;
     current_instruction_asm = std::format("LD B, B");
 }
 
@@ -947,7 +963,7 @@ void Cpu::instruction_41_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    B = C;
     current_instruction_asm = std::format("LD B, C");
 }
 
@@ -958,7 +974,7 @@ void Cpu::instruction_42_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    B = D;
     current_instruction_asm = std::format("LD B, D");
 }
 
@@ -969,7 +985,7 @@ void Cpu::instruction_43_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    B = E;
     current_instruction_asm = std::format("LD B, E");
 }
 
@@ -980,7 +996,7 @@ void Cpu::instruction_44_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    B = H;
     current_instruction_asm = std::format("LD B, H");
 }
 
@@ -991,7 +1007,7 @@ void Cpu::instruction_45_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    B = L;
     current_instruction_asm = std::format("LD B, L");
 }
 
@@ -1002,7 +1018,7 @@ void Cpu::instruction_46_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    B = read_8(get_HL());
     current_instruction_asm = std::format("LD B, !HL");
 }
 
@@ -1013,7 +1029,7 @@ void Cpu::instruction_47_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    B = A;
     current_instruction_asm = std::format("LD B, A");
 }
 
@@ -1024,7 +1040,7 @@ void Cpu::instruction_48_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    C = B;
     current_instruction_asm = std::format("LD C, B");
 }
 
@@ -1035,7 +1051,7 @@ void Cpu::instruction_49_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    C = C;
     current_instruction_asm = std::format("LD C, C");
 }
 
@@ -1046,7 +1062,7 @@ void Cpu::instruction_4A_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    C = D;
     current_instruction_asm = std::format("LD C, D");
 }
 
@@ -1057,7 +1073,7 @@ void Cpu::instruction_4B_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    C = E;
     current_instruction_asm = std::format("LD C, E");
 }
 
@@ -1068,7 +1084,7 @@ void Cpu::instruction_4C_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    C = H;
     current_instruction_asm = std::format("LD C, H");
 }
 
@@ -1079,7 +1095,7 @@ void Cpu::instruction_4D_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    C = L;
     current_instruction_asm = std::format("LD C, L");
 }
 
@@ -1090,7 +1106,7 @@ void Cpu::instruction_4E_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    C = read_8(get_HL());
     current_instruction_asm = std::format("LD C, !HL");
 }
 
@@ -1101,7 +1117,7 @@ void Cpu::instruction_4F_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    C = A;
     current_instruction_asm = std::format("LD C, A");
 }
 
@@ -1112,7 +1128,7 @@ void Cpu::instruction_50_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    D = B;
     current_instruction_asm = std::format("LD D, B");
 }
 
@@ -1123,7 +1139,7 @@ void Cpu::instruction_51_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    D = C;
     current_instruction_asm = std::format("LD D, C");
 }
 
@@ -1134,7 +1150,7 @@ void Cpu::instruction_52_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    D = D;
     current_instruction_asm = std::format("LD D, D");
 }
 
@@ -1145,7 +1161,7 @@ void Cpu::instruction_53_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    D = E;
     current_instruction_asm = std::format("LD D, E");
 }
 
@@ -1156,7 +1172,7 @@ void Cpu::instruction_54_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    D = H;
     current_instruction_asm = std::format("LD D, H");
 }
 
@@ -1167,7 +1183,7 @@ void Cpu::instruction_55_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    D = L;
     current_instruction_asm = std::format("LD D, L");
 }
 
@@ -1178,7 +1194,7 @@ void Cpu::instruction_56_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    D = read_8(get_HL());
     current_instruction_asm = std::format("LD D, !HL");
 }
 
@@ -1189,7 +1205,7 @@ void Cpu::instruction_57_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    D = A;
     current_instruction_asm = std::format("LD D, A");
 }
 
@@ -1200,7 +1216,7 @@ void Cpu::instruction_58_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    E = B;
     current_instruction_asm = std::format("LD E, B");
 }
 
@@ -1211,7 +1227,7 @@ void Cpu::instruction_59_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    E = C;
     current_instruction_asm = std::format("LD E, C");
 }
 
@@ -1222,7 +1238,7 @@ void Cpu::instruction_5A_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    E = D;
     current_instruction_asm = std::format("LD E, D");
 }
 
@@ -1233,7 +1249,7 @@ void Cpu::instruction_5B_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    E = E;
     current_instruction_asm = std::format("LD E, E");
 }
 
@@ -1244,7 +1260,7 @@ void Cpu::instruction_5C_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    E = H;
     current_instruction_asm = std::format("LD E, H");
 }
 
@@ -1255,7 +1271,7 @@ void Cpu::instruction_5D_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    E = L;
     current_instruction_asm = std::format("LD E, L");
 }
 
@@ -1266,7 +1282,7 @@ void Cpu::instruction_5E_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    E = read_8(get_HL());
     current_instruction_asm = std::format("LD E, !HL");
 }
 
@@ -1277,7 +1293,7 @@ void Cpu::instruction_5F_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    E = A;
     current_instruction_asm = std::format("LD E, A");
 }
 
@@ -1288,7 +1304,7 @@ void Cpu::instruction_60_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    H = B;
     current_instruction_asm = std::format("LD H, B");
 }
 
@@ -1299,7 +1315,7 @@ void Cpu::instruction_61_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    H = C;
     current_instruction_asm = std::format("LD H, C");
 }
 
@@ -1310,7 +1326,7 @@ void Cpu::instruction_62_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    H = D;
     current_instruction_asm = std::format("LD H, D");
 }
 
@@ -1321,7 +1337,7 @@ void Cpu::instruction_63_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    H = E;
     current_instruction_asm = std::format("LD H, E");
 }
 
@@ -1332,7 +1348,7 @@ void Cpu::instruction_64_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    H = H;
     current_instruction_asm = std::format("LD H, H");
 }
 
@@ -1343,7 +1359,7 @@ void Cpu::instruction_65_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    H = L;
     current_instruction_asm = std::format("LD H, L");
 }
 
@@ -1354,7 +1370,7 @@ void Cpu::instruction_66_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    H = read_8(get_HL());
     current_instruction_asm = std::format("LD H, !HL");
 }
 
@@ -1365,7 +1381,7 @@ void Cpu::instruction_67_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    H = A;
     current_instruction_asm = std::format("LD H, A");
 }
 
@@ -1376,7 +1392,7 @@ void Cpu::instruction_68_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    L = B;
     current_instruction_asm = std::format("LD L, B");
 }
 
@@ -1387,7 +1403,7 @@ void Cpu::instruction_69_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    L = C;
     current_instruction_asm = std::format("LD L, C");
 }
 
@@ -1398,7 +1414,7 @@ void Cpu::instruction_6A_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    L = D;
     current_instruction_asm = std::format("LD L, D");
 }
 
@@ -1409,7 +1425,7 @@ void Cpu::instruction_6B_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    L = E;
     current_instruction_asm = std::format("LD L, E");
 }
 
@@ -1420,7 +1436,7 @@ void Cpu::instruction_6C_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    L = H;
     current_instruction_asm = std::format("LD L, H");
 }
 
@@ -1431,7 +1447,7 @@ void Cpu::instruction_6D_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    L = L;
     current_instruction_asm = std::format("LD L, L");
 }
 
@@ -1442,7 +1458,7 @@ void Cpu::instruction_6E_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    L = read_8(get_HL());
     current_instruction_asm = std::format("LD L, !HL");
 }
 
@@ -1453,7 +1469,7 @@ void Cpu::instruction_6F_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    L = A;
     current_instruction_asm = std::format("LD L, A");
 }
 
@@ -1464,7 +1480,7 @@ void Cpu::instruction_70_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    write_8(get_HL(), B);
     current_instruction_asm = std::format("LD !HL, B");
 }
 
@@ -1475,7 +1491,7 @@ void Cpu::instruction_71_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    write_8(get_HL(), C);
     current_instruction_asm = std::format("LD !HL, C");
 }
 
@@ -1486,7 +1502,7 @@ void Cpu::instruction_72_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    write_8(get_HL(), D);
     current_instruction_asm = std::format("LD !HL, D");
 }
 
@@ -1497,7 +1513,7 @@ void Cpu::instruction_73_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    write_8(get_HL(), E);
     current_instruction_asm = std::format("LD !HL, E");
 }
 
@@ -1508,7 +1524,7 @@ void Cpu::instruction_74_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    write_8(get_HL(), H);
     current_instruction_asm = std::format("LD !HL, H");
 }
 
@@ -1519,7 +1535,7 @@ void Cpu::instruction_75_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    write_8(get_HL(), L);
     current_instruction_asm = std::format("LD !HL, L");
 }
 
@@ -1543,7 +1559,7 @@ void Cpu::instruction_77_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    write_8(get_HL(), A);
     current_instruction_asm = std::format("LD !HL, A");
 }
 
@@ -1554,7 +1570,7 @@ void Cpu::instruction_78_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    A = B;
     current_instruction_asm = std::format("LD A, B");
 }
 
@@ -1565,7 +1581,7 @@ void Cpu::instruction_79_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    A = C;
     current_instruction_asm = std::format("LD A, C");
 }
 
@@ -1576,7 +1592,7 @@ void Cpu::instruction_7A_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    A = D;
     current_instruction_asm = std::format("LD A, D");
 }
 
@@ -1587,7 +1603,7 @@ void Cpu::instruction_7B_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    A = E;
     current_instruction_asm = std::format("LD A, E");
 }
 
@@ -1598,7 +1614,7 @@ void Cpu::instruction_7C_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    A = H;
     current_instruction_asm = std::format("LD A, H");
 }
 
@@ -1609,7 +1625,7 @@ void Cpu::instruction_7D_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    A = L;
     current_instruction_asm = std::format("LD A, L");
 }
 
@@ -1620,7 +1636,7 @@ void Cpu::instruction_7E_LD()
      * Flags: - - - -
      * Cycles: 8
      */
-
+    A = read_8(get_HL());
     current_instruction_asm = std::format("LD A, !HL");
 }
 
@@ -1631,7 +1647,7 @@ void Cpu::instruction_7F_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-
+    A = A;
     current_instruction_asm = std::format("LD A, A");
 }
 
@@ -1642,7 +1658,16 @@ void Cpu::instruction_80_ADD()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = B;
+    const uint16_t result = op1 + op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADD A, B");
 }
 
@@ -1653,7 +1678,16 @@ void Cpu::instruction_81_ADD()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = C;
+    const uint16_t result = op1 + op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADD A, C");
 }
 
@@ -1664,7 +1698,16 @@ void Cpu::instruction_82_ADD()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = D;
+    const uint16_t result = op1 + op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADD A, D");
 }
 
@@ -1675,7 +1718,16 @@ void Cpu::instruction_83_ADD()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = E;
+    const uint16_t result = op1 + op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADD A, E");
 }
 
@@ -1686,7 +1738,16 @@ void Cpu::instruction_84_ADD()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = H;
+    const uint16_t result = op1 + op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADD A, H");
 }
 
@@ -1697,7 +1758,16 @@ void Cpu::instruction_85_ADD()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = L;
+    const uint16_t result = op1 + op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADD A, L");
 }
 
@@ -1708,7 +1778,16 @@ void Cpu::instruction_86_ADD()
      * Flags: Z 0 H C
      * Cycles: 8
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = read_8(get_HL());
+    const uint16_t result = op1 + op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADD A, !HL");
 }
 
@@ -1719,7 +1798,16 @@ void Cpu::instruction_87_ADD()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = A;
+    const uint16_t result = op1 + op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADD A, A");
 }
 
@@ -1730,7 +1818,16 @@ void Cpu::instruction_88_ADC()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = B;
+    const uint16_t result = op1 + op2 + get_C();
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADC A, B");
 }
 
@@ -1741,7 +1838,16 @@ void Cpu::instruction_89_ADC()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = C;
+    const uint16_t result = op1 + op2 + get_C();
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADC A, C");
 }
 
@@ -1752,7 +1858,16 @@ void Cpu::instruction_8A_ADC()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = D;
+    const uint16_t result = op1 + op2 + get_C();
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADC A, D");
 }
 
@@ -1763,7 +1878,16 @@ void Cpu::instruction_8B_ADC()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = E;
+    const uint16_t result = op1 + op2 + get_C();
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADC A, E");
 }
 
@@ -1774,7 +1898,16 @@ void Cpu::instruction_8C_ADC()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = H;
+    const uint16_t result = op1 + op2 + get_C();
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADC A, H");
 }
 
@@ -1785,7 +1918,16 @@ void Cpu::instruction_8D_ADC()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = L;
+    const uint16_t result = op1 + op2 + get_C();
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADC A, L");
 }
 
@@ -1796,7 +1938,16 @@ void Cpu::instruction_8E_ADC()
      * Flags: Z 0 H C
      * Cycles: 8
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = read_8(get_HL());
+    const uint16_t result = op1 + op2 + get_C();
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADC A, !HL");
 }
 
@@ -1807,7 +1958,16 @@ void Cpu::instruction_8F_ADC()
      * Flags: Z 0 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = A;
+    const uint16_t result = op1 + op2 + get_C();
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
+    set_C(result & 0x100);
     current_instruction_asm = std::format("ADC A, A");
 }
 
@@ -1818,7 +1978,16 @@ void Cpu::instruction_90_SUB()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = B;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SUB A, B");
 }
 
@@ -1829,7 +1998,16 @@ void Cpu::instruction_91_SUB()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = C;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SUB A, C");
 }
 
@@ -1840,7 +2018,16 @@ void Cpu::instruction_92_SUB()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = D;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SUB A, D");
 }
 
@@ -1851,7 +2038,16 @@ void Cpu::instruction_93_SUB()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = E;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SUB A, E");
 }
 
@@ -1862,7 +2058,16 @@ void Cpu::instruction_94_SUB()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = H;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SUB A, H");
 }
 
@@ -1873,7 +2078,16 @@ void Cpu::instruction_95_SUB()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = L;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SUB A, L");
 }
 
@@ -1884,7 +2098,16 @@ void Cpu::instruction_96_SUB()
      * Flags: Z 1 H C
      * Cycles: 8
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = read_8(get_HL());
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SUB A, !HL");
 }
 
@@ -1895,7 +2118,16 @@ void Cpu::instruction_97_SUB()
      * Flags: 1 1 0 0
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = A;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(1);
+    set_N(1);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("SUB A, A");
 }
 
@@ -1906,7 +2138,16 @@ void Cpu::instruction_98_SBC()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = B;
+    const uint16_t result = op1 - op2 - get_C();
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f) + get_C());
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, B");
 }
 
@@ -1917,7 +2158,16 @@ void Cpu::instruction_99_SBC()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = C;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, C");
 }
 
@@ -1928,7 +2178,16 @@ void Cpu::instruction_9A_SBC()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = D;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, D");
 }
 
@@ -1939,7 +2198,16 @@ void Cpu::instruction_9B_SBC()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = E;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, E");
 }
 
@@ -1950,7 +2218,16 @@ void Cpu::instruction_9C_SBC()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = H;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, H");
 }
 
@@ -1961,7 +2238,16 @@ void Cpu::instruction_9D_SBC()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = L;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, L");
 }
 
@@ -1972,7 +2258,16 @@ void Cpu::instruction_9E_SBC()
      * Flags: Z 1 H C
      * Cycles: 8
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = read_8(get_HL());
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, !HL");
 }
 
@@ -1983,7 +2278,15 @@ void Cpu::instruction_9F_SBC()
      * Flags: Z 1 H -
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = A;
+    const uint16_t result = op1 - op2;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
     current_instruction_asm = std::format("SBC A, A");
 }
 
@@ -1994,7 +2297,12 @@ void Cpu::instruction_A0_AND()
      * Flags: Z 0 1 0
      * Cycles: 4
      */
+    A &= B;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
     current_instruction_asm = std::format("AND A, B");
 }
 
@@ -2005,7 +2313,12 @@ void Cpu::instruction_A1_AND()
      * Flags: Z 0 1 0
      * Cycles: 4
      */
+    A &= C;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
     current_instruction_asm = std::format("AND A, C");
 }
 
@@ -2016,7 +2329,12 @@ void Cpu::instruction_A2_AND()
      * Flags: Z 0 1 0
      * Cycles: 4
      */
+    A &= D;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
     current_instruction_asm = std::format("AND A, D");
 }
 
@@ -2027,7 +2345,12 @@ void Cpu::instruction_A3_AND()
      * Flags: Z 0 1 0
      * Cycles: 4
      */
+    A &= E;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
     current_instruction_asm = std::format("AND A, E");
 }
 
@@ -2038,7 +2361,12 @@ void Cpu::instruction_A4_AND()
      * Flags: Z 0 1 0
      * Cycles: 4
      */
+    A &= H;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
     current_instruction_asm = std::format("AND A, H");
 }
 
@@ -2049,7 +2377,12 @@ void Cpu::instruction_A5_AND()
      * Flags: Z 0 1 0
      * Cycles: 4
      */
+    A &= L;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
     current_instruction_asm = std::format("AND A, L");
 }
 
@@ -2060,7 +2393,12 @@ void Cpu::instruction_A6_AND()
      * Flags: Z 0 1 0
      * Cycles: 8
      */
+    A &= read_8(get_HL());
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
     current_instruction_asm = std::format("AND A, !HL");
 }
 
@@ -2071,7 +2409,12 @@ void Cpu::instruction_A7_AND()
      * Flags: Z 0 1 0
      * Cycles: 4
      */
+    A &= A;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
     current_instruction_asm = std::format("AND A, A");
 }
 
@@ -2082,7 +2425,12 @@ void Cpu::instruction_A8_XOR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A ^= B;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("XOR A, B");
 }
 
@@ -2093,7 +2441,12 @@ void Cpu::instruction_A9_XOR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A ^= C;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("XOR A, C");
 }
 
@@ -2104,7 +2457,12 @@ void Cpu::instruction_AA_XOR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A ^= D;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("XOR A, D");
 }
 
@@ -2115,7 +2473,12 @@ void Cpu::instruction_AB_XOR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A ^= E;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("XOR A, E");
 }
 
@@ -2126,7 +2489,12 @@ void Cpu::instruction_AC_XOR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A ^= H;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("XOR A, H");
 }
 
@@ -2137,7 +2505,12 @@ void Cpu::instruction_AD_XOR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A ^= L;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("XOR A, L");
 }
 
@@ -2148,7 +2521,12 @@ void Cpu::instruction_AE_XOR()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    A ^= read_8(get_HL());
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("XOR A, !HL");
 }
 
@@ -2159,7 +2537,12 @@ void Cpu::instruction_AF_XOR()
      * Flags: 1 0 0 0
      * Cycles: 4
      */
+    A ^= A;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("XOR A, A");
 }
 
@@ -2170,7 +2553,12 @@ void Cpu::instruction_B0_OR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A |= B;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("OR A, B");
 }
 
@@ -2181,7 +2569,12 @@ void Cpu::instruction_B1_OR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A |= C;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("OR A, C");
 }
 
@@ -2192,7 +2585,12 @@ void Cpu::instruction_B2_OR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A |= D;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("OR A, D");
 }
 
@@ -2203,7 +2601,12 @@ void Cpu::instruction_B3_OR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A |= E;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("OR A, E");
 }
 
@@ -2214,7 +2617,12 @@ void Cpu::instruction_B4_OR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A |= H;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("OR A, H");
 }
 
@@ -2225,7 +2633,12 @@ void Cpu::instruction_B5_OR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A |= L;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("OR A, L");
 }
 
@@ -2236,7 +2649,12 @@ void Cpu::instruction_B6_OR()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    A |= read_8(get_HL());
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("OR A, !HL");
 }
 
@@ -2247,7 +2665,12 @@ void Cpu::instruction_B7_OR()
      * Flags: Z 0 0 0
      * Cycles: 4
      */
+    A |= A;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("OR A, A");
 }
 
@@ -2258,7 +2681,13 @@ void Cpu::instruction_B8_CP()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = B;
 
+    set_Z(op1 == op2);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(op1 < op2);
     current_instruction_asm = std::format("CP A, B");
 }
 
@@ -2269,7 +2698,13 @@ void Cpu::instruction_B9_CP()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = C;
 
+    set_Z(op1 == op2);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(op1 < op2);
     current_instruction_asm = std::format("CP A, C");
 }
 
@@ -2280,7 +2715,13 @@ void Cpu::instruction_BA_CP()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = D;
 
+    set_Z(op1 == op2);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(op1 < op2);
     current_instruction_asm = std::format("CP A, D");
 }
 
@@ -2291,7 +2732,13 @@ void Cpu::instruction_BB_CP()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = E;
 
+    set_Z(op1 == op2);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(op1 < op2);
     current_instruction_asm = std::format("CP A, E");
 }
 
@@ -2302,7 +2749,13 @@ void Cpu::instruction_BC_CP()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = H;
 
+    set_Z(op1 == op2);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(op1 < op2);
     current_instruction_asm = std::format("CP A, H");
 }
 
@@ -2313,7 +2766,13 @@ void Cpu::instruction_BD_CP()
      * Flags: Z 1 H C
      * Cycles: 4
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = L;
 
+    set_Z(op1 == op2);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(op1 < op2);
     current_instruction_asm = std::format("CP A, L");
 }
 
@@ -2324,7 +2783,13 @@ void Cpu::instruction_BE_CP()
      * Flags: Z 1 H C
      * Cycles: 8
      */
+    const uint8_t op1 = A;
+    const uint8_t op2 = read_8(get_HL());
 
+    set_Z(op1 == op2);
+    set_N(1);
+    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_C(op1 < op2);
     current_instruction_asm = std::format("CP A, !HL");
 }
 
@@ -2335,7 +2800,10 @@ void Cpu::instruction_BF_CP()
      * Flags: 1 1 0 0
      * Cycles: 4
      */
-
+    set_Z(1);
+    set_N(1);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("CP A, A");
 }
 
@@ -2344,8 +2812,13 @@ void Cpu::instruction_C0_RET()
     /*
      * RET NZ
      * Flags: - - - -
-     * Cycles: 8
+     * Cycles: 20/8
      */
+    if (!get_Z())
+    {
+        pc = pop_16();
+        num_cycles_elapsed += 12;
+    }
 
     current_instruction_asm = std::format("RET NZ");
 }
@@ -2357,6 +2830,7 @@ void Cpu::instruction_C1_POP()
      * Flags: - - - -
      * Cycles: 12
      */
+    set_BC(pop_16());
 
     current_instruction_asm = std::format("POP BC");
 }
@@ -2366,10 +2840,17 @@ void Cpu::instruction_C2_JP()
     /*
      * JP NZ, a16
      * Flags: - - - -
-     * Cycles: 12
+     * Cycles: 16/12
      */
+    const uint16_t a16 = fetch_16();
 
-    current_instruction_asm = std::format("JP NZ, a16");
+    if (!get_Z())
+    {
+        pc = a16;
+        num_cycles_elapsed += 4;
+    }
+
+    current_instruction_asm = std::format("JP NZ, {:04X}", a16);
 }
 
 void Cpu::instruction_C3_JP()
@@ -2379,8 +2860,10 @@ void Cpu::instruction_C3_JP()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint16_t a16 = fetch_16();
+    pc = a16;
 
-    current_instruction_asm = std::format("JP a16");
+    current_instruction_asm = std::format("JP {:04X}", a16);
 }
 
 void Cpu::instruction_C4_CALL()
@@ -2388,10 +2871,18 @@ void Cpu::instruction_C4_CALL()
     /*
      * CALL NZ, a16
      * Flags: - - - -
-     * Cycles: 12
+     * Cycles: 24/12
      */
+    const uint16_t a16 = fetch_16();
 
-    current_instruction_asm = std::format("CALL NZ, a16");
+    if (!get_Z())
+    {
+        push_16(pc);
+        pc = a16;
+        num_cycles_elapsed += 12;
+    }
+
+    current_instruction_asm = std::format("CALL NZ, {:04X}", a16);
 }
 
 void Cpu::instruction_C5_PUSH()
@@ -2401,6 +2892,7 @@ void Cpu::instruction_C5_PUSH()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(get_BC());
 
     current_instruction_asm = std::format("PUSH BC");
 }
@@ -2412,8 +2904,17 @@ void Cpu::instruction_C6_ADD()
      * Flags: Z 0 H C
      * Cycles: 8
      */
+    const uint8_t op1 = A;
+    const uint8_t n8 = fetch_8();
+    const uint16_t result = op1 + n8;
 
-    current_instruction_asm = std::format("ADD A, n8");
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (n8 & 0x0f) > 0x0f);
+    set_C(result & 0x100);
+    current_instruction_asm = std::format("ADD A, {:02X}", n8);
 }
 
 void Cpu::instruction_C7_RST()
@@ -2423,6 +2924,8 @@ void Cpu::instruction_C7_RST()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(pc);
+    pc = 0x0000;
 
     current_instruction_asm = std::format("RST 00");
 }
@@ -2432,8 +2935,13 @@ void Cpu::instruction_C8_RET()
     /*
      * RET Z
      * Flags: - - - -
-     * Cycles: 8
+     * Cycles: 20/8
      */
+    if (get_Z())
+    {
+        pc = pop_16();
+        num_cycles_elapsed += 12;
+    }
 
     current_instruction_asm = std::format("RET Z");
 }
@@ -2445,6 +2953,7 @@ void Cpu::instruction_C9_RET()
      * Flags: - - - -
      * Cycles: 16
      */
+    pc = pop_16();
 
     current_instruction_asm = std::format("RET ");
 }
@@ -2456,8 +2965,15 @@ void Cpu::instruction_CA_JP()
      * Flags: - - - -
      * Cycles: 12
      */
+    const uint16_t a16 = fetch_16();
 
-    current_instruction_asm = std::format("JP Z, a16");
+    if (get_Z())
+    {
+        pc = a16;
+        num_cycles_elapsed += 4;
+    }
+
+    current_instruction_asm = std::format("JP Z, {:04X}", a16);
 }
 
 void Cpu::instruction_CC_CALL()
@@ -2465,10 +2981,18 @@ void Cpu::instruction_CC_CALL()
     /*
      * CALL Z, a16
      * Flags: - - - -
-     * Cycles: 12
+     * Cycles: 24/12
      */
+    const uint16_t a16 = fetch_16();
 
-    current_instruction_asm = std::format("CALL Z, a16");
+    if (get_Z())
+    {
+        push_16(pc);
+        pc = a16;
+        num_cycles_elapsed += 12;
+    }
+
+    current_instruction_asm = std::format("CALL Z, {:04X}", a16);
 }
 
 void Cpu::instruction_CD_CALL()
@@ -2478,8 +3002,11 @@ void Cpu::instruction_CD_CALL()
      * Flags: - - - -
      * Cycles: 24
      */
+    const uint16_t a16 = fetch_16();
+    push_16(pc);
+    pc = a16;
 
-    current_instruction_asm = std::format("CALL a16");
+    current_instruction_asm = std::format("CALL {:04X}", a16);
 }
 
 void Cpu::instruction_CE_ADC()
@@ -2489,8 +3016,17 @@ void Cpu::instruction_CE_ADC()
      * Flags: Z 0 H C
      * Cycles: 8
      */
+    const uint8_t op1 = A;
+    const uint8_t n8 = fetch_8();
+    const uint16_t result = op1 + n8 + get_C();
 
-    current_instruction_asm = std::format("ADC A, n8");
+    A = result;
+
+    set_Z(result == 0);
+    set_N(0);
+    set_H((op1 & 0x0f) + (n8 & 0x0f) + get_C() > 0x0f);
+    set_C(result & 0x100);
+    current_instruction_asm = std::format("ADC A, {:02X}", n8);
 }
 
 void Cpu::instruction_CF_RST()
@@ -2500,6 +3036,8 @@ void Cpu::instruction_CF_RST()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(pc);
+    pc = 0x0008;
 
     current_instruction_asm = std::format("RST 08");
 }
@@ -2509,8 +3047,13 @@ void Cpu::instruction_D0_RET()
     /*
      * RET NC
      * Flags: - - - -
-     * Cycles: 8
+     * Cycles: 20/8
      */
+    if (!get_C())
+    {
+        pc = pop_16();
+        num_cycles_elapsed += 12;
+    }
 
     current_instruction_asm = std::format("RET NC");
 }
@@ -2522,6 +3065,7 @@ void Cpu::instruction_D1_POP()
      * Flags: - - - -
      * Cycles: 12
      */
+    set_DE(pop_16());
 
     current_instruction_asm = std::format("POP DE");
 }
@@ -2531,10 +3075,17 @@ void Cpu::instruction_D2_JP()
     /*
      * JP NC, a16
      * Flags: - - - -
-     * Cycles: 12
+     * Cycles: 16/12
      */
+    const uint16_t a16 = fetch_16();
 
-    current_instruction_asm = std::format("JP NC, a16");
+    if (!get_C())
+    {
+        pc = a16;
+        num_cycles_elapsed += 4;
+    }
+
+    current_instruction_asm = std::format("JP NC, {:04X}", a16);
 }
 
 void Cpu::instruction_D4_CALL()
@@ -2542,10 +3093,18 @@ void Cpu::instruction_D4_CALL()
     /*
      * CALL NC, a16
      * Flags: - - - -
-     * Cycles: 12
+     * Cycles: 24/12
      */
+    const uint16_t a16 = fetch_16();
 
-    current_instruction_asm = std::format("CALL NC, a16");
+    if (!get_C())
+    {
+        push_16(pc);
+        pc = a16;
+        num_cycles_elapsed += 12;
+    }
+
+    current_instruction_asm = std::format("CALL NC, {:04X}", a16);
 }
 
 void Cpu::instruction_D5_PUSH()
@@ -2555,6 +3114,7 @@ void Cpu::instruction_D5_PUSH()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(get_DE());
 
     current_instruction_asm = std::format("PUSH DE");
 }
@@ -2566,7 +3126,16 @@ void Cpu::instruction_D6_SUB()
      * Flags: Z 1 H C
      * Cycles: 8
      */
+    const uint8_t op1 = A;
+    const uint8_t n8 = fetch_8();
+    const uint16_t result = op1 - n8;
 
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (n8 & 0x0f));
+    set_C(result & 0x8000);
     current_instruction_asm = std::format("SUB A, n8");
 }
 
@@ -2577,6 +3146,8 @@ void Cpu::instruction_D7_RST()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(pc);
+    pc = 0x0010;
 
     current_instruction_asm = std::format("RST 10");
 }
@@ -2586,8 +3157,13 @@ void Cpu::instruction_D8_RET()
     /*
      * RET C
      * Flags: - - - -
-     * Cycles: 8
+     * Cycles: 20/8
      */
+    if (get_C())
+    {
+        pc = pop_16();
+        num_cycles_elapsed += 12;
+    }
 
     current_instruction_asm = std::format("RET C");
 }
@@ -2599,6 +3175,8 @@ void Cpu::instruction_D9_RETI()
      * Flags: - - - -
      * Cycles: 16
      */
+    pc = pop_16();
+    interrupts_enbled = false;
 
     current_instruction_asm = std::format("RETI ");
 }
@@ -2610,8 +3188,15 @@ void Cpu::instruction_DA_JP()
      * Flags: - - - -
      * Cycles: 12
      */
+    const uint16_t a16 = fetch_16();
 
-    current_instruction_asm = std::format("JP C, a16");
+    if (get_C())
+    {
+        pc = a16;
+        num_cycles_elapsed += 4;
+    }
+
+    current_instruction_asm = std::format("JP C, {:04X}", a16);
 }
 
 void Cpu::instruction_DC_CALL()
@@ -2619,10 +3204,18 @@ void Cpu::instruction_DC_CALL()
     /*
      * CALL C, a16
      * Flags: - - - -
-     * Cycles: 12
+     * Cycles: 24/12
      */
+    const uint16_t a16 = fetch_16();
 
-    current_instruction_asm = std::format("CALL C, a16");
+    if (get_C())
+    {
+        push_16(pc);
+        pc = a16;
+        num_cycles_elapsed += 12;
+    }
+
+    current_instruction_asm = std::format("CALL C, {:04X}", a16);
 }
 
 void Cpu::instruction_DE_SBC()
@@ -2632,8 +3225,17 @@ void Cpu::instruction_DE_SBC()
      * Flags: Z 1 H C
      * Cycles: 8
      */
+    const uint8_t op1 = A;
+    const uint8_t n8 = fetch_8();
+    const uint16_t result = op1 - n8 - get_C();
 
-    current_instruction_asm = std::format("SBC A, n8");
+    A = result;
+
+    set_Z(result == 0);
+    set_N(1);
+    set_H((op1 & 0x0f) < (n8 & 0x0f) + get_C());
+    set_C(result & 0x8000);
+    current_instruction_asm = std::format("SBC A, {:02X}", n8);
 }
 
 void Cpu::instruction_DF_RST()
@@ -2643,6 +3245,8 @@ void Cpu::instruction_DF_RST()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(pc);
+    pc = 0x0018;
 
     current_instruction_asm = std::format("RST 18");
 }
@@ -2654,8 +3258,10 @@ void Cpu::instruction_E0_LDH()
      * Flags: - - - -
      * Cycles: 12
      */
+    const uint8_t a8 = fetch_8();
+    write_8(0xff00 | a8, A);
 
-    current_instruction_asm = std::format("LDH *a8, A");
+    current_instruction_asm = std::format("LDH !{:02X}, A", a8);
 }
 
 void Cpu::instruction_E1_POP()
@@ -2665,6 +3271,7 @@ void Cpu::instruction_E1_POP()
      * Flags: - - - -
      * Cycles: 12
      */
+    set_HL(pop_16());
 
     current_instruction_asm = std::format("POP HL");
 }
@@ -2676,8 +3283,9 @@ void Cpu::instruction_E2_LDH()
      * Flags: - - - -
      * Cycles: 8
      */
+    write_8(0xff00 | C, A);
 
-    current_instruction_asm = std::format("LDH *C, A");
+    current_instruction_asm = std::format("LDH !C, A");
 }
 
 void Cpu::instruction_E5_PUSH()
@@ -2687,6 +3295,7 @@ void Cpu::instruction_E5_PUSH()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(get_HL());
 
     current_instruction_asm = std::format("PUSH HL");
 }
@@ -2698,8 +3307,14 @@ void Cpu::instruction_E6_AND()
      * Flags: Z 0 1 0
      * Cycles: 8
      */
+    const uint8_t n8 = fetch_8();
+    A &= n8;
 
-    current_instruction_asm = std::format("AND A, n8");
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
+    current_instruction_asm = std::format("AND A, {:02X}", n8);
 }
 
 void Cpu::instruction_E7_RST()
@@ -2709,6 +3324,8 @@ void Cpu::instruction_E7_RST()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(pc);
+    pc = 0x0020;
 
     current_instruction_asm = std::format("RST 20");
 }
@@ -2720,8 +3337,16 @@ void Cpu::instruction_E8_ADD()
      * Flags: 0 0 H C
      * Cycles: 16
      */
+    const uint8_t e8 = fetch_8();
+    const uint16_t old_sp = sp;
 
-    current_instruction_asm = std::format("ADD SP, e8");
+    sp += static_cast<int8_t>(e8);
+
+    set_Z(0);
+    set_N(0);
+    set_H((old_sp & 0x0f) + (e8 & 0x0f) > 0x0f);
+    set_C(old_sp + e8 > 0xff);
+    current_instruction_asm = std::format("ADD SP, {:02X}", e8);
 }
 
 void Cpu::instruction_E9_JP()
@@ -2731,6 +3356,7 @@ void Cpu::instruction_E9_JP()
      * Flags: - - - -
      * Cycles: 4
      */
+    pc = get_HL();
 
     current_instruction_asm = std::format("JP HL");
 }
@@ -2742,8 +3368,10 @@ void Cpu::instruction_EA_LD()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint16_t a16 = fetch_16();
+    write_16(a16, A);
 
-    current_instruction_asm = std::format("LD *a16, A");
+    current_instruction_asm = std::format("LD !{:04X}, A", a16);
 }
 
 void Cpu::instruction_EE_XOR()
@@ -2753,8 +3381,14 @@ void Cpu::instruction_EE_XOR()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    const uint8_t n8 = fetch_8();
+    A ^= n8;
 
-    current_instruction_asm = std::format("XOR A, n8");
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
+    current_instruction_asm = std::format("XOR A, {:02X}", n8);
 }
 
 void Cpu::instruction_EF_RST()
@@ -2764,6 +3398,8 @@ void Cpu::instruction_EF_RST()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(pc);
+    pc = 0x0028;
 
     current_instruction_asm = std::format("RST 28");
 }
@@ -2775,8 +3411,10 @@ void Cpu::instruction_F0_LDH()
      * Flags: - - - -
      * Cycles: 12
      */
+    const uint8_t a8 = fetch_8();
+    A = read_8(0xff00 | a8);
 
-    current_instruction_asm = std::format("LDH A, *a8");
+    current_instruction_asm = std::format("LDH A, !{:02X}", a8);
 }
 
 void Cpu::instruction_F1_POP()
@@ -2786,6 +3424,7 @@ void Cpu::instruction_F1_POP()
      * Flags: Z N H C
      * Cycles: 12
      */
+    set_AF(pop_16());
 
     current_instruction_asm = std::format("POP AF");
 }
@@ -2797,8 +3436,9 @@ void Cpu::instruction_F2_LDH()
      * Flags: - - - -
      * Cycles: 8
      */
+    A = read_8(0xff00 | C);
 
-    current_instruction_asm = std::format("LDH A, *C");
+    current_instruction_asm = std::format("LDH A, !C");
 }
 
 void Cpu::instruction_F3_DI()
@@ -2808,6 +3448,7 @@ void Cpu::instruction_F3_DI()
      * Flags: - - - -
      * Cycles: 4
      */
+    interrupts_enbled = false;
 
     current_instruction_asm = std::format("DI ");
 }
@@ -2819,6 +3460,7 @@ void Cpu::instruction_F5_PUSH()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(get_AF());
 
     current_instruction_asm = std::format("PUSH AF");
 }
@@ -2830,8 +3472,14 @@ void Cpu::instruction_F6_OR()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    const uint8_t n8 = fetch_8();
+    A |= n8;
 
-    current_instruction_asm = std::format("OR A, n8");
+    set_Z(A == 0);
+    set_N(0);
+    set_H(1);
+    set_C(0);
+    current_instruction_asm = std::format("OR A, {:02X}", n8);
 }
 
 void Cpu::instruction_F7_RST()
@@ -2841,6 +3489,8 @@ void Cpu::instruction_F7_RST()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(pc);
+    pc = 0x0030;
 
     current_instruction_asm = std::format("RST 30");
 }
@@ -2852,8 +3502,16 @@ void Cpu::instruction_F8_LD()
      * Flags: 0 0 H C
      * Cycles: 12
      */
+    const uint8_t e8 = fetch_8();
+    const uint16_t old_HL = get_HL();
 
-    current_instruction_asm = std::format("LD HL, SP, e8");
+    set_HL(sp + static_cast<int8_t>(e8));
+
+    set_Z(0);
+    set_N(0);
+    set_H((old_HL & 0x0f) + (e8 & 0x0f) > 0x0f);
+    set_C(old_HL + e8 > 0xff);
+    current_instruction_asm = std::format("LD HL, SP, {:02X}", e8);
 }
 
 void Cpu::instruction_F9_LD()
@@ -2863,6 +3521,7 @@ void Cpu::instruction_F9_LD()
      * Flags: - - - -
      * Cycles: 8
      */
+    sp = get_HL();
 
     current_instruction_asm = std::format("LD SP, HL");
 }
@@ -2874,8 +3533,10 @@ void Cpu::instruction_FA_LD()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint16_t a16 = fetch_16();
+    A = read_16(a16);
 
-    current_instruction_asm = std::format("LD A, *a16");
+    current_instruction_asm = std::format("LD A, !{:04X}", a16);
 }
 
 void Cpu::instruction_FB_EI()
@@ -2885,6 +3546,7 @@ void Cpu::instruction_FB_EI()
      * Flags: - - - -
      * Cycles: 4
      */
+    interrupts_enbled = true;
 
     current_instruction_asm = std::format("EI ");
 }
@@ -2896,8 +3558,14 @@ void Cpu::instruction_FE_CP()
      * Flags: Z 1 H C
      * Cycles: 8
      */
+    const uint8_t op1 = A;
+    const uint8_t n8 = fetch_8();
 
-    current_instruction_asm = std::format("CP A, n8");
+    set_Z(op1 == n8);
+    set_N(1);
+    set_H((op1 & 0x0f) < (n8 & 0x0f));
+    set_C(op1 < n8);
+    current_instruction_asm = std::format("CP A, {:02X}", n8);
 }
 
 void Cpu::instruction_FF_RST()
@@ -2907,6 +3575,8 @@ void Cpu::instruction_FF_RST()
      * Flags: - - - -
      * Cycles: 16
      */
+    push_16(pc);
+    pc = 0x0038;
 
     current_instruction_asm = std::format("RST 38");
 }
