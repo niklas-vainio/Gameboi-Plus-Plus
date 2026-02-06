@@ -952,7 +952,6 @@ void Cpu::instruction_40_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-    B = B;
     current_instruction_asm = std::format("LD B, B");
 }
 
@@ -1051,7 +1050,6 @@ void Cpu::instruction_49_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-    C = C;
     current_instruction_asm = std::format("LD C, C");
 }
 
@@ -1150,7 +1148,6 @@ void Cpu::instruction_52_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-    D = D;
     current_instruction_asm = std::format("LD D, D");
 }
 
@@ -1249,7 +1246,6 @@ void Cpu::instruction_5B_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-    E = E;
     current_instruction_asm = std::format("LD E, E");
 }
 
@@ -1348,7 +1344,6 @@ void Cpu::instruction_64_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-    H = H;
     current_instruction_asm = std::format("LD H, H");
 }
 
@@ -1447,7 +1442,6 @@ void Cpu::instruction_6D_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-    L = L;
     current_instruction_asm = std::format("LD L, L");
 }
 
@@ -1647,7 +1641,6 @@ void Cpu::instruction_7F_LD()
      * Flags: - - - -
      * Cycles: 4
      */
-    A = A;
     current_instruction_asm = std::format("LD A, A");
 }
 
@@ -3594,7 +3587,13 @@ void Cpu::instruction_CB_00_RLC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = B >> 7;
+    B = (B << 1) | bit_7;
 
+    set_Z(B == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RLC B");
 }
 
@@ -3605,7 +3604,13 @@ void Cpu::instruction_CB_01_RLC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = C >> 7;
+    C = (C << 1) | bit_7;
 
+    set_Z(C == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RLC C");
 }
 
@@ -3616,7 +3621,13 @@ void Cpu::instruction_CB_02_RLC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = D >> 7;
+    D = (D << 1) | bit_7;
 
+    set_Z(D == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RLC D");
 }
 
@@ -3627,7 +3638,13 @@ void Cpu::instruction_CB_03_RLC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = E >> 7;
+    E = (E << 1) | bit_7;
 
+    set_Z(E == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RLC E");
 }
 
@@ -3638,7 +3655,13 @@ void Cpu::instruction_CB_04_RLC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = H >> 7;
+    H = (H << 1) | bit_7;
 
+    set_Z(H == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RLC H");
 }
 
@@ -3649,7 +3672,13 @@ void Cpu::instruction_CB_05_RLC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = L >> 7;
+    L = (L << 1) | bit_7;
 
+    set_Z(B == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RLC L");
 }
 
@@ -3660,7 +3689,15 @@ void Cpu::instruction_CB_06_RLC()
      * Flags: Z 0 0 C
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    const bool bit_7 = value >> 7;
+    const uint8_t result = (value << 1) | bit_7;
+    write_8(get_HL(), result);
 
+    set_Z(result == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RLC !HL");
 }
 
@@ -3671,7 +3708,13 @@ void Cpu::instruction_CB_07_RLC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = A >> 7;
+    A = (A << 1) | bit_7;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RLC A");
 }
 
@@ -3682,7 +3725,13 @@ void Cpu::instruction_CB_08_RRC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = B & 1;
+    B = (B >> 1) | (bit_0 << 7);
 
+    set_Z(B == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RRC B");
 }
 
@@ -3693,7 +3742,13 @@ void Cpu::instruction_CB_09_RRC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = C & 1;
+    C = (C >> 1) | (bit_0 << 7);
 
+    set_Z(C == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RRC C");
 }
 
@@ -3704,7 +3759,13 @@ void Cpu::instruction_CB_0A_RRC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = D & 1;
+    D = (D >> 1) | (bit_0 << 7);
 
+    set_Z(D == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RRC D");
 }
 
@@ -3715,7 +3776,13 @@ void Cpu::instruction_CB_0B_RRC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = E & 1;
+    E = (E >> 1) | (bit_0 << 7);
 
+    set_Z(E == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RRC E");
 }
 
@@ -3726,7 +3793,13 @@ void Cpu::instruction_CB_0C_RRC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = H & 1;
+    H = (H >> 1) | (bit_0 << 7);
 
+    set_Z(H == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RRC H");
 }
 
@@ -3737,7 +3810,13 @@ void Cpu::instruction_CB_0D_RRC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = L & 1;
+    L = (L >> 1) | (bit_0 << 7);
 
+    set_Z(L == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RRC L");
 }
 
@@ -3748,7 +3827,15 @@ void Cpu::instruction_CB_0E_RRC()
      * Flags: Z 0 0 C
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    const bool bit_0 = value & 1;
+    const uint8_t result = (value >> 1) | (bit_0 << 7);
+    write_8(get_HL(), result);
 
+    set_Z(result == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RRC !HL");
 }
 
@@ -3759,7 +3846,13 @@ void Cpu::instruction_CB_0F_RRC()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = A & 1;
+    A = (A >> 1) | (bit_0 << 7);
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RRC A");
 }
 
@@ -3770,7 +3863,13 @@ void Cpu::instruction_CB_10_RL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = B >> 7;
+    B = (B << 1) | get_C();
 
+    set_Z(B == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RL B");
 }
 
@@ -3781,7 +3880,13 @@ void Cpu::instruction_CB_11_RL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = C >> 7;
+    C = (C << 1) | get_C();
 
+    set_Z(C == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RL C");
 }
 
@@ -3792,7 +3897,13 @@ void Cpu::instruction_CB_12_RL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = D >> 7;
+    D = (D << 1) | get_C();
 
+    set_Z(D == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RL D");
 }
 
@@ -3803,7 +3914,13 @@ void Cpu::instruction_CB_13_RL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = E >> 7;
+    E = (E << 1) | get_C();
 
+    set_Z(E == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RL E");
 }
 
@@ -3814,7 +3931,13 @@ void Cpu::instruction_CB_14_RL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = H >> 7;
+    H = (H << 1) | get_C();
 
+    set_Z(H == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RL H");
 }
 
@@ -3825,7 +3948,13 @@ void Cpu::instruction_CB_15_RL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = L >> 7;
+    L = (L << 1) | get_C();
 
+    set_Z(L == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RL L");
 }
 
@@ -3836,7 +3965,15 @@ void Cpu::instruction_CB_16_RL()
      * Flags: Z 0 0 C
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    const bool bit_7 = value >> 7;
+    const uint8_t result = (value << 1) | get_C();
+    write_8(get_HL(), result);
 
+    set_Z(result == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RL !HL");
 }
 
@@ -3847,7 +3984,13 @@ void Cpu::instruction_CB_17_RL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = A >> 7;
+    A = (A << 1) | get_C();
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("RL A");
 }
 
@@ -3858,7 +4001,13 @@ void Cpu::instruction_CB_18_RR()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = B & 1;
+    B = (get_C() << 7) | (B >> 1);
 
+    set_Z(B == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RR B");
 }
 
@@ -3869,7 +4018,13 @@ void Cpu::instruction_CB_19_RR()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = C & 1;
+    C = (get_C() << 7) | (C >> 1);
 
+    set_Z(C == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RR C");
 }
 
@@ -3880,7 +4035,13 @@ void Cpu::instruction_CB_1A_RR()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = D & 1;
+    D = (get_C() << 7) | (D >> 1);
 
+    set_Z(D == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RR D");
 }
 
@@ -3891,7 +4052,13 @@ void Cpu::instruction_CB_1B_RR()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = E & 1;
+    E = (get_C() << 7) | (E >> 1);
 
+    set_Z(E == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RR E");
 }
 
@@ -3902,7 +4069,13 @@ void Cpu::instruction_CB_1C_RR()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = H & 1;
+    H = (get_C() << 7) | (H >> 1);
 
+    set_Z(H == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RR H");
 }
 
@@ -3913,7 +4086,13 @@ void Cpu::instruction_CB_1D_RR()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = L & 1;
+    L = (get_C() << 7) | (L >> 1);
 
+    set_Z(L == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RR L");
 }
 
@@ -3924,7 +4103,15 @@ void Cpu::instruction_CB_1E_RR()
      * Flags: Z 0 0 C
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    const bool bit_0 = value & 1;
+    const uint8_t result = (get_C() << 7) | (value >> 1);
+    write_8(get_HL(), result);
 
+    set_Z(result == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RR !HL");
 }
 
@@ -3935,7 +4122,13 @@ void Cpu::instruction_CB_1F_RR()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = A & 1;
+    A = (get_C() << 7) | (A >> 1);
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("RR A");
 }
 
@@ -3946,7 +4139,13 @@ void Cpu::instruction_CB_20_SLA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = B >> 7;
+    B = B << 1;
 
+    set_Z(B == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("SLA B");
 }
 
@@ -3957,7 +4156,13 @@ void Cpu::instruction_CB_21_SLA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = C >> 7;
+    C = C << 1;
 
+    set_Z(C == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("SLA C");
 }
 
@@ -3968,7 +4173,13 @@ void Cpu::instruction_CB_22_SLA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = D >> 7;
+    D = D << 1;
 
+    set_Z(D == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("SLA D");
 }
 
@@ -3979,7 +4190,13 @@ void Cpu::instruction_CB_23_SLA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = E >> 7;
+    E = E << 1;
 
+    set_Z(E == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("SLA E");
 }
 
@@ -3990,7 +4207,13 @@ void Cpu::instruction_CB_24_SLA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = H >> 7;
+    H = H << 1;
 
+    set_Z(H == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("SLA H");
 }
 
@@ -4001,7 +4224,13 @@ void Cpu::instruction_CB_25_SLA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = L >> 7;
+    L = L << 1;
 
+    set_Z(L == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("SLA L");
 }
 
@@ -4012,7 +4241,15 @@ void Cpu::instruction_CB_26_SLA()
      * Flags: Z 0 0 C
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    const bool bit_7 = value >> 7;
+    const uint8_t result = value << 1;
+    write_8(get_HL(), result);
 
+    set_Z(result == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("SLA !HL");
 }
 
@@ -4023,7 +4260,13 @@ void Cpu::instruction_CB_27_SLA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_7 = A >> 7;
+    A = A << 1;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_7);
     current_instruction_asm = std::format("SLA A");
 }
 
@@ -4034,7 +4277,13 @@ void Cpu::instruction_CB_28_SRA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = B & 1;
+    B = (B & 0x80) | (B >> 1);
 
+    set_Z(B == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRA B");
 }
 
@@ -4045,7 +4294,13 @@ void Cpu::instruction_CB_29_SRA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = C & 1;
+    C = (C & 0x80) | (C >> 1);
 
+    set_Z(C == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRA C");
 }
 
@@ -4056,7 +4311,13 @@ void Cpu::instruction_CB_2A_SRA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = D & 1;
+    D = (D & 0x80) | (D >> 1);
 
+    set_Z(D == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRA D");
 }
 
@@ -4067,7 +4328,13 @@ void Cpu::instruction_CB_2B_SRA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = E & 1;
+    E = (E & 0x80) | (E >> 1);
 
+    set_Z(E == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRA E");
 }
 
@@ -4078,7 +4345,13 @@ void Cpu::instruction_CB_2C_SRA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = H & 1;
+    H = (H & 0x80) | (H >> 1);
 
+    set_Z(H == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRA H");
 }
 
@@ -4089,7 +4362,13 @@ void Cpu::instruction_CB_2D_SRA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = L & 1;
+    L = (L & 0x80) | (L >> 1);
 
+    set_Z(L == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRA L");
 }
 
@@ -4100,7 +4379,15 @@ void Cpu::instruction_CB_2E_SRA()
      * Flags: Z 0 0 C
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    const bool bit_0 = value & 1;
+    const uint8_t result = (value & 0x80) | (value >> 1);
+    write_8(get_HL(), result);
 
+    set_Z(result == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRA !HL");
 }
 
@@ -4111,7 +4398,13 @@ void Cpu::instruction_CB_2F_SRA()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = A & 1;
+    A = (A & 0x80) | (A >> 1);
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRA A");
 }
 
@@ -4122,7 +4415,12 @@ void Cpu::instruction_CB_30_SWAP()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    B = ((B & 0xf0) >> 4) | ((B & 0x0f) << 4);
 
+    set_Z(B == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("SWAP B");
 }
 
@@ -4133,7 +4431,12 @@ void Cpu::instruction_CB_31_SWAP()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    C = ((C & 0xf0) >> 4) | ((C & 0x0f) << 4);
 
+    set_Z(C == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("SWAP C");
 }
 
@@ -4144,7 +4447,12 @@ void Cpu::instruction_CB_32_SWAP()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    D = ((D & 0xf0) >> 4) | ((D & 0x0f) << 4);
 
+    set_Z(D == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("SWAP D");
 }
 
@@ -4155,7 +4463,12 @@ void Cpu::instruction_CB_33_SWAP()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    E = ((E & 0xf0) >> 4) | ((E & 0x0f) << 4);
 
+    set_Z(E == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("SWAP E");
 }
 
@@ -4166,7 +4479,12 @@ void Cpu::instruction_CB_34_SWAP()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    H = ((H & 0xf0) >> 4) | ((H & 0x0f) << 4);
 
+    set_Z(H == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("SWAP H");
 }
 
@@ -4177,7 +4495,12 @@ void Cpu::instruction_CB_35_SWAP()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    L = ((L & 0xf0) >> 4) | ((L & 0x0f) << 4);
 
+    set_Z(L == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("SWAP L");
 }
 
@@ -4188,7 +4511,14 @@ void Cpu::instruction_CB_36_SWAP()
      * Flags: Z 0 0 0
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    const uint8_t result = ((value & 0xf0) >> 4) | ((value & 0x0f) << 4);
+    write_8(get_HL(), value);
 
+    set_Z(result == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("SWAP !HL");
 }
 
@@ -4199,7 +4529,12 @@ void Cpu::instruction_CB_37_SWAP()
      * Flags: Z 0 0 0
      * Cycles: 8
      */
+    A = ((A & 0xf0) >> 4) | ((A & 0x0f) << 4);
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(0);
     current_instruction_asm = std::format("SWAP A");
 }
 
@@ -4210,7 +4545,13 @@ void Cpu::instruction_CB_38_SRL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = B & 1;
+    B = B >> 1;
 
+    set_Z(B == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRL B");
 }
 
@@ -4221,7 +4562,13 @@ void Cpu::instruction_CB_39_SRL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = C & 1;
+    C = C >> 1;
 
+    set_Z(C == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRL C");
 }
 
@@ -4232,7 +4579,13 @@ void Cpu::instruction_CB_3A_SRL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = D & 1;
+    D = D >> 1;
 
+    set_Z(D == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRL D");
 }
 
@@ -4243,7 +4596,13 @@ void Cpu::instruction_CB_3B_SRL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = E & 1;
+    E = E >> 1;
 
+    set_Z(E == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRL E");
 }
 
@@ -4254,7 +4613,13 @@ void Cpu::instruction_CB_3C_SRL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = H & 1;
+    H = H >> 1;
 
+    set_Z(H == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRL H");
 }
 
@@ -4265,7 +4630,13 @@ void Cpu::instruction_CB_3D_SRL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = L & 1;
+    L = L >> 1;
 
+    set_Z(L == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRL L");
 }
 
@@ -4276,7 +4647,15 @@ void Cpu::instruction_CB_3E_SRL()
      * Flags: Z 0 0 C
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    const bool bit_0 = value & 1;
+    const uint8_t result = value >> 1;
+    write_8(get_HL(), result);
 
+    set_Z(result == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRL !HL");
 }
 
@@ -4287,7 +4666,13 @@ void Cpu::instruction_CB_3F_SRL()
      * Flags: Z 0 0 C
      * Cycles: 8
      */
+    const bool bit_0 = A & 1;
+    A = A >> 1;
 
+    set_Z(A == 0);
+    set_N(0);
+    set_H(0);
+    set_C(bit_0);
     current_instruction_asm = std::format("SRL A");
 }
 
@@ -4298,7 +4683,9 @@ void Cpu::instruction_CB_40_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((B & (1 << 0)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 0, B");
 }
 
@@ -4309,7 +4696,9 @@ void Cpu::instruction_CB_41_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((C & (1 << 0)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 0, C");
 }
 
@@ -4320,7 +4709,9 @@ void Cpu::instruction_CB_42_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((D & (1 << 0)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 0, D");
 }
 
@@ -4331,7 +4722,9 @@ void Cpu::instruction_CB_43_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((E & (1 << 0)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 0, E");
 }
 
@@ -4342,7 +4735,9 @@ void Cpu::instruction_CB_44_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((H & (1 << 0)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 0, H");
 }
 
@@ -4353,7 +4748,9 @@ void Cpu::instruction_CB_45_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((L & (1 << 0)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 0, L");
 }
 
@@ -4364,7 +4761,9 @@ void Cpu::instruction_CB_46_BIT()
      * Flags: Z 0 1 -
      * Cycles: 12
      */
-
+    set_Z((read_8(get_HL()) & (1 << 0)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 0, !HL");
 }
 
@@ -4375,7 +4774,9 @@ void Cpu::instruction_CB_47_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((A & (1 << 0)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 0, A");
 }
 
@@ -4386,7 +4787,9 @@ void Cpu::instruction_CB_48_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((B & (1 << 1)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 1, B");
 }
 
@@ -4397,7 +4800,9 @@ void Cpu::instruction_CB_49_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((C & (1 << 1)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 1, C");
 }
 
@@ -4408,7 +4813,9 @@ void Cpu::instruction_CB_4A_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((D & (1 << 1)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 1, D");
 }
 
@@ -4419,7 +4826,9 @@ void Cpu::instruction_CB_4B_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((E & (1 << 1)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 1, E");
 }
 
@@ -4430,7 +4839,9 @@ void Cpu::instruction_CB_4C_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((H & (1 << 1)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 1, H");
 }
 
@@ -4441,7 +4852,9 @@ void Cpu::instruction_CB_4D_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((L & (1 << 1)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 1, L");
 }
 
@@ -4452,7 +4865,9 @@ void Cpu::instruction_CB_4E_BIT()
      * Flags: Z 0 1 -
      * Cycles: 12
      */
-
+    set_Z((read_8(get_HL()) & (1 << 1)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 1, !HL");
 }
 
@@ -4463,7 +4878,9 @@ void Cpu::instruction_CB_4F_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((A & (1 << 1)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 1, A");
 }
 
@@ -4474,7 +4891,9 @@ void Cpu::instruction_CB_50_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((B & (1 << 2)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 2, B");
 }
 
@@ -4485,7 +4904,9 @@ void Cpu::instruction_CB_51_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((C & (1 << 2)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 2, C");
 }
 
@@ -4496,7 +4917,9 @@ void Cpu::instruction_CB_52_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((D & (1 << 2)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 2, D");
 }
 
@@ -4507,7 +4930,9 @@ void Cpu::instruction_CB_53_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((E & (1 << 2)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 2, E");
 }
 
@@ -4518,7 +4943,9 @@ void Cpu::instruction_CB_54_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((H & (1 << 2)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 2, H");
 }
 
@@ -4529,7 +4956,9 @@ void Cpu::instruction_CB_55_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((L & (1 << 2)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 2, L");
 }
 
@@ -4540,7 +4969,9 @@ void Cpu::instruction_CB_56_BIT()
      * Flags: Z 0 1 -
      * Cycles: 12
      */
-
+    set_Z((read_8(get_HL()) & (1 << 2)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 2, !HL");
 }
 
@@ -4551,7 +4982,9 @@ void Cpu::instruction_CB_57_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((A & (1 << 2)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 2, A");
 }
 
@@ -4562,7 +4995,9 @@ void Cpu::instruction_CB_58_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((B & (1 << 3)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 3, B");
 }
 
@@ -4573,7 +5008,9 @@ void Cpu::instruction_CB_59_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((C & (1 << 3)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 3, C");
 }
 
@@ -4584,7 +5021,9 @@ void Cpu::instruction_CB_5A_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((D & (1 << 3)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 3, D");
 }
 
@@ -4595,7 +5034,9 @@ void Cpu::instruction_CB_5B_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((E & (1 << 3)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 3, E");
 }
 
@@ -4606,7 +5047,9 @@ void Cpu::instruction_CB_5C_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((H & (1 << 3)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 3, H");
 }
 
@@ -4617,7 +5060,9 @@ void Cpu::instruction_CB_5D_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((L & (1 << 3)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 3, L");
 }
 
@@ -4628,7 +5073,9 @@ void Cpu::instruction_CB_5E_BIT()
      * Flags: Z 0 1 -
      * Cycles: 12
      */
-
+    set_Z((read_8(get_HL()) & (1 << 3)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 3, !HL");
 }
 
@@ -4639,7 +5086,9 @@ void Cpu::instruction_CB_5F_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((A & (1 << 3)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 3, A");
 }
 
@@ -4650,7 +5099,9 @@ void Cpu::instruction_CB_60_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((B & (1 << 4)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 4, B");
 }
 
@@ -4661,7 +5112,9 @@ void Cpu::instruction_CB_61_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((C & (1 << 4)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 4, C");
 }
 
@@ -4672,7 +5125,9 @@ void Cpu::instruction_CB_62_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((D & (1 << 4)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 4, D");
 }
 
@@ -4683,7 +5138,9 @@ void Cpu::instruction_CB_63_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((E & (1 << 4)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 4, E");
 }
 
@@ -4694,7 +5151,9 @@ void Cpu::instruction_CB_64_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((H & (1 << 4)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 4, H");
 }
 
@@ -4705,7 +5164,9 @@ void Cpu::instruction_CB_65_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((L & (1 << 4)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 4, L");
 }
 
@@ -4716,7 +5177,9 @@ void Cpu::instruction_CB_66_BIT()
      * Flags: Z 0 1 -
      * Cycles: 12
      */
-
+    set_Z((read_8(get_HL()) & (1 << 4)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 4, !HL");
 }
 
@@ -4727,7 +5190,9 @@ void Cpu::instruction_CB_67_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((A & (1 << 4)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 4, A");
 }
 
@@ -4738,7 +5203,9 @@ void Cpu::instruction_CB_68_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((B & (1 << 5)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 5, B");
 }
 
@@ -4749,7 +5216,9 @@ void Cpu::instruction_CB_69_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((C & (1 << 5)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 5, C");
 }
 
@@ -4760,7 +5229,9 @@ void Cpu::instruction_CB_6A_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((D & (1 << 5)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 5, D");
 }
 
@@ -4771,7 +5242,9 @@ void Cpu::instruction_CB_6B_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((E & (1 << 5)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 5, E");
 }
 
@@ -4782,7 +5255,9 @@ void Cpu::instruction_CB_6C_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((H & (1 << 5)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 5, H");
 }
 
@@ -4793,7 +5268,9 @@ void Cpu::instruction_CB_6D_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((L & (1 << 5)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 5, L");
 }
 
@@ -4804,7 +5281,9 @@ void Cpu::instruction_CB_6E_BIT()
      * Flags: Z 0 1 -
      * Cycles: 12
      */
-
+    set_Z((read_8(get_HL()) & (1 << 5)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 5, !HL");
 }
 
@@ -4815,7 +5294,9 @@ void Cpu::instruction_CB_6F_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((A & (1 << 5)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 5, A");
 }
 
@@ -4826,7 +5307,9 @@ void Cpu::instruction_CB_70_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((B & (1 << 6)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 6, B");
 }
 
@@ -4837,7 +5320,9 @@ void Cpu::instruction_CB_71_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((C & (1 << 6)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 6, C");
 }
 
@@ -4848,7 +5333,9 @@ void Cpu::instruction_CB_72_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((D & (1 << 6)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 6, D");
 }
 
@@ -4859,7 +5346,9 @@ void Cpu::instruction_CB_73_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((E & (1 << 6)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 6, E");
 }
 
@@ -4870,7 +5359,9 @@ void Cpu::instruction_CB_74_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((H & (1 << 6)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 6, H");
 }
 
@@ -4881,7 +5372,9 @@ void Cpu::instruction_CB_75_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((L & (1 << 6)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 6, L");
 }
 
@@ -4892,7 +5385,9 @@ void Cpu::instruction_CB_76_BIT()
      * Flags: Z 0 1 -
      * Cycles: 12
      */
-
+    set_Z((read_8(get_HL()) & (1 << 6)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 6, !HL");
 }
 
@@ -4903,7 +5398,9 @@ void Cpu::instruction_CB_77_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((A & (1 << 6)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 6, A");
 }
 
@@ -4914,7 +5411,9 @@ void Cpu::instruction_CB_78_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((B & (1 << 7)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 7, B");
 }
 
@@ -4925,7 +5424,9 @@ void Cpu::instruction_CB_79_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((C & (1 << 7)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 7, C");
 }
 
@@ -4936,7 +5437,9 @@ void Cpu::instruction_CB_7A_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((D & (1 << 7)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 7, D");
 }
 
@@ -4947,7 +5450,9 @@ void Cpu::instruction_CB_7B_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((E & (1 << 7)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 7, E");
 }
 
@@ -4958,7 +5463,9 @@ void Cpu::instruction_CB_7C_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((H & (1 << 7)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 7, H");
 }
 
@@ -4969,7 +5476,9 @@ void Cpu::instruction_CB_7D_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((L & (1 << 7)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 7, L");
 }
 
@@ -4980,7 +5489,9 @@ void Cpu::instruction_CB_7E_BIT()
      * Flags: Z 0 1 -
      * Cycles: 12
      */
-
+    set_Z((read_8(get_HL()) & (1 << 7)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 7, !HL");
 }
 
@@ -4991,7 +5502,9 @@ void Cpu::instruction_CB_7F_BIT()
      * Flags: Z 0 1 -
      * Cycles: 8
      */
-
+    set_Z((A & (1 << 7)) == 0);
+    set_N(0);
+    set_H(1);
     current_instruction_asm = std::format("BIT 7, A");
 }
 
@@ -5002,6 +5515,7 @@ void Cpu::instruction_CB_80_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    B &= ~(1 << 0);
 
     current_instruction_asm = std::format("RES 0, B");
 }
@@ -5013,6 +5527,7 @@ void Cpu::instruction_CB_81_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    C &= ~(1 << 0);
 
     current_instruction_asm = std::format("RES 0, C");
 }
@@ -5024,6 +5539,7 @@ void Cpu::instruction_CB_82_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    D &= ~(1 << 0);
 
     current_instruction_asm = std::format("RES 0, D");
 }
@@ -5035,6 +5551,7 @@ void Cpu::instruction_CB_83_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    E &= ~(1 << 0);
 
     current_instruction_asm = std::format("RES 0, E");
 }
@@ -5046,6 +5563,7 @@ void Cpu::instruction_CB_84_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    H &= ~(1 << 0);
 
     current_instruction_asm = std::format("RES 0, H");
 }
@@ -5057,6 +5575,7 @@ void Cpu::instruction_CB_85_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    L &= ~(1 << 0);
 
     current_instruction_asm = std::format("RES 0, L");
 }
@@ -5068,6 +5587,8 @@ void Cpu::instruction_CB_86_RES()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value & ~(1 << 0));
 
     current_instruction_asm = std::format("RES 0, !HL");
 }
@@ -5079,6 +5600,7 @@ void Cpu::instruction_CB_87_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    A &= ~(1 << 0);
 
     current_instruction_asm = std::format("RES 0, A");
 }
@@ -5090,6 +5612,7 @@ void Cpu::instruction_CB_88_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    B &= ~(1 << 1);
 
     current_instruction_asm = std::format("RES 1, B");
 }
@@ -5101,6 +5624,7 @@ void Cpu::instruction_CB_89_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    C &= ~(1 << 1);
 
     current_instruction_asm = std::format("RES 1, C");
 }
@@ -5112,6 +5636,7 @@ void Cpu::instruction_CB_8A_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    D &= ~(1 << 1);
 
     current_instruction_asm = std::format("RES 1, D");
 }
@@ -5123,6 +5648,7 @@ void Cpu::instruction_CB_8B_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    E &= ~(1 << 1);
 
     current_instruction_asm = std::format("RES 1, E");
 }
@@ -5134,6 +5660,7 @@ void Cpu::instruction_CB_8C_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    H &= ~(1 << 1);
 
     current_instruction_asm = std::format("RES 1, H");
 }
@@ -5145,6 +5672,7 @@ void Cpu::instruction_CB_8D_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    L &= ~(1 << 1);
 
     current_instruction_asm = std::format("RES 1, L");
 }
@@ -5156,6 +5684,8 @@ void Cpu::instruction_CB_8E_RES()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value & ~(1 << 1));
 
     current_instruction_asm = std::format("RES 1, !HL");
 }
@@ -5167,6 +5697,7 @@ void Cpu::instruction_CB_8F_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    A &= ~(1 << 1);
 
     current_instruction_asm = std::format("RES 1, A");
 }
@@ -5178,6 +5709,7 @@ void Cpu::instruction_CB_90_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    B &= ~(1 << 2);
 
     current_instruction_asm = std::format("RES 2, B");
 }
@@ -5189,6 +5721,7 @@ void Cpu::instruction_CB_91_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    C &= ~(1 << 2);
 
     current_instruction_asm = std::format("RES 2, C");
 }
@@ -5200,6 +5733,7 @@ void Cpu::instruction_CB_92_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    D &= ~(1 << 2);
 
     current_instruction_asm = std::format("RES 2, D");
 }
@@ -5211,6 +5745,7 @@ void Cpu::instruction_CB_93_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    E &= ~(1 << 2);
 
     current_instruction_asm = std::format("RES 2, E");
 }
@@ -5222,6 +5757,7 @@ void Cpu::instruction_CB_94_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    H &= ~(1 << 2);
 
     current_instruction_asm = std::format("RES 2, H");
 }
@@ -5233,6 +5769,7 @@ void Cpu::instruction_CB_95_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    L &= ~(1 << 2);
 
     current_instruction_asm = std::format("RES 2, L");
 }
@@ -5244,6 +5781,8 @@ void Cpu::instruction_CB_96_RES()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value & ~(1 << 2));
 
     current_instruction_asm = std::format("RES 2, !HL");
 }
@@ -5255,6 +5794,7 @@ void Cpu::instruction_CB_97_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    A &= ~(1 << 2);
 
     current_instruction_asm = std::format("RES 2, A");
 }
@@ -5266,6 +5806,7 @@ void Cpu::instruction_CB_98_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    B &= ~(1 << 3);
 
     current_instruction_asm = std::format("RES 3, B");
 }
@@ -5277,6 +5818,7 @@ void Cpu::instruction_CB_99_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    C &= ~(1 << 3);
 
     current_instruction_asm = std::format("RES 3, C");
 }
@@ -5288,6 +5830,7 @@ void Cpu::instruction_CB_9A_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    D &= ~(1 << 3);
 
     current_instruction_asm = std::format("RES 3, D");
 }
@@ -5299,6 +5842,7 @@ void Cpu::instruction_CB_9B_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    E &= ~(1 << 3);
 
     current_instruction_asm = std::format("RES 3, E");
 }
@@ -5310,6 +5854,7 @@ void Cpu::instruction_CB_9C_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    H &= ~(1 << 3);
 
     current_instruction_asm = std::format("RES 3, H");
 }
@@ -5321,6 +5866,7 @@ void Cpu::instruction_CB_9D_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    L &= ~(1 << 3);
 
     current_instruction_asm = std::format("RES 3, L");
 }
@@ -5332,6 +5878,8 @@ void Cpu::instruction_CB_9E_RES()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value & ~(1 << 3));
 
     current_instruction_asm = std::format("RES 3, !HL");
 }
@@ -5343,6 +5891,7 @@ void Cpu::instruction_CB_9F_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    A &= ~(1 << 3);
 
     current_instruction_asm = std::format("RES 3, A");
 }
@@ -5354,6 +5903,7 @@ void Cpu::instruction_CB_A0_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    B &= ~(1 << 4);
 
     current_instruction_asm = std::format("RES 4, B");
 }
@@ -5365,6 +5915,7 @@ void Cpu::instruction_CB_A1_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    C &= ~(1 << 4);
 
     current_instruction_asm = std::format("RES 4, C");
 }
@@ -5376,6 +5927,7 @@ void Cpu::instruction_CB_A2_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    D &= ~(1 << 4);
 
     current_instruction_asm = std::format("RES 4, D");
 }
@@ -5387,6 +5939,7 @@ void Cpu::instruction_CB_A3_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    E &= ~(1 << 4);
 
     current_instruction_asm = std::format("RES 4, E");
 }
@@ -5398,6 +5951,7 @@ void Cpu::instruction_CB_A4_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    H &= ~(1 << 4);
 
     current_instruction_asm = std::format("RES 4, H");
 }
@@ -5409,6 +5963,7 @@ void Cpu::instruction_CB_A5_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    L &= ~(1 << 4);
 
     current_instruction_asm = std::format("RES 4, L");
 }
@@ -5420,6 +5975,8 @@ void Cpu::instruction_CB_A6_RES()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value & ~(1 << 4));
 
     current_instruction_asm = std::format("RES 4, !HL");
 }
@@ -5431,6 +5988,7 @@ void Cpu::instruction_CB_A7_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    A &= ~(1 << 4);
 
     current_instruction_asm = std::format("RES 4, A");
 }
@@ -5442,6 +6000,7 @@ void Cpu::instruction_CB_A8_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    B &= ~(1 << 5);
 
     current_instruction_asm = std::format("RES 5, B");
 }
@@ -5453,6 +6012,7 @@ void Cpu::instruction_CB_A9_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    C &= ~(1 << 5);
 
     current_instruction_asm = std::format("RES 5, C");
 }
@@ -5464,6 +6024,7 @@ void Cpu::instruction_CB_AA_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    D &= ~(1 << 5);
 
     current_instruction_asm = std::format("RES 5, D");
 }
@@ -5475,6 +6036,7 @@ void Cpu::instruction_CB_AB_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    E &= ~(1 << 5);
 
     current_instruction_asm = std::format("RES 5, E");
 }
@@ -5486,6 +6048,7 @@ void Cpu::instruction_CB_AC_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    H &= ~(1 << 5);
 
     current_instruction_asm = std::format("RES 5, H");
 }
@@ -5497,6 +6060,7 @@ void Cpu::instruction_CB_AD_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    L &= ~(1 << 5);
 
     current_instruction_asm = std::format("RES 5, L");
 }
@@ -5508,6 +6072,8 @@ void Cpu::instruction_CB_AE_RES()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value & ~(1 << 5));
 
     current_instruction_asm = std::format("RES 5, !HL");
 }
@@ -5519,6 +6085,7 @@ void Cpu::instruction_CB_AF_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    A &= ~(1 << 5);
 
     current_instruction_asm = std::format("RES 5, A");
 }
@@ -5530,6 +6097,7 @@ void Cpu::instruction_CB_B0_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    B &= ~(1 << 6);
 
     current_instruction_asm = std::format("RES 6, B");
 }
@@ -5541,6 +6109,7 @@ void Cpu::instruction_CB_B1_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    C &= ~(1 << 6);
 
     current_instruction_asm = std::format("RES 6, C");
 }
@@ -5552,6 +6121,7 @@ void Cpu::instruction_CB_B2_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    D &= ~(1 << 6);
 
     current_instruction_asm = std::format("RES 6, D");
 }
@@ -5563,6 +6133,7 @@ void Cpu::instruction_CB_B3_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    E &= ~(1 << 6);
 
     current_instruction_asm = std::format("RES 6, E");
 }
@@ -5574,6 +6145,7 @@ void Cpu::instruction_CB_B4_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    H &= ~(1 << 6);
 
     current_instruction_asm = std::format("RES 6, H");
 }
@@ -5585,6 +6157,7 @@ void Cpu::instruction_CB_B5_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    L &= ~(1 << 6);
 
     current_instruction_asm = std::format("RES 6, L");
 }
@@ -5596,6 +6169,8 @@ void Cpu::instruction_CB_B6_RES()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value & ~(1 << 6));
 
     current_instruction_asm = std::format("RES 6, !HL");
 }
@@ -5607,6 +6182,7 @@ void Cpu::instruction_CB_B7_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    A &= ~(1 << 6);
 
     current_instruction_asm = std::format("RES 6, A");
 }
@@ -5618,6 +6194,7 @@ void Cpu::instruction_CB_B8_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    B &= ~(1 << 7);
 
     current_instruction_asm = std::format("RES 7, B");
 }
@@ -5629,6 +6206,7 @@ void Cpu::instruction_CB_B9_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    C &= ~(1 << 7);
 
     current_instruction_asm = std::format("RES 7, C");
 }
@@ -5640,6 +6218,7 @@ void Cpu::instruction_CB_BA_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    D &= ~(1 << 7);
 
     current_instruction_asm = std::format("RES 7, D");
 }
@@ -5651,6 +6230,7 @@ void Cpu::instruction_CB_BB_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    E &= ~(1 << 7);
 
     current_instruction_asm = std::format("RES 7, E");
 }
@@ -5662,6 +6242,7 @@ void Cpu::instruction_CB_BC_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    H &= ~(1 << 7);
 
     current_instruction_asm = std::format("RES 7, H");
 }
@@ -5673,6 +6254,7 @@ void Cpu::instruction_CB_BD_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    L &= ~(1 << 7);
 
     current_instruction_asm = std::format("RES 7, L");
 }
@@ -5684,6 +6266,8 @@ void Cpu::instruction_CB_BE_RES()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value & ~(1 << 7));
 
     current_instruction_asm = std::format("RES 7, !HL");
 }
@@ -5695,6 +6279,7 @@ void Cpu::instruction_CB_BF_RES()
      * Flags: - - - -
      * Cycles: 8
      */
+    A &= ~(1 << 7);
 
     current_instruction_asm = std::format("RES 7, A");
 }
@@ -5706,6 +6291,7 @@ void Cpu::instruction_CB_C0_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    B |= (1 << 0);
 
     current_instruction_asm = std::format("SET 0, B");
 }
@@ -5717,6 +6303,7 @@ void Cpu::instruction_CB_C1_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    C |= (1 << 0);
 
     current_instruction_asm = std::format("SET 0, C");
 }
@@ -5728,6 +6315,7 @@ void Cpu::instruction_CB_C2_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    D |= (1 << 0);
 
     current_instruction_asm = std::format("SET 0, D");
 }
@@ -5739,6 +6327,7 @@ void Cpu::instruction_CB_C3_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    E |= (1 << 0);
 
     current_instruction_asm = std::format("SET 0, E");
 }
@@ -5750,6 +6339,7 @@ void Cpu::instruction_CB_C4_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    H |= (1 << 0);
 
     current_instruction_asm = std::format("SET 0, H");
 }
@@ -5761,6 +6351,7 @@ void Cpu::instruction_CB_C5_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    L |= (1 << 0);
 
     current_instruction_asm = std::format("SET 0, L");
 }
@@ -5772,6 +6363,8 @@ void Cpu::instruction_CB_C6_SET()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value | (1 << 0));
 
     current_instruction_asm = std::format("SET 0, !HL");
 }
@@ -5783,6 +6376,7 @@ void Cpu::instruction_CB_C7_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    A |= (1 << 0);
 
     current_instruction_asm = std::format("SET 0, A");
 }
@@ -5794,6 +6388,7 @@ void Cpu::instruction_CB_C8_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    B |= (1 << 1);
 
     current_instruction_asm = std::format("SET 1, B");
 }
@@ -5805,6 +6400,7 @@ void Cpu::instruction_CB_C9_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    C |= (1 << 1);
 
     current_instruction_asm = std::format("SET 1, C");
 }
@@ -5816,6 +6412,7 @@ void Cpu::instruction_CB_CA_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    D |= (1 << 1);
 
     current_instruction_asm = std::format("SET 1, D");
 }
@@ -5827,6 +6424,7 @@ void Cpu::instruction_CB_CB_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    E |= (1 << 1);
 
     current_instruction_asm = std::format("SET 1, E");
 }
@@ -5838,6 +6436,7 @@ void Cpu::instruction_CB_CC_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    H |= (1 << 1);
 
     current_instruction_asm = std::format("SET 1, H");
 }
@@ -5849,6 +6448,7 @@ void Cpu::instruction_CB_CD_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    L |= (1 << 1);
 
     current_instruction_asm = std::format("SET 1, L");
 }
@@ -5860,6 +6460,8 @@ void Cpu::instruction_CB_CE_SET()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value | (1 << 1));
 
     current_instruction_asm = std::format("SET 1, !HL");
 }
@@ -5871,6 +6473,7 @@ void Cpu::instruction_CB_CF_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    A |= (1 << 1);
 
     current_instruction_asm = std::format("SET 1, A");
 }
@@ -5882,6 +6485,7 @@ void Cpu::instruction_CB_D0_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    B |= (1 << 2);
 
     current_instruction_asm = std::format("SET 2, B");
 }
@@ -5893,6 +6497,7 @@ void Cpu::instruction_CB_D1_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    C |= (1 << 2);
 
     current_instruction_asm = std::format("SET 2, C");
 }
@@ -5904,6 +6509,7 @@ void Cpu::instruction_CB_D2_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    D |= (1 << 2);
 
     current_instruction_asm = std::format("SET 2, D");
 }
@@ -5915,6 +6521,7 @@ void Cpu::instruction_CB_D3_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    E |= (1 << 2);
 
     current_instruction_asm = std::format("SET 2, E");
 }
@@ -5926,6 +6533,7 @@ void Cpu::instruction_CB_D4_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    H |= (1 << 2);
 
     current_instruction_asm = std::format("SET 2, H");
 }
@@ -5937,6 +6545,7 @@ void Cpu::instruction_CB_D5_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    L |= (1 << 2);
 
     current_instruction_asm = std::format("SET 2, L");
 }
@@ -5948,6 +6557,8 @@ void Cpu::instruction_CB_D6_SET()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value | (1 << 2));
 
     current_instruction_asm = std::format("SET 2, !HL");
 }
@@ -5959,6 +6570,7 @@ void Cpu::instruction_CB_D7_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    A |= (1 << 2);
 
     current_instruction_asm = std::format("SET 2, A");
 }
@@ -5970,6 +6582,7 @@ void Cpu::instruction_CB_D8_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    B |= (1 << 3);
 
     current_instruction_asm = std::format("SET 3, B");
 }
@@ -5981,6 +6594,7 @@ void Cpu::instruction_CB_D9_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    C |= (1 << 3);
 
     current_instruction_asm = std::format("SET 3, C");
 }
@@ -5992,6 +6606,7 @@ void Cpu::instruction_CB_DA_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    D |= (1 << 3);
 
     current_instruction_asm = std::format("SET 3, D");
 }
@@ -6003,6 +6618,7 @@ void Cpu::instruction_CB_DB_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    E |= (1 << 3);
 
     current_instruction_asm = std::format("SET 3, E");
 }
@@ -6014,6 +6630,7 @@ void Cpu::instruction_CB_DC_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    H |= (1 << 3);
 
     current_instruction_asm = std::format("SET 3, H");
 }
@@ -6025,6 +6642,7 @@ void Cpu::instruction_CB_DD_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    L |= (1 << 3);
 
     current_instruction_asm = std::format("SET 3, L");
 }
@@ -6036,6 +6654,8 @@ void Cpu::instruction_CB_DE_SET()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value | (1 << 3));
 
     current_instruction_asm = std::format("SET 3, !HL");
 }
@@ -6047,6 +6667,7 @@ void Cpu::instruction_CB_DF_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    A |= (1 << 3);
 
     current_instruction_asm = std::format("SET 3, A");
 }
@@ -6058,6 +6679,7 @@ void Cpu::instruction_CB_E0_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    B |= (1 << 4);
 
     current_instruction_asm = std::format("SET 4, B");
 }
@@ -6069,6 +6691,7 @@ void Cpu::instruction_CB_E1_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    C |= (1 << 4);
 
     current_instruction_asm = std::format("SET 4, C");
 }
@@ -6080,6 +6703,7 @@ void Cpu::instruction_CB_E2_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    D |= (1 << 4);
 
     current_instruction_asm = std::format("SET 4, D");
 }
@@ -6091,6 +6715,7 @@ void Cpu::instruction_CB_E3_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    E |= (1 << 4);
 
     current_instruction_asm = std::format("SET 4, E");
 }
@@ -6102,6 +6727,7 @@ void Cpu::instruction_CB_E4_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    H |= (1 << 4);
 
     current_instruction_asm = std::format("SET 4, H");
 }
@@ -6113,6 +6739,7 @@ void Cpu::instruction_CB_E5_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    L |= (1 << 4);
 
     current_instruction_asm = std::format("SET 4, L");
 }
@@ -6124,6 +6751,8 @@ void Cpu::instruction_CB_E6_SET()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value | (1 << 4));
 
     current_instruction_asm = std::format("SET 4, !HL");
 }
@@ -6135,6 +6764,7 @@ void Cpu::instruction_CB_E7_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    A |= (1 << 4);
 
     current_instruction_asm = std::format("SET 4, A");
 }
@@ -6146,6 +6776,7 @@ void Cpu::instruction_CB_E8_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    B |= (1 << 5);
 
     current_instruction_asm = std::format("SET 5, B");
 }
@@ -6157,6 +6788,7 @@ void Cpu::instruction_CB_E9_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    C |= (1 << 5);
 
     current_instruction_asm = std::format("SET 5, C");
 }
@@ -6168,6 +6800,7 @@ void Cpu::instruction_CB_EA_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    D |= (1 << 5);
 
     current_instruction_asm = std::format("SET 5, D");
 }
@@ -6179,6 +6812,7 @@ void Cpu::instruction_CB_EB_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    E |= (1 << 5);
 
     current_instruction_asm = std::format("SET 5, E");
 }
@@ -6190,6 +6824,7 @@ void Cpu::instruction_CB_EC_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    H |= (1 << 5);
 
     current_instruction_asm = std::format("SET 5, H");
 }
@@ -6201,6 +6836,7 @@ void Cpu::instruction_CB_ED_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    L |= (1 << 5);
 
     current_instruction_asm = std::format("SET 5, L");
 }
@@ -6212,6 +6848,8 @@ void Cpu::instruction_CB_EE_SET()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value | (1 << 5));
 
     current_instruction_asm = std::format("SET 5, !HL");
 }
@@ -6223,6 +6861,7 @@ void Cpu::instruction_CB_EF_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    A |= (1 << 5);
 
     current_instruction_asm = std::format("SET 5, A");
 }
@@ -6234,6 +6873,7 @@ void Cpu::instruction_CB_F0_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    B |= (1 << 6);
 
     current_instruction_asm = std::format("SET 6, B");
 }
@@ -6245,6 +6885,7 @@ void Cpu::instruction_CB_F1_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    C |= (1 << 6);
 
     current_instruction_asm = std::format("SET 6, C");
 }
@@ -6256,6 +6897,7 @@ void Cpu::instruction_CB_F2_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    D |= (1 << 6);
 
     current_instruction_asm = std::format("SET 6, D");
 }
@@ -6267,6 +6909,7 @@ void Cpu::instruction_CB_F3_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    E |= (1 << 6);
 
     current_instruction_asm = std::format("SET 6, E");
 }
@@ -6278,6 +6921,7 @@ void Cpu::instruction_CB_F4_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    H |= (1 << 6);
 
     current_instruction_asm = std::format("SET 6, H");
 }
@@ -6289,6 +6933,7 @@ void Cpu::instruction_CB_F5_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    L |= (1 << 6);
 
     current_instruction_asm = std::format("SET 6, L");
 }
@@ -6300,6 +6945,8 @@ void Cpu::instruction_CB_F6_SET()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value | (1 << 6));
 
     current_instruction_asm = std::format("SET 6, !HL");
 }
@@ -6311,6 +6958,7 @@ void Cpu::instruction_CB_F7_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    A |= (1 << 6);
 
     current_instruction_asm = std::format("SET 6, A");
 }
@@ -6322,6 +6970,7 @@ void Cpu::instruction_CB_F8_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    B |= (1 << 7);
 
     current_instruction_asm = std::format("SET 7, B");
 }
@@ -6333,6 +6982,7 @@ void Cpu::instruction_CB_F9_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    C |= (1 << 7);
 
     current_instruction_asm = std::format("SET 7, C");
 }
@@ -6344,6 +6994,7 @@ void Cpu::instruction_CB_FA_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    D |= (1 << 7);
 
     current_instruction_asm = std::format("SET 7, D");
 }
@@ -6355,6 +7006,7 @@ void Cpu::instruction_CB_FB_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    E |= (1 << 7);
 
     current_instruction_asm = std::format("SET 7, E");
 }
@@ -6366,6 +7018,7 @@ void Cpu::instruction_CB_FC_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    H |= (1 << 7);
 
     current_instruction_asm = std::format("SET 7, H");
 }
@@ -6377,6 +7030,7 @@ void Cpu::instruction_CB_FD_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    L |= (1 << 7);
 
     current_instruction_asm = std::format("SET 7, L");
 }
@@ -6388,6 +7042,8 @@ void Cpu::instruction_CB_FE_SET()
      * Flags: - - - -
      * Cycles: 16
      */
+    const uint8_t value = read_8(get_HL());
+    write_8(get_HL(), value | (1 << 7));
 
     current_instruction_asm = std::format("SET 7, !HL");
 }
@@ -6399,6 +7055,7 @@ void Cpu::instruction_CB_FF_SET()
      * Flags: - - - -
      * Cycles: 8
      */
+    A |= (1 << 7);
 
     current_instruction_asm = std::format("SET 7, A");
 }
