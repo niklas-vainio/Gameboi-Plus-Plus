@@ -6,6 +6,7 @@
  */
 
 #include "backend/Emulator.hpp"
+#include "common/unused.hpp"
 #include "frontend/App.hpp"
 #include <string>
 
@@ -36,7 +37,10 @@ public:
         bool debug;
     };
 
-    GameboiPlusPlus(const Args args) : app(), emulator() {};
+    GameboiPlusPlus(const Args args) : app(), emulator()
+    {
+        UNUSED(args);
+    };
 
     /**
      * Main method to run until the app exits.

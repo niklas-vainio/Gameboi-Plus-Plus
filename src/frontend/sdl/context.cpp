@@ -51,7 +51,7 @@ Context init(const std::string &window_title,
     /*
      * Load all fonts.
      */
-    const auto font_path = Utils::get_resource_path(font_file);
+    const auto font_path = Resource::get_resource_path(font_file);
 
     for (const auto font_size : font_sizes)
     {

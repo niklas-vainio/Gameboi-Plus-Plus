@@ -8,10 +8,14 @@
 
 #pragma once
 
+#include <cstdint>
 #include <filesystem>
+#include <fstream>
+#include <stdexcept>
 #include <string>
+#include <vector>
 
-namespace Gbpp::Utils
+namespace Gbpp::Resource
 {
 
 namespace fs = std::filesystem;
@@ -33,9 +37,9 @@ inline const fs::path resources_dir_path =
  * @param[in] filename  Filename of the resource to lookup
  * @return The path to the file.
  */
-fs::path get_resource_path(const std::string &filename)
+inline fs::path get_resource_path(const std::string &filename)
 {
     return resources_dir_path / fs::path(filename);
 }
 
-} // namespace Gbpp::Utils
+} // namespace Gbpp::Resource

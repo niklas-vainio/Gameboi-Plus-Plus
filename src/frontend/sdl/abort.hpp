@@ -11,7 +11,10 @@
 #include <SDL3/SDL.h>
 
 /**
- * Eevaluate \p `expr` and log an error if the result failed.
+ * Evaluate \p `expr` and log an error if the result failed.
+ *
+ * FIXME: Unify with existing abort, and tie to a function return value for safe
+ * exit, not std::exit
  */
 #define AbortOnSdlError(expr)                                                  \
     [&]()                                                                      \

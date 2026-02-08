@@ -14,7 +14,7 @@ namespace Gbpp::Backend
 
 uint8_t Bus::read(const uint16_t address)
 {
-    LogDebug("Read from address %02x", address);
+    // LogDebug("Read from address %02x", address);
 
     return address & 0x00ff;
 }
