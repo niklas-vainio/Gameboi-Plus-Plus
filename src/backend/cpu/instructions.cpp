@@ -581,13 +581,29 @@ void Cpu::instruction_26_LD()
 void Cpu::instruction_27_DAA()
 {
     /*
-     * FIXME - implement this
-     *
      * DAA
      * Flags: Z - 0 C
      * Cycles: 4
      */
-    LogWarning("DAA is unimplemented!");
+    if (get_N())
+    {
+        uint8_t adjustment = 0;
+        adjustment += get_H() ? 0x6 : 0;
+        adjustment += get_C() ? 0x60 : 0;
+        A -= adjustment;
+    }
+    else
+    {
+        uint8_t adjustment = 0;
+        adjustment += (get_H() || (A & 0x0f) > 0x09) ? 0x6 : 0;
+        adjustment += (get_C() || A > 0x99) ? 0x60 : 0;
+        set_C(get_C() || A > 0x99);
+
+        A += adjustment;
+    }
+
+    set_Z(A == 0);
+    set_H(0);
     current_instruction_asm = std::format("DAA");
 }
 
