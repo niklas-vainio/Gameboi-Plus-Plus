@@ -14,14 +14,26 @@ int main(int argc, const char **argv)
     /*
      * Parse args.
      */
-    UNUSED(argc);
-    UNUSED(argv);
+    if (argc < 2)
+    {
+        std::printf("\nUsage: gameboi++ <path_to_rom.gb>\n");
+        return EXIT_FAILURE;
+    }
 
     /*
      * Instantiate app and run forever.
      */
-    Gbpp::GameboiPlusPlus({.debug = false}).go();
+    const auto success = Gbpp::GameboiPlusPlus({.rom_path = {argv[1]}}).go();
 
-    LogInfo(ANSI_GREEN "All done, thanks for playing! :)");
-    return EXIT_SUCCESS;
+    if (success)
+    {
+        LogInfo();
+        LogInfo(ANSI_GREEN "All done, thanks for playing! :)");
+        LogInfo();
+        return EXIT_SUCCESS;
+    }
+    else
+    {
+        return EXIT_FAILURE;
+    }
 }

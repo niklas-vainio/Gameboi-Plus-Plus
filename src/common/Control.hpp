@@ -20,7 +20,8 @@ namespace Gbpp
 struct ControlState
 {
     bool app_running{true};
-    bool run_cpu_instruction{};
+    bool run_single_instruction{};
+    bool run_many_instructions{};
 };
 
 } // namespace Gbpp

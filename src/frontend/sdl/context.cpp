@@ -9,7 +9,7 @@
 #include "abort.hpp"
 #include "common/resource.hpp"
 
-namespace Gbpp::Frontend::SDL
+namespace Gbpp::Frontend::Sdl
 {
 
 Version get_version()
@@ -21,32 +21,32 @@ Version get_version()
             .patch = SDL_VERSIONNUM_MICRO(version)};
 }
 
-Context init(const std::string &window_title,
-             const uint32_t screen_width,
-             const uint32_t screen_height,
-             const uint64_t window_flags,
-             const std::string &font_file,
-             std::span<const float> font_sizes)
+bool init(Context &context,
+          const std::string &window_title,
+          const uint32_t screen_width,
+          const uint32_t screen_height,
+          const uint64_t window_flags,
+          const std::string &font_file,
+          std::span<const float> font_sizes)
 {
-    Context context{};
-
-    AbortOnSdlError(SDL_Init(SDL_INIT_VIDEO));
+    AbortOnSDLError(SDL_Init(SDL_INIT_VIDEO));
 
     /*
      * Create window and renderer.
      */
-    context.window = AbortOnSdlError(SDL_CreateWindow(
-        window_title.c_str(), screen_width, screen_height, window_flags));
+    context.window = SDL_CreateWindow(
+        window_title.c_str(), screen_width, screen_height, window_flags);
+    AbortOnSDLError(context.window);
 
-    context.renderer =
-        AbortOnSdlError(SDL_CreateRenderer(context.window, nullptr));
+    context.renderer = SDL_CreateRenderer(context.window, nullptr);
+    AbortOnSDLError(context.renderer);
 
     /*
      * Initialize the TTF engine.
      */
-    AbortOnSdlError(TTF_Init());
-    context.text_engine =
-        AbortOnSdlError(TTF_CreateRendererTextEngine(context.renderer));
+    AbortOnSDLError(TTF_Init());
+    context.text_engine = TTF_CreateRendererTextEngine(context.renderer);
+    AbortOnSDLError(context.text_engine);
 
     /*
      * Load all fonts.
@@ -55,16 +55,24 @@ Context init(const std::string &window_title,
 
     for (const auto font_size : font_sizes)
     {
-        auto font = AbortOnSdlError(TTF_OpenFont(font_path.c_str(), font_size));
+        auto font = TTF_OpenFont(font_path.c_str(), font_size);
+        AbortOnSDLError(font);
         context.fonts.push_back(font);
     }
 
-    return context;
+    return true;
 }
 
 void quit(Context &context)
 {
-    TTF_DestroyRendererTextEngine(context.text_engine);
+    /*
+     * Check all context fields, because they might be nullptr if an
+     * exception occured during initialization.
+     */
+    if (context.text_engine)
+    {
+        TTF_DestroyRendererTextEngine(context.text_engine);
+    }
 
     /*
      * Close all fonts.
@@ -74,9 +82,15 @@ void quit(Context &context)
         TTF_CloseFont(font);
     }
 
-    SDL_DestroyWindow(context.window);
-    SDL_DestroyRenderer(context.renderer);
+    if (context.window)
+    {
+        SDL_DestroyWindow(context.window);
+    }
+    if (context.renderer)
+    {
+        SDL_DestroyRenderer(context.renderer);
+    }
     SDL_Quit();
 }
 
-} // namespace Gbpp::Frontend::SDL
+} // namespace Gbpp::Frontend::Sdl

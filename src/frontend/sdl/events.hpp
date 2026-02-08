@@ -9,7 +9,7 @@
 
 #include <SDL3/SDL.h>
 
-namespace Gbpp::Frontend::SDL
+namespace Gbpp::Frontend::Sdl
 {
 
 /**
@@ -27,4 +27,4 @@ void handle_events(const T &callback)
     }
 };
 
-} // namespace Gbpp::Frontend::SDL
+} // namespace Gbpp::Frontend::Sdl

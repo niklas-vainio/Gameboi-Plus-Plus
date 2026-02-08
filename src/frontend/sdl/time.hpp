@@ -10,7 +10,7 @@
 #include <SDL3/SDL.h>
 #include <cstdint>
 
-namespace Gbpp::Frontend::SDL
+namespace Gbpp::Frontend::Sdl
 {
 
 /**
@@ -52,4 +52,4 @@ void delay_until(const Time time);
  */
 void delay_for_fps(const Time frame_start, const double fps);
 
-} // namespace Gbpp::Frontend::SDL
+} // namespace Gbpp::Frontend::Sdl

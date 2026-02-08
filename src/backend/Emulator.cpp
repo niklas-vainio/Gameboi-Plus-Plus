@@ -8,21 +8,36 @@
 
 #include "Emulator.hpp"
 #include "Bus.hpp"
+#include "common/GameBoyConstants.hpp"
+#include "common/abort.hpp"
 #include "common/logging.hpp"
+#include "common/resource.hpp"
 
 namespace Gbpp::Backend
 {
 
-bool Emulator::init()
+bool Emulator::init(const std::string &rom_path)
 {
-    LogInfo(ANSI_PURPLE "Emulator backend initialized!");
+    /*
+     * Load the provided ROM file.
+     */
+    const auto rom_path_full = Resource::get_resource_path(rom_path);
+    AbortIfNot(bus.load_rom(rom_path_full), false);
 
+    LogInfo(ANSI_CYAN "Emulator backend initialized successfully!");
     return true;
 }
 
 void Emulator::emulate_frame(const ControlState &control_state)
 {
-    if (control_state.run_cpu_instruction)
+    if (control_state.run_many_instructions)
+    {
+        for (auto i = 0; i < GameBoyConstants::clock_cycles_per_frame / 4; i++)
+        {
+            emulate_instruction();
+        }
+    }
+    else if (control_state.run_single_instruction)
     {
         emulate_instruction();
     }

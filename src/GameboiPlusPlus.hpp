@@ -24,28 +24,21 @@ public:
         /**
          * The filename of the ROM to load.
          */
-        const std::string rom_path;
-
-        /**
-         * The name of the file to load/store battery backed save data to/from.
-         */
-        const std::string saves_path;
-
-        /**
-         * True if debugging, false otherwise.
-         */
-        bool debug;
+        std::string rom_path;
     };
 
-    GameboiPlusPlus(const Args args) : app(), emulator()
+    GameboiPlusPlus(const Args &&args)
+        : rom_path(args.rom_path), app(), emulator()
     {
         UNUSED(args);
     };
 
     /**
      * Main method to run until the app exits.
+     *
+     * @return True on successful exit, false otherwise.
      */
-    void go();
+    bool go();
 
 private:
     /**
@@ -66,6 +59,11 @@ private:
      * Run when the app exits.
      */
     void quit();
+
+    /**
+     * File path of rom to load.
+     */
+    std::string rom_path;
 
     /**
      * Main class for the frontend, which manages all graphics, audio and input.

@@ -14,7 +14,7 @@
 #include <string>
 #include <vector>
 
-namespace Gbpp::Frontend::SDL
+namespace Gbpp::Frontend::Sdl
 {
 
 /**
@@ -44,25 +44,29 @@ struct Context
      * Configurations for TTF font rendering.
      */
     TTF_TextEngine *text_engine{};
-    std::vector<TTF_Font *> fonts;
+    std::vector<TTF_Font *> fonts{};
 };
 
 /**
- * Initialize SDL, returning a Context struct.
+ * Initialize SDL, popualting the given context struct.
  *
- * @param[in] window_title  Title for the window.
- * @param[in] screen_width  Width of the screen, in pixels.
- * @param[in] screen_height Height of the screen, in pixels.
- * @param[in] window_flags  Window settings.
- * @param[in] font_file     Filename of the font for text.
- * @param[in] font_sizes    List of font sizes to load.
+ * @param[out] context      Context to be populated
+ * @param[in]  window_title  Title for the window.
+ * @param[in]  screen_width  Width of the screen, in pixels.
+ * @param[in]  screen_height Height of the screen, in pixels.
+ * @param[in]  window_flags  Window settings.
+ * @param[in]  font_file     Filename of the font for text.
+ * @param[in]  font_sizes    List of font sizes to load.
+ *
+ * @return True on success, false otherwise.
  */
-Context init(const std::string &window_title,
-             const uint32_t screen_width,
-             const uint32_t screen_height,
-             const uint64_t window_flags,
-             const std::string &font_file,
-             std::span<const float> font_sizes);
+bool init(Context &context,
+          const std::string &window_title,
+          const uint32_t screen_width,
+          const uint32_t screen_height,
+          const uint64_t window_flags,
+          const std::string &font_file,
+          std::span<const float> font_sizes);
 
 /**
  * Destroy the currently running SDL instance.
@@ -71,4 +75,4 @@ Context init(const std::string &window_title,
  */
 void quit(Context &context);
 
-} // namespace Gbpp::Frontend::SDL
+} // namespace Gbpp::Frontend::Sdl

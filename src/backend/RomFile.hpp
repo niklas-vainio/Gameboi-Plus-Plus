@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include "common/logging.hpp"
 #include <string>
 #include <vector>
 
@@ -41,6 +42,7 @@ public:
      */
     uint8_t operator[](std::size_t i) const
     {
+        LogDebug("Reading from ROM at address %04X", i);
         return loaded ? data.at(i) : 0xff;
     }
 

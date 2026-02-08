@@ -11,6 +11,14 @@
 #include <SDL3/SDL.h>
 
 /**
+ * Internal implementation for an abort action. Uses variadic arguments
+ * as logging specifiers and returns \p `retval` .
+ */
+#define AbortImpl(retval, ...)                                                 \
+    LogError(__VA_ARGS__);                                                     \
+    return retval;
+
+/**
  * Raise an error error and return \p `retval` . Any extra arguments are passed
  * to a LogError call, so they may contain a string, or format specifier with
  * values.
@@ -18,8 +26,7 @@
 #define Abort(retval, ...)                                                     \
     do                                                                         \
     {                                                                          \
-        __VA_OPT__(LogError(__VA_ARGS__);)                                     \
-        return (retval);                                                       \
+        AbortImpl(retval __VA_OPT__(, ) __VA_ARGS__)                           \
     } while (0)
 
 /**
@@ -30,7 +37,7 @@
     {                                                                          \
         if ((expr))                                                            \
         {                                                                      \
-            Abort(retval __VA_OPT__(, ) __VA_ARGS__);                          \
+            AbortImpl(retval __VA_OPT__(, ) __VA_ARGS__)                       \
         }                                                                      \
     } while (0)
 
@@ -42,6 +49,6 @@
     {                                                                          \
         if (!(expr))                                                           \
         {                                                                      \
-            Abort(retval __VA_OPT__(, ) __VA_ARGS__);                          \
+            AbortImpl(retval __VA_OPT__(, ) __VA_ARGS__)                       \
         }                                                                      \
     } while (0)

@@ -79,7 +79,7 @@ private:
     /**
      * Active SDL context.
      */
-    SDL::Context sdl_context{};
+    Sdl::Context sdl_context{};
 
     /**
      * The current set of user inputs, updated each frame.
@@ -89,7 +89,7 @@ private:
     /**
      * Timestamp of the start of the furrent frame.
      */
-    SDL::Time frame_start{};
+    Sdl::Time frame_start{};
 
     /**
      * Number of frames processed.

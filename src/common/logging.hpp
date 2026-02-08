@@ -26,12 +26,12 @@
  * Log a formatted message with the [INFO] prefix.
  */
 #define LogDebug(fmt, ...)                                                     \
-    do                                                                         \
-    {                                                                          \
-        std::printf(ANSI_GRAY "[DEBUG] %s:%d    " fmt "\n",                    \
-                    __FILE_NAME__,                                             \
-                    __LINE__ __VA_OPT__(, ) __VA_ARGS__);                      \
-    } while (0)
+    // do                                                                         \
+    // {                                                                          \
+    //     std::printf(ANSI_GRAY "[DEBUG] %s:%d    " fmt "\n",                    \
+    //                 __FILE_NAME__,                                             \
+    //                 __LINE__ __VA_OPT__(, ) __VA_ARGS__);                      \
+    // } while (0)
 
 /**
  * Log a formatted message with the [INFO] prefix.

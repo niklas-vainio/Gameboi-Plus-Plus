@@ -6,12 +6,13 @@
  */
 
 #include "GameboiPlusPlus.hpp"
+#include "common/abort.hpp"
 #include "common/logging.hpp"
 
 namespace Gbpp
 {
 
-void GameboiPlusPlus::go()
+bool GameboiPlusPlus::go()
 {
     /*
      * Initialize.
@@ -20,7 +21,7 @@ void GameboiPlusPlus::go()
     {
         LogError("Failed initialization, quitting!");
         quit();
-        return;
+        return false;
     }
 
     /*
@@ -34,12 +35,16 @@ void GameboiPlusPlus::go()
      * Exit.
      */
     quit();
+    return true;
 }
 
 bool GameboiPlusPlus::init()
 {
     LogInfo("Initializing...");
-    return emulator.init() && app.init();
+    AbortIfNot(emulator.init(rom_path), false);
+    AbortIfNot(app.init(), false);
+
+    return true;
 }
 
 bool GameboiPlusPlus::run_frame()

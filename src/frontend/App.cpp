@@ -25,12 +25,14 @@ bool App::init()
     /*
      * Initialize SDL context.
      */
-    sdl_context = SDL::init(window_title,
-                            Graphics::Layout::screen_width,
-                            Graphics::Layout::screen_height,
-                            0u,
-                            Font::font_file,
-                            Font::size_map);
+    AbortIfNot(Sdl::init(sdl_context,
+                         window_title,
+                         Graphics::Layout::screen_width,
+                         Graphics::Layout::screen_height,
+                         0u,
+                         Font::font_file,
+                         Font::size_map),
+               false);
 
     /*
      * Make sure control state flags are correctly initialied
@@ -40,7 +42,7 @@ bool App::init()
     /*
      * Print out log message with SDL version.
      */
-    const auto version = SDL::get_version();
+    const auto version = Sdl::get_version();
     LogInfo(ANSI_CYAN "SDL Frontend App Initialized! (SDL%d.%d.%d)",
             version.major,
             version.minor,
@@ -50,7 +52,7 @@ bool App::init()
 
 void App::start_frame()
 {
-    frame_start = SDL::get_time();
+    frame_start = Sdl::get_time();
     frame_count++;
 }
 
@@ -59,9 +61,9 @@ void App::handle_inputs()
     /*
      * Clear all control state flags that look for key press events.
      */
-    control_state.run_cpu_instruction = false;
+    control_state.run_single_instruction = false;
 
-    SDL::handle_events([this](const auto &event) { handle_sdl_event(event); });
+    Sdl::handle_events([this](const auto &event) { handle_sdl_event(event); });
 }
 
 void App::draw_frame(const EmulatorDebugInfo &debug_info)
@@ -71,7 +73,7 @@ void App::draw_frame(const EmulatorDebugInfo &debug_info)
 
 void App::wait_until_frame_over()
 {
-    SDL::delay_for_fps(frame_start, GameBoyConstants::framerate);
+    Sdl::delay_for_fps(frame_start, GameBoyConstants::framerate);
 }
 
 void App::quit()
@@ -79,7 +81,7 @@ void App::quit()
     /*
      * Destroy render and window, then exit.
      */
-    SDL::quit(sdl_context);
+    Sdl::quit(sdl_context);
 }
 
 void App::handle_sdl_event(const SDL_Event &event)
@@ -99,8 +101,12 @@ void App::handle_sdl_event(const SDL_Event &event)
          */
         switch (event.key.key)
         {
+            case SDLK_RETURN:
+                control_state.run_single_instruction = true;
+                break;
             case SDLK_SPACE:
-                control_state.run_cpu_instruction = true;
+                control_state.run_many_instructions =
+                    !control_state.run_many_instructions;
                 break;
         }
     }

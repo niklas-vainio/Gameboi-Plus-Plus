@@ -262,6 +262,8 @@ void Cpu::instruction_10_STOP()
      */
     LogWarning("STOP is not fully implemented!");
     const uint8_t n8 = fetch_8();
+    stopped = true;
+    
     current_instruction_asm = std::format("STOP {:02X}", n8);
 }
 
@@ -1552,13 +1554,12 @@ void Cpu::instruction_75_LD()
 void Cpu::instruction_76_HALT()
 {
     /*
-     * FIXME - implement this
-     *
      * HALT
      * Flags: - - - -
      * Cycles: 4
      */
-    LogWarning("HALT is unimplemented");
+    LogDebug("Halting at pc = %04X", pc - 1);
+    halted = true;
     current_instruction_asm = std::format("HALT");
 }
 

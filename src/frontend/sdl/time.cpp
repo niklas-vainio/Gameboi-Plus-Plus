@@ -7,7 +7,7 @@
 
 #include "time.hpp"
 
-namespace Gbpp::Frontend::SDL
+namespace Gbpp::Frontend::Sdl
 {
 
 Time get_time()
@@ -45,4 +45,4 @@ void delay_for_fps(const Time frame_start, const double fps)
     delay_until(frame_end);
 }
 
-} // namespace Gbpp::Frontend::SDL
+} // namespace Gbpp::Frontend::Sdl

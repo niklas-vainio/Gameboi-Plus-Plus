@@ -7,24 +7,19 @@
 
 #pragma once
 
+#include "common/abort.hpp"
 #include "common/logging.hpp"
 #include <SDL3/SDL.h>
 
 /**
- * Evaluate \p `expr` and log an error if the result failed.
- *
- * FIXME: Unify with existing abort, and tie to a function return value for safe
- * exit, not std::exit
+ * If \p `expr` evaluates to false, i.e. it is the result of a failed SDL call,
+ * abort with a descriptive error message.
  */
-#define AbortOnSdlError(expr)                                                  \
-    [&]()                                                                      \
+#define AbortOnSDLError(expr)                                                  \
+    do                                                                         \
     {                                                                          \
-        const auto result = expr;                                              \
-        if (!result)                                                           \
+        if (!(expr))                                                           \
         {                                                                      \
-            LogError("Call %s failed: %s\n", #expr, SDL_GetError());           \
-            SDL_Quit();                                                        \
-            std::exit(1);                                                      \
+            AbortImpl(false, "SDL Error: %s\n", SDL_GetError());               \
         }                                                                      \
-        return result;                                                         \
-    }();
+    } while (0)

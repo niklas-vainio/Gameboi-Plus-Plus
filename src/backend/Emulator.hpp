@@ -35,9 +35,10 @@ public:
     /**
      * Initialize the emulator.
      *
+     * @param[in] rom_path      Path of the rom to load
      * @return True on success, false otherwise.
      */
-    bool init();
+    bool init(const std::string &rom_path);
 
     /**
      * Emulate a single frame.
@@ -56,7 +57,7 @@ public:
 
 private:
     /**
-     * Emulate a single CPU instruction.
+     * Emulate a single Cpu instruction.
      */
     void emulate_instruction();
 
@@ -71,7 +72,7 @@ private:
     Bus bus{};
 
     /**
-     * CPU object, linked to the bus.
+     * Cpu object, linked to the bus.
      */
     Cpu cpu{bus};
 

@@ -108,10 +108,12 @@ private:
     }
 
     /**
-     * Registers
+     * Registers.
+     *
+     * FIXME: Don't start pc at 0x0100 once bios is implemented.
      */
     uint8_t A{}, B{}, C{}, D{}, E{}, F{}, H{}, L{};
-    uint16_t pc{};
+    uint16_t pc{0x0100};
     uint16_t sp{};
 
     /**
@@ -169,6 +171,13 @@ private:
      * Store whether interrupts are currently enabled;
      */
     bool interrupts_enbled{};
+
+    /**
+     * Store whether the CPU is currently halted or stopped (via the HALT/STOP
+     * instructions).
+     */
+    bool halted{};
+    bool stopped{};
 
     /**
      * Prototypes of all opcode functions - included from a separate file.

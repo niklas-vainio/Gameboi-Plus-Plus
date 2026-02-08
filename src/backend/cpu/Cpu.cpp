@@ -16,6 +16,14 @@ namespace Gbpp::Backend
 
 void Cpu::emulate_instruction()
 {
+    /**
+     * Do nothing if HALT/STOP has been called.
+     */
+    if (halted || stopped)
+    {
+        return;
+    }
+    
     /*
      * Fetch opcode.
      */

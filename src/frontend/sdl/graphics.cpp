@@ -7,7 +7,7 @@
 
 #include "graphics.hpp"
 
-namespace Gbpp::Frontend::SDL
+namespace Gbpp::Frontend::Sdl
 {
 void fill_screen(Context &context, const SDL_Color color)
 {
@@ -45,4 +45,4 @@ void show(Context &context)
     SDL_RenderPresent(context.renderer);
 }
 
-} // namespace Gbpp::Frontend::SDL
+} // namespace Gbpp::Frontend::Sdl
