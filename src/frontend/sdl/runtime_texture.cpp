@@ -24,6 +24,12 @@ bool RuntimeTexture::init(Context &context,
                                 height);
 
     AbortOnSDLError(texture);
+
+    /*
+     * Use nearest neighbor mode for clean scaling, and disable alpha blending.
+     */
+    AbortOnSDLError(SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST));
+    AbortOnSDLError(SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_NONE));
     return true;
 }
 

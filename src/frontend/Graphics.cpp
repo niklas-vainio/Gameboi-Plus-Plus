@@ -12,6 +12,31 @@
 namespace Gbpp::Frontend::Graphics
 {
 
+void populate_memory_viewer_texture(Sdl::RuntimeTexture &memory_viewer_texture,
+                                    const EmulatorDebugInfo &debug_info)
+{
+    /*
+     * Map pixel values to grayscale.
+     */
+    auto pixels = memory_viewer_texture.lock();
+
+    for (auto x = 0; x < 256; x++)
+    {
+        for (auto y = 0; y < 256; y++)
+        {
+            const auto value = debug_info.memory_viewer_pixel_buffer(x, y);
+            pixels(x, y) = {.r = value, .g = value, .b = value, .a = 255};
+        }
+    }
+
+    /*
+     * Render PC, SP, and HL with special colors.
+     */
+    pixels(debug_info.cpu.pc & 0xFF, debug_info.cpu.pc >> 8) = Sdl::RED;
+    pixels(debug_info.cpu.sp & 0xFF, debug_info.cpu.sp >> 8) = Sdl::CYAN;
+    pixels(debug_info.cpu.L, debug_info.cpu.H) = Sdl::GREEN;
+}
+
 void draw_frame(Sdl::Context &sdl_context,
                 Sdl::RuntimeTexture &memory_viewer_texture,
                 const EmulatorDebugInfo &debug_info)
@@ -28,12 +53,10 @@ void draw_frame(Sdl::Context &sdl_context,
     /**
      * Draw debug area.
      */
-    Sdl::draw_runtime_texture(sdl_context,
-                              memory_viewer_texture,
-                              {.left = Layout::screen_width - 256,
-                               .top = 0,
-                               .width = 256,
-                               .height = 256});
+    Sdl::draw_runtime_texture(
+        sdl_context,
+        memory_viewer_texture,
+        {.left = 0, .top = 0, .width = 512, .height = 512});
 
     draw_cpu_status(sdl_context, debug_info.cpu);
 

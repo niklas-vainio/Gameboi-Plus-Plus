@@ -1,6 +1,9 @@
 # Build folder
 build
 
+# Extra local files, not to be committed
+local
+
 # Generated files
 scripts/generated
 

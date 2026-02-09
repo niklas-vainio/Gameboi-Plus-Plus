@@ -56,6 +56,15 @@ inline constexpr auto padding = 10u;
 } // namespace Layout
 
 /**
+ * Populate the memory viewer texture with data from the emulator.
+ *
+ * @param[in] memory_viewer_texture Texture for the memory viewer.
+ * @param[in] debug_info            Debug info from the backend.
+ */
+void populate_memory_viewer_texture(Sdl::RuntimeTexture &memory_viewer_texture,
+                                    const EmulatorDebugInfo &debug_info);
+
+/**
  * Draw the current frame to the screen.
  *
  * @param[in] sdl_context           Current SDL context.

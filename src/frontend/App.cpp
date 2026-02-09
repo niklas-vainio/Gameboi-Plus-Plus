@@ -78,18 +78,7 @@ void App::draw_frame(const EmulatorDebugInfo &debug_info)
     /*
      * Populate runtime textures with data from the emulator.
      */
-    {
-        auto pixels = memory_viewer_texture.lock();
-
-        for (auto x = 0; x < 256; x++)
-        {
-            for (auto y = 0; y < 256; y++)
-            {
-                const auto value = debug_info.memory_viewer_pixel_buffer(x, y);
-                pixels(x, y) = {.r = value, .g = value, .b = value, .a = 255};
-            }
-        }
-    }
+    Graphics::populate_memory_viewer_texture(memory_viewer_texture, debug_info);
 
     Graphics::draw_frame(sdl_context, memory_viewer_texture, debug_info);
 }
