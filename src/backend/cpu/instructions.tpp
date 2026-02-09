@@ -7,14 +7,14 @@
  * @date   2026-02-01
  */
 
-#include "Cpu.hpp"
 #include "common/logging.hpp"
 #include <format>
 
 namespace Gbpp::Backend
 {
 
-void Cpu::instruction_ILLEGAL()
+template <typename Bus>
+void Cpu<Bus>::instruction_ILLEGAL()
 {
     /*
      * Catch-all for illegal opcodes. Log an error and do nothing.
@@ -29,7 +29,8 @@ void Cpu::instruction_ILLEGAL()
  * ============================================================================
  */
 
-void Cpu::instruction_00_NOP()
+template <typename Bus>
+void Cpu<Bus>::instruction_00_NOP()
 {
     /*
      * NOP
@@ -39,7 +40,8 @@ void Cpu::instruction_00_NOP()
     current_instruction_asm = std::format("NOP");
 }
 
-void Cpu::instruction_01_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_01_LD()
 {
     /*
      * LD BC, n16
@@ -52,7 +54,8 @@ void Cpu::instruction_01_LD()
     current_instruction_asm = std::format("LD BC, {:04X}", n16);
 }
 
-void Cpu::instruction_02_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_02_LD()
 {
     /*
      * LD [BC], A
@@ -64,7 +67,8 @@ void Cpu::instruction_02_LD()
     current_instruction_asm = std::format("LD !BC, A");
 }
 
-void Cpu::instruction_03_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_03_INC()
 {
     /*
      * INC BC
@@ -76,7 +80,8 @@ void Cpu::instruction_03_INC()
     current_instruction_asm = std::format("INC BC");
 }
 
-void Cpu::instruction_04_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_04_INC()
 {
     /*
      * INC B
@@ -91,7 +96,8 @@ void Cpu::instruction_04_INC()
     current_instruction_asm = std::format("INC B");
 }
 
-void Cpu::instruction_05_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_05_DEC()
 {
     /*
      * DEC B
@@ -106,7 +112,8 @@ void Cpu::instruction_05_DEC()
     current_instruction_asm = std::format("DEC B");
 }
 
-void Cpu::instruction_06_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_06_LD()
 {
     /*
      * LD B, n8
@@ -119,7 +126,8 @@ void Cpu::instruction_06_LD()
     current_instruction_asm = std::format("LD B, {:02X}", n8);
 }
 
-void Cpu::instruction_07_RLCA()
+template <typename Bus>
+void Cpu<Bus>::instruction_07_RLCA()
 {
     /*
      * RLCA
@@ -136,7 +144,8 @@ void Cpu::instruction_07_RLCA()
     current_instruction_asm = std::format("RLCA");
 }
 
-void Cpu::instruction_08_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_08_LD()
 {
     /*
      * LD [a16], SP
@@ -149,7 +158,8 @@ void Cpu::instruction_08_LD()
     current_instruction_asm = std::format("LD !{:04X}, SP", a16);
 }
 
-void Cpu::instruction_09_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_09_ADD()
 {
     /*
      * ADD HL, BC
@@ -168,7 +178,8 @@ void Cpu::instruction_09_ADD()
     current_instruction_asm = std::format("ADD HL, BC");
 }
 
-void Cpu::instruction_0A_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_0A_LD()
 {
     /*
      * LD A, [BC]
@@ -180,7 +191,8 @@ void Cpu::instruction_0A_LD()
     current_instruction_asm = std::format("LD A, !BC");
 }
 
-void Cpu::instruction_0B_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_0B_DEC()
 {
     /*
      * DEC BC
@@ -192,7 +204,8 @@ void Cpu::instruction_0B_DEC()
     current_instruction_asm = std::format("DEC BC");
 }
 
-void Cpu::instruction_0C_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_0C_INC()
 {
     /*
      * INC C
@@ -207,7 +220,8 @@ void Cpu::instruction_0C_INC()
     current_instruction_asm = std::format("INC C");
 }
 
-void Cpu::instruction_0D_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_0D_DEC()
 {
     /*
      * DEC C
@@ -222,7 +236,8 @@ void Cpu::instruction_0D_DEC()
     current_instruction_asm = std::format("DEC C");
 }
 
-void Cpu::instruction_0E_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_0E_LD()
 {
     /*
      * LD C, n8
@@ -235,7 +250,8 @@ void Cpu::instruction_0E_LD()
     current_instruction_asm = std::format("LD C, {:02X}", n8);
 }
 
-void Cpu::instruction_0F_RRCA()
+template <typename Bus>
+void Cpu<Bus>::instruction_0F_RRCA()
 {
     /*
      * RRCA
@@ -252,7 +268,8 @@ void Cpu::instruction_0F_RRCA()
     current_instruction_asm = std::format("RRCA");
 }
 
-void Cpu::instruction_10_STOP()
+template <typename Bus>
+void Cpu<Bus>::instruction_10_STOP()
 {
     /*
      * FIXME - handle this properly
@@ -267,7 +284,8 @@ void Cpu::instruction_10_STOP()
     current_instruction_asm = std::format("STOP {:02X}", n8);
 }
 
-void Cpu::instruction_11_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_11_LD()
 {
     /*
      * LD DE, n16
@@ -280,7 +298,8 @@ void Cpu::instruction_11_LD()
     current_instruction_asm = std::format("LD DE, {:04X}", n16);
 }
 
-void Cpu::instruction_12_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_12_LD()
 {
     /*
      * LD [DE], A
@@ -292,7 +311,8 @@ void Cpu::instruction_12_LD()
     current_instruction_asm = std::format("LD !DE, A");
 }
 
-void Cpu::instruction_13_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_13_INC()
 {
     /*
      * INC DE
@@ -304,7 +324,8 @@ void Cpu::instruction_13_INC()
     current_instruction_asm = std::format("INC DE");
 }
 
-void Cpu::instruction_14_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_14_INC()
 {
     /*
      * INC D
@@ -319,7 +340,8 @@ void Cpu::instruction_14_INC()
     current_instruction_asm = std::format("INC D");
 }
 
-void Cpu::instruction_15_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_15_DEC()
 {
     /*
      * DEC D
@@ -334,7 +356,8 @@ void Cpu::instruction_15_DEC()
     current_instruction_asm = std::format("DEC D");
 }
 
-void Cpu::instruction_16_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_16_LD()
 {
     /*
      * LD D, n8
@@ -347,7 +370,8 @@ void Cpu::instruction_16_LD()
     current_instruction_asm = std::format("LD D, {:02X}", n8);
 }
 
-void Cpu::instruction_17_RLA()
+template <typename Bus>
+void Cpu<Bus>::instruction_17_RLA()
 {
     /*
      * RLA
@@ -364,7 +388,8 @@ void Cpu::instruction_17_RLA()
     current_instruction_asm = std::format("RLA ");
 }
 
-void Cpu::instruction_18_JR()
+template <typename Bus>
+void Cpu<Bus>::instruction_18_JR()
 {
     /*
      * JR e8
@@ -377,7 +402,8 @@ void Cpu::instruction_18_JR()
     current_instruction_asm = std::format("JR {:04X}", pc);
 }
 
-void Cpu::instruction_19_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_19_ADD()
 {
     /*
      * ADD HL, DE
@@ -396,7 +422,8 @@ void Cpu::instruction_19_ADD()
     current_instruction_asm = std::format("ADD HL, DE");
 }
 
-void Cpu::instruction_1A_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_1A_LD()
 {
     /*
      * LD A, [DE]
@@ -408,7 +435,8 @@ void Cpu::instruction_1A_LD()
     current_instruction_asm = std::format("LD A, !DE");
 }
 
-void Cpu::instruction_1B_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_1B_DEC()
 {
     /*
      * DEC DE
@@ -420,7 +448,8 @@ void Cpu::instruction_1B_DEC()
     current_instruction_asm = std::format("DEC DE");
 }
 
-void Cpu::instruction_1C_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_1C_INC()
 {
     /*
      * INC E
@@ -435,7 +464,8 @@ void Cpu::instruction_1C_INC()
     current_instruction_asm = std::format("INC E");
 }
 
-void Cpu::instruction_1D_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_1D_DEC()
 {
     /*
      * DEC E
@@ -450,7 +480,8 @@ void Cpu::instruction_1D_DEC()
     current_instruction_asm = std::format("DEC E");
 }
 
-void Cpu::instruction_1E_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_1E_LD()
 {
     /*
      * LD E, n8
@@ -463,7 +494,8 @@ void Cpu::instruction_1E_LD()
     current_instruction_asm = std::format("LD E, {:02X}", n8);
 }
 
-void Cpu::instruction_1F_RRA()
+template <typename Bus>
+void Cpu<Bus>::instruction_1F_RRA()
 {
     /*
      * RRA
@@ -480,7 +512,8 @@ void Cpu::instruction_1F_RRA()
     current_instruction_asm = std::format("RRA ");
 }
 
-void Cpu::instruction_20_JR()
+template <typename Bus>
+void Cpu<Bus>::instruction_20_JR()
 {
     /*
      * JR NZ, e8
@@ -499,7 +532,8 @@ void Cpu::instruction_20_JR()
     current_instruction_asm = std::format("JR NZ, {:04X}", dest);
 }
 
-void Cpu::instruction_21_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_21_LD()
 {
     /*
      * LD HL, n16
@@ -512,7 +546,8 @@ void Cpu::instruction_21_LD()
     current_instruction_asm = std::format("LD HL, {:04X}", n16);
 }
 
-void Cpu::instruction_22_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_22_LD()
 {
     /*
      * LD [HL+], A
@@ -525,7 +560,8 @@ void Cpu::instruction_22_LD()
     current_instruction_asm = std::format("LDI !HL, A");
 }
 
-void Cpu::instruction_23_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_23_INC()
 {
     /*
      * INC HL
@@ -537,7 +573,8 @@ void Cpu::instruction_23_INC()
     current_instruction_asm = std::format("INC HL");
 }
 
-void Cpu::instruction_24_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_24_INC()
 {
     /*
      * INC H
@@ -552,7 +589,8 @@ void Cpu::instruction_24_INC()
     current_instruction_asm = std::format("INC H");
 }
 
-void Cpu::instruction_25_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_25_DEC()
 {
     /*
      * DEC H
@@ -567,7 +605,8 @@ void Cpu::instruction_25_DEC()
     current_instruction_asm = std::format("DEC H");
 }
 
-void Cpu::instruction_26_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_26_LD()
 {
     /*
      * LD H, n8
@@ -580,7 +619,8 @@ void Cpu::instruction_26_LD()
     current_instruction_asm = std::format("LD H, {:02X}", n8);
 }
 
-void Cpu::instruction_27_DAA()
+template <typename Bus>
+void Cpu<Bus>::instruction_27_DAA()
 {
     /*
      * DAA
@@ -609,7 +649,8 @@ void Cpu::instruction_27_DAA()
     current_instruction_asm = std::format("DAA");
 }
 
-void Cpu::instruction_28_JR()
+template <typename Bus>
+void Cpu<Bus>::instruction_28_JR()
 {
     /*
      * JR Z, e8
@@ -628,7 +669,8 @@ void Cpu::instruction_28_JR()
     current_instruction_asm = std::format("JR Z, {:04X}", dest);
 }
 
-void Cpu::instruction_29_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_29_ADD()
 {
     /*
      * ADD HL, HL
@@ -647,7 +689,8 @@ void Cpu::instruction_29_ADD()
     current_instruction_asm = std::format("ADD HL, HL");
 }
 
-void Cpu::instruction_2A_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_2A_LD()
 {
     /*
      * LD A, [HL+]
@@ -660,7 +703,8 @@ void Cpu::instruction_2A_LD()
     current_instruction_asm = std::format("LDI A, !HL");
 }
 
-void Cpu::instruction_2B_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_2B_DEC()
 {
     /*
      * DEC HL
@@ -672,7 +716,8 @@ void Cpu::instruction_2B_DEC()
     current_instruction_asm = std::format("DEC HL");
 }
 
-void Cpu::instruction_2C_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_2C_INC()
 {
     /*
      * INC L
@@ -687,7 +732,8 @@ void Cpu::instruction_2C_INC()
     current_instruction_asm = std::format("INC L");
 }
 
-void Cpu::instruction_2D_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_2D_DEC()
 {
     /*
      * DEC L
@@ -702,7 +748,8 @@ void Cpu::instruction_2D_DEC()
     current_instruction_asm = std::format("DEC L");
 }
 
-void Cpu::instruction_2E_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_2E_LD()
 {
     /*
      * LD L, n8
@@ -715,7 +762,8 @@ void Cpu::instruction_2E_LD()
     current_instruction_asm = std::format("LD L, {:02X}", n8);
 }
 
-void Cpu::instruction_2F_CPL()
+template <typename Bus>
+void Cpu<Bus>::instruction_2F_CPL()
 {
     /*
      * CPL
@@ -729,7 +777,8 @@ void Cpu::instruction_2F_CPL()
     current_instruction_asm = std::format("CPL ");
 }
 
-void Cpu::instruction_30_JR()
+template <typename Bus>
+void Cpu<Bus>::instruction_30_JR()
 {
     /*
      * JR NC, e8
@@ -748,7 +797,8 @@ void Cpu::instruction_30_JR()
     current_instruction_asm = std::format("JR NC, {:04X}", dest);
 }
 
-void Cpu::instruction_31_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_31_LD()
 {
     /*
      * LD SP, n16
@@ -761,7 +811,8 @@ void Cpu::instruction_31_LD()
     current_instruction_asm = std::format("LD SP, {:04X}", n16);
 }
 
-void Cpu::instruction_32_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_32_LD()
 {
     /*
      * LD [HL-], A
@@ -774,7 +825,8 @@ void Cpu::instruction_32_LD()
     current_instruction_asm = std::format("LDD !HL, A");
 }
 
-void Cpu::instruction_33_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_33_INC()
 {
     /*
      * INC SP
@@ -786,7 +838,8 @@ void Cpu::instruction_33_INC()
     current_instruction_asm = std::format("INC SP");
 }
 
-void Cpu::instruction_34_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_34_INC()
 {
     /*
      * INC [HL]
@@ -802,7 +855,8 @@ void Cpu::instruction_34_INC()
     current_instruction_asm = std::format("INC !HL");
 }
 
-void Cpu::instruction_35_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_35_DEC()
 {
     /*
      * DEC [HL]
@@ -818,7 +872,8 @@ void Cpu::instruction_35_DEC()
     current_instruction_asm = std::format("DEC !HL");
 }
 
-void Cpu::instruction_36_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_36_LD()
 {
     /*
      * LD [HL], n8
@@ -831,7 +886,8 @@ void Cpu::instruction_36_LD()
     current_instruction_asm = std::format("LD !HL, {:02X}", n8);
 }
 
-void Cpu::instruction_37_SCF()
+template <typename Bus>
+void Cpu<Bus>::instruction_37_SCF()
 {
     /*
      * SCF
@@ -844,7 +900,8 @@ void Cpu::instruction_37_SCF()
     current_instruction_asm = std::format("SCF ");
 }
 
-void Cpu::instruction_38_JR()
+template <typename Bus>
+void Cpu<Bus>::instruction_38_JR()
 {
     /*
      * JR C, e8
@@ -863,7 +920,8 @@ void Cpu::instruction_38_JR()
     current_instruction_asm = std::format("JR C, {:04X}", dest);
 }
 
-void Cpu::instruction_39_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_39_ADD()
 {
     /*
      * ADD HL, SP
@@ -882,7 +940,8 @@ void Cpu::instruction_39_ADD()
     current_instruction_asm = std::format("ADD HL, SP");
 }
 
-void Cpu::instruction_3A_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_3A_LD()
 {
     /*
      * LD A, [HL-]
@@ -895,7 +954,8 @@ void Cpu::instruction_3A_LD()
     current_instruction_asm = std::format("LDD A, !HL");
 }
 
-void Cpu::instruction_3B_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_3B_DEC()
 {
     /*
      * DEC SP
@@ -907,7 +967,8 @@ void Cpu::instruction_3B_DEC()
     current_instruction_asm = std::format("DEC SP");
 }
 
-void Cpu::instruction_3C_INC()
+template <typename Bus>
+void Cpu<Bus>::instruction_3C_INC()
 {
     /*
      * INC A
@@ -922,7 +983,8 @@ void Cpu::instruction_3C_INC()
     current_instruction_asm = std::format("INC A");
 }
 
-void Cpu::instruction_3D_DEC()
+template <typename Bus>
+void Cpu<Bus>::instruction_3D_DEC()
 {
     /*
      * DEC A
@@ -937,7 +999,8 @@ void Cpu::instruction_3D_DEC()
     current_instruction_asm = std::format("DEC A");
 }
 
-void Cpu::instruction_3E_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_3E_LD()
 {
     /*
      * LD A, n8
@@ -950,7 +1013,8 @@ void Cpu::instruction_3E_LD()
     current_instruction_asm = std::format("LD A, {:02X}", n8);
 }
 
-void Cpu::instruction_3F_CCF()
+template <typename Bus>
+void Cpu<Bus>::instruction_3F_CCF()
 {
     /*
      * CCF
@@ -963,7 +1027,8 @@ void Cpu::instruction_3F_CCF()
     current_instruction_asm = std::format("CCF ");
 }
 
-void Cpu::instruction_40_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_40_LD()
 {
     /*
      * LD B, B
@@ -973,7 +1038,8 @@ void Cpu::instruction_40_LD()
     current_instruction_asm = std::format("LD B, B");
 }
 
-void Cpu::instruction_41_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_41_LD()
 {
     /*
      * LD B, C
@@ -984,7 +1050,8 @@ void Cpu::instruction_41_LD()
     current_instruction_asm = std::format("LD B, C");
 }
 
-void Cpu::instruction_42_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_42_LD()
 {
     /*
      * LD B, D
@@ -995,7 +1062,8 @@ void Cpu::instruction_42_LD()
     current_instruction_asm = std::format("LD B, D");
 }
 
-void Cpu::instruction_43_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_43_LD()
 {
     /*
      * LD B, E
@@ -1006,7 +1074,8 @@ void Cpu::instruction_43_LD()
     current_instruction_asm = std::format("LD B, E");
 }
 
-void Cpu::instruction_44_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_44_LD()
 {
     /*
      * LD B, H
@@ -1017,7 +1086,8 @@ void Cpu::instruction_44_LD()
     current_instruction_asm = std::format("LD B, H");
 }
 
-void Cpu::instruction_45_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_45_LD()
 {
     /*
      * LD B, L
@@ -1028,7 +1098,8 @@ void Cpu::instruction_45_LD()
     current_instruction_asm = std::format("LD B, L");
 }
 
-void Cpu::instruction_46_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_46_LD()
 {
     /*
      * LD B, [HL]
@@ -1039,7 +1110,8 @@ void Cpu::instruction_46_LD()
     current_instruction_asm = std::format("LD B, !HL");
 }
 
-void Cpu::instruction_47_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_47_LD()
 {
     /*
      * LD B, A
@@ -1050,7 +1122,8 @@ void Cpu::instruction_47_LD()
     current_instruction_asm = std::format("LD B, A");
 }
 
-void Cpu::instruction_48_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_48_LD()
 {
     /*
      * LD C, B
@@ -1061,7 +1134,8 @@ void Cpu::instruction_48_LD()
     current_instruction_asm = std::format("LD C, B");
 }
 
-void Cpu::instruction_49_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_49_LD()
 {
     /*
      * LD C, C
@@ -1071,7 +1145,8 @@ void Cpu::instruction_49_LD()
     current_instruction_asm = std::format("LD C, C");
 }
 
-void Cpu::instruction_4A_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_4A_LD()
 {
     /*
      * LD C, D
@@ -1082,7 +1157,8 @@ void Cpu::instruction_4A_LD()
     current_instruction_asm = std::format("LD C, D");
 }
 
-void Cpu::instruction_4B_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_4B_LD()
 {
     /*
      * LD C, E
@@ -1093,7 +1169,8 @@ void Cpu::instruction_4B_LD()
     current_instruction_asm = std::format("LD C, E");
 }
 
-void Cpu::instruction_4C_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_4C_LD()
 {
     /*
      * LD C, H
@@ -1104,7 +1181,8 @@ void Cpu::instruction_4C_LD()
     current_instruction_asm = std::format("LD C, H");
 }
 
-void Cpu::instruction_4D_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_4D_LD()
 {
     /*
      * LD C, L
@@ -1115,7 +1193,8 @@ void Cpu::instruction_4D_LD()
     current_instruction_asm = std::format("LD C, L");
 }
 
-void Cpu::instruction_4E_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_4E_LD()
 {
     /*
      * LD C, [HL]
@@ -1126,7 +1205,8 @@ void Cpu::instruction_4E_LD()
     current_instruction_asm = std::format("LD C, !HL");
 }
 
-void Cpu::instruction_4F_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_4F_LD()
 {
     /*
      * LD C, A
@@ -1137,7 +1217,8 @@ void Cpu::instruction_4F_LD()
     current_instruction_asm = std::format("LD C, A");
 }
 
-void Cpu::instruction_50_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_50_LD()
 {
     /*
      * LD D, B
@@ -1148,7 +1229,8 @@ void Cpu::instruction_50_LD()
     current_instruction_asm = std::format("LD D, B");
 }
 
-void Cpu::instruction_51_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_51_LD()
 {
     /*
      * LD D, C
@@ -1159,7 +1241,8 @@ void Cpu::instruction_51_LD()
     current_instruction_asm = std::format("LD D, C");
 }
 
-void Cpu::instruction_52_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_52_LD()
 {
     /*
      * LD D, D
@@ -1169,7 +1252,8 @@ void Cpu::instruction_52_LD()
     current_instruction_asm = std::format("LD D, D");
 }
 
-void Cpu::instruction_53_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_53_LD()
 {
     /*
      * LD D, E
@@ -1180,7 +1264,8 @@ void Cpu::instruction_53_LD()
     current_instruction_asm = std::format("LD D, E");
 }
 
-void Cpu::instruction_54_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_54_LD()
 {
     /*
      * LD D, H
@@ -1191,7 +1276,8 @@ void Cpu::instruction_54_LD()
     current_instruction_asm = std::format("LD D, H");
 }
 
-void Cpu::instruction_55_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_55_LD()
 {
     /*
      * LD D, L
@@ -1202,7 +1288,8 @@ void Cpu::instruction_55_LD()
     current_instruction_asm = std::format("LD D, L");
 }
 
-void Cpu::instruction_56_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_56_LD()
 {
     /*
      * LD D, [HL]
@@ -1213,7 +1300,8 @@ void Cpu::instruction_56_LD()
     current_instruction_asm = std::format("LD D, !HL");
 }
 
-void Cpu::instruction_57_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_57_LD()
 {
     /*
      * LD D, A
@@ -1224,7 +1312,8 @@ void Cpu::instruction_57_LD()
     current_instruction_asm = std::format("LD D, A");
 }
 
-void Cpu::instruction_58_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_58_LD()
 {
     /*
      * LD E, B
@@ -1235,7 +1324,8 @@ void Cpu::instruction_58_LD()
     current_instruction_asm = std::format("LD E, B");
 }
 
-void Cpu::instruction_59_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_59_LD()
 {
     /*
      * LD E, C
@@ -1246,7 +1336,8 @@ void Cpu::instruction_59_LD()
     current_instruction_asm = std::format("LD E, C");
 }
 
-void Cpu::instruction_5A_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_5A_LD()
 {
     /*
      * LD E, D
@@ -1257,7 +1348,8 @@ void Cpu::instruction_5A_LD()
     current_instruction_asm = std::format("LD E, D");
 }
 
-void Cpu::instruction_5B_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_5B_LD()
 {
     /*
      * LD E, E
@@ -1267,7 +1359,8 @@ void Cpu::instruction_5B_LD()
     current_instruction_asm = std::format("LD E, E");
 }
 
-void Cpu::instruction_5C_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_5C_LD()
 {
     /*
      * LD E, H
@@ -1278,7 +1371,8 @@ void Cpu::instruction_5C_LD()
     current_instruction_asm = std::format("LD E, H");
 }
 
-void Cpu::instruction_5D_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_5D_LD()
 {
     /*
      * LD E, L
@@ -1289,7 +1383,8 @@ void Cpu::instruction_5D_LD()
     current_instruction_asm = std::format("LD E, L");
 }
 
-void Cpu::instruction_5E_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_5E_LD()
 {
     /*
      * LD E, [HL]
@@ -1300,7 +1395,8 @@ void Cpu::instruction_5E_LD()
     current_instruction_asm = std::format("LD E, !HL");
 }
 
-void Cpu::instruction_5F_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_5F_LD()
 {
     /*
      * LD E, A
@@ -1311,7 +1407,8 @@ void Cpu::instruction_5F_LD()
     current_instruction_asm = std::format("LD E, A");
 }
 
-void Cpu::instruction_60_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_60_LD()
 {
     /*
      * LD H, B
@@ -1322,7 +1419,8 @@ void Cpu::instruction_60_LD()
     current_instruction_asm = std::format("LD H, B");
 }
 
-void Cpu::instruction_61_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_61_LD()
 {
     /*
      * LD H, C
@@ -1333,7 +1431,8 @@ void Cpu::instruction_61_LD()
     current_instruction_asm = std::format("LD H, C");
 }
 
-void Cpu::instruction_62_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_62_LD()
 {
     /*
      * LD H, D
@@ -1344,7 +1443,8 @@ void Cpu::instruction_62_LD()
     current_instruction_asm = std::format("LD H, D");
 }
 
-void Cpu::instruction_63_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_63_LD()
 {
     /*
      * LD H, E
@@ -1355,7 +1455,8 @@ void Cpu::instruction_63_LD()
     current_instruction_asm = std::format("LD H, E");
 }
 
-void Cpu::instruction_64_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_64_LD()
 {
     /*
      * LD H, H
@@ -1365,7 +1466,8 @@ void Cpu::instruction_64_LD()
     current_instruction_asm = std::format("LD H, H");
 }
 
-void Cpu::instruction_65_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_65_LD()
 {
     /*
      * LD H, L
@@ -1376,7 +1478,8 @@ void Cpu::instruction_65_LD()
     current_instruction_asm = std::format("LD H, L");
 }
 
-void Cpu::instruction_66_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_66_LD()
 {
     /*
      * LD H, [HL]
@@ -1387,7 +1490,8 @@ void Cpu::instruction_66_LD()
     current_instruction_asm = std::format("LD H, !HL");
 }
 
-void Cpu::instruction_67_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_67_LD()
 {
     /*
      * LD H, A
@@ -1398,7 +1502,8 @@ void Cpu::instruction_67_LD()
     current_instruction_asm = std::format("LD H, A");
 }
 
-void Cpu::instruction_68_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_68_LD()
 {
     /*
      * LD L, B
@@ -1409,7 +1514,8 @@ void Cpu::instruction_68_LD()
     current_instruction_asm = std::format("LD L, B");
 }
 
-void Cpu::instruction_69_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_69_LD()
 {
     /*
      * LD L, C
@@ -1420,7 +1526,8 @@ void Cpu::instruction_69_LD()
     current_instruction_asm = std::format("LD L, C");
 }
 
-void Cpu::instruction_6A_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_6A_LD()
 {
     /*
      * LD L, D
@@ -1431,7 +1538,8 @@ void Cpu::instruction_6A_LD()
     current_instruction_asm = std::format("LD L, D");
 }
 
-void Cpu::instruction_6B_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_6B_LD()
 {
     /*
      * LD L, E
@@ -1442,7 +1550,8 @@ void Cpu::instruction_6B_LD()
     current_instruction_asm = std::format("LD L, E");
 }
 
-void Cpu::instruction_6C_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_6C_LD()
 {
     /*
      * LD L, H
@@ -1453,7 +1562,8 @@ void Cpu::instruction_6C_LD()
     current_instruction_asm = std::format("LD L, H");
 }
 
-void Cpu::instruction_6D_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_6D_LD()
 {
     /*
      * LD L, L
@@ -1463,7 +1573,8 @@ void Cpu::instruction_6D_LD()
     current_instruction_asm = std::format("LD L, L");
 }
 
-void Cpu::instruction_6E_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_6E_LD()
 {
     /*
      * LD L, [HL]
@@ -1474,7 +1585,8 @@ void Cpu::instruction_6E_LD()
     current_instruction_asm = std::format("LD L, !HL");
 }
 
-void Cpu::instruction_6F_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_6F_LD()
 {
     /*
      * LD L, A
@@ -1485,7 +1597,8 @@ void Cpu::instruction_6F_LD()
     current_instruction_asm = std::format("LD L, A");
 }
 
-void Cpu::instruction_70_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_70_LD()
 {
     /*
      * LD [HL], B
@@ -1496,7 +1609,8 @@ void Cpu::instruction_70_LD()
     current_instruction_asm = std::format("LD !HL, B");
 }
 
-void Cpu::instruction_71_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_71_LD()
 {
     /*
      * LD [HL], C
@@ -1507,7 +1621,8 @@ void Cpu::instruction_71_LD()
     current_instruction_asm = std::format("LD !HL, C");
 }
 
-void Cpu::instruction_72_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_72_LD()
 {
     /*
      * LD [HL], D
@@ -1518,7 +1633,8 @@ void Cpu::instruction_72_LD()
     current_instruction_asm = std::format("LD !HL, D");
 }
 
-void Cpu::instruction_73_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_73_LD()
 {
     /*
      * LD [HL], E
@@ -1529,7 +1645,8 @@ void Cpu::instruction_73_LD()
     current_instruction_asm = std::format("LD !HL, E");
 }
 
-void Cpu::instruction_74_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_74_LD()
 {
     /*
      * LD [HL], H
@@ -1540,7 +1657,8 @@ void Cpu::instruction_74_LD()
     current_instruction_asm = std::format("LD !HL, H");
 }
 
-void Cpu::instruction_75_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_75_LD()
 {
     /*
      * LD [HL], L
@@ -1551,7 +1669,8 @@ void Cpu::instruction_75_LD()
     current_instruction_asm = std::format("LD !HL, L");
 }
 
-void Cpu::instruction_76_HALT()
+template <typename Bus>
+void Cpu<Bus>::instruction_76_HALT()
 {
     /*
      * HALT
@@ -1563,7 +1682,8 @@ void Cpu::instruction_76_HALT()
     current_instruction_asm = std::format("HALT");
 }
 
-void Cpu::instruction_77_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_77_LD()
 {
     /*
      * LD [HL], A
@@ -1574,7 +1694,8 @@ void Cpu::instruction_77_LD()
     current_instruction_asm = std::format("LD !HL, A");
 }
 
-void Cpu::instruction_78_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_78_LD()
 {
     /*
      * LD A, B
@@ -1585,7 +1706,8 @@ void Cpu::instruction_78_LD()
     current_instruction_asm = std::format("LD A, B");
 }
 
-void Cpu::instruction_79_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_79_LD()
 {
     /*
      * LD A, C
@@ -1596,7 +1718,8 @@ void Cpu::instruction_79_LD()
     current_instruction_asm = std::format("LD A, C");
 }
 
-void Cpu::instruction_7A_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_7A_LD()
 {
     /*
      * LD A, D
@@ -1607,7 +1730,8 @@ void Cpu::instruction_7A_LD()
     current_instruction_asm = std::format("LD A, D");
 }
 
-void Cpu::instruction_7B_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_7B_LD()
 {
     /*
      * LD A, E
@@ -1618,7 +1742,8 @@ void Cpu::instruction_7B_LD()
     current_instruction_asm = std::format("LD A, E");
 }
 
-void Cpu::instruction_7C_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_7C_LD()
 {
     /*
      * LD A, H
@@ -1629,7 +1754,8 @@ void Cpu::instruction_7C_LD()
     current_instruction_asm = std::format("LD A, H");
 }
 
-void Cpu::instruction_7D_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_7D_LD()
 {
     /*
      * LD A, L
@@ -1640,7 +1766,8 @@ void Cpu::instruction_7D_LD()
     current_instruction_asm = std::format("LD A, L");
 }
 
-void Cpu::instruction_7E_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_7E_LD()
 {
     /*
      * LD A, [HL]
@@ -1651,7 +1778,8 @@ void Cpu::instruction_7E_LD()
     current_instruction_asm = std::format("LD A, !HL");
 }
 
-void Cpu::instruction_7F_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_7F_LD()
 {
     /*
      * LD A, A
@@ -1661,7 +1789,8 @@ void Cpu::instruction_7F_LD()
     current_instruction_asm = std::format("LD A, A");
 }
 
-void Cpu::instruction_80_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_80_ADD()
 {
     /*
      * ADD A, B
@@ -1681,7 +1810,8 @@ void Cpu::instruction_80_ADD()
     current_instruction_asm = std::format("ADD A, B");
 }
 
-void Cpu::instruction_81_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_81_ADD()
 {
     /*
      * ADD A, C
@@ -1701,7 +1831,8 @@ void Cpu::instruction_81_ADD()
     current_instruction_asm = std::format("ADD A, C");
 }
 
-void Cpu::instruction_82_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_82_ADD()
 {
     /*
      * ADD A, D
@@ -1721,7 +1852,8 @@ void Cpu::instruction_82_ADD()
     current_instruction_asm = std::format("ADD A, D");
 }
 
-void Cpu::instruction_83_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_83_ADD()
 {
     /*
      * ADD A, E
@@ -1741,7 +1873,8 @@ void Cpu::instruction_83_ADD()
     current_instruction_asm = std::format("ADD A, E");
 }
 
-void Cpu::instruction_84_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_84_ADD()
 {
     /*
      * ADD A, H
@@ -1761,7 +1894,8 @@ void Cpu::instruction_84_ADD()
     current_instruction_asm = std::format("ADD A, H");
 }
 
-void Cpu::instruction_85_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_85_ADD()
 {
     /*
      * ADD A, L
@@ -1781,7 +1915,8 @@ void Cpu::instruction_85_ADD()
     current_instruction_asm = std::format("ADD A, L");
 }
 
-void Cpu::instruction_86_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_86_ADD()
 {
     /*
      * ADD A, [HL]
@@ -1801,7 +1936,8 @@ void Cpu::instruction_86_ADD()
     current_instruction_asm = std::format("ADD A, !HL");
 }
 
-void Cpu::instruction_87_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_87_ADD()
 {
     /*
      * ADD A, A
@@ -1821,7 +1957,8 @@ void Cpu::instruction_87_ADD()
     current_instruction_asm = std::format("ADD A, A");
 }
 
-void Cpu::instruction_88_ADC()
+template <typename Bus>
+void Cpu<Bus>::instruction_88_ADC()
 {
     /*
      * ADC A, B
@@ -1841,7 +1978,8 @@ void Cpu::instruction_88_ADC()
     current_instruction_asm = std::format("ADC A, B");
 }
 
-void Cpu::instruction_89_ADC()
+template <typename Bus>
+void Cpu<Bus>::instruction_89_ADC()
 {
     /*
      * ADC A, C
@@ -1861,7 +1999,8 @@ void Cpu::instruction_89_ADC()
     current_instruction_asm = std::format("ADC A, C");
 }
 
-void Cpu::instruction_8A_ADC()
+template <typename Bus>
+void Cpu<Bus>::instruction_8A_ADC()
 {
     /*
      * ADC A, D
@@ -1881,7 +2020,8 @@ void Cpu::instruction_8A_ADC()
     current_instruction_asm = std::format("ADC A, D");
 }
 
-void Cpu::instruction_8B_ADC()
+template <typename Bus>
+void Cpu<Bus>::instruction_8B_ADC()
 {
     /*
      * ADC A, E
@@ -1901,7 +2041,8 @@ void Cpu::instruction_8B_ADC()
     current_instruction_asm = std::format("ADC A, E");
 }
 
-void Cpu::instruction_8C_ADC()
+template <typename Bus>
+void Cpu<Bus>::instruction_8C_ADC()
 {
     /*
      * ADC A, H
@@ -1921,7 +2062,8 @@ void Cpu::instruction_8C_ADC()
     current_instruction_asm = std::format("ADC A, H");
 }
 
-void Cpu::instruction_8D_ADC()
+template <typename Bus>
+void Cpu<Bus>::instruction_8D_ADC()
 {
     /*
      * ADC A, L
@@ -1941,7 +2083,8 @@ void Cpu::instruction_8D_ADC()
     current_instruction_asm = std::format("ADC A, L");
 }
 
-void Cpu::instruction_8E_ADC()
+template <typename Bus>
+void Cpu<Bus>::instruction_8E_ADC()
 {
     /*
      * ADC A, [HL]
@@ -1961,7 +2104,8 @@ void Cpu::instruction_8E_ADC()
     current_instruction_asm = std::format("ADC A, !HL");
 }
 
-void Cpu::instruction_8F_ADC()
+template <typename Bus>
+void Cpu<Bus>::instruction_8F_ADC()
 {
     /*
      * ADC A, A
@@ -1981,7 +2125,8 @@ void Cpu::instruction_8F_ADC()
     current_instruction_asm = std::format("ADC A, A");
 }
 
-void Cpu::instruction_90_SUB()
+template <typename Bus>
+void Cpu<Bus>::instruction_90_SUB()
 {
     /*
      * SUB A, B
@@ -2001,7 +2146,8 @@ void Cpu::instruction_90_SUB()
     current_instruction_asm = std::format("SUB A, B");
 }
 
-void Cpu::instruction_91_SUB()
+template <typename Bus>
+void Cpu<Bus>::instruction_91_SUB()
 {
     /*
      * SUB A, C
@@ -2021,7 +2167,8 @@ void Cpu::instruction_91_SUB()
     current_instruction_asm = std::format("SUB A, C");
 }
 
-void Cpu::instruction_92_SUB()
+template <typename Bus>
+void Cpu<Bus>::instruction_92_SUB()
 {
     /*
      * SUB A, D
@@ -2041,7 +2188,8 @@ void Cpu::instruction_92_SUB()
     current_instruction_asm = std::format("SUB A, D");
 }
 
-void Cpu::instruction_93_SUB()
+template <typename Bus>
+void Cpu<Bus>::instruction_93_SUB()
 {
     /*
      * SUB A, E
@@ -2061,7 +2209,8 @@ void Cpu::instruction_93_SUB()
     current_instruction_asm = std::format("SUB A, E");
 }
 
-void Cpu::instruction_94_SUB()
+template <typename Bus>
+void Cpu<Bus>::instruction_94_SUB()
 {
     /*
      * SUB A, H
@@ -2081,7 +2230,8 @@ void Cpu::instruction_94_SUB()
     current_instruction_asm = std::format("SUB A, H");
 }
 
-void Cpu::instruction_95_SUB()
+template <typename Bus>
+void Cpu<Bus>::instruction_95_SUB()
 {
     /*
      * SUB A, L
@@ -2101,7 +2251,8 @@ void Cpu::instruction_95_SUB()
     current_instruction_asm = std::format("SUB A, L");
 }
 
-void Cpu::instruction_96_SUB()
+template <typename Bus>
+void Cpu<Bus>::instruction_96_SUB()
 {
     /*
      * SUB A, [HL]
@@ -2121,7 +2272,8 @@ void Cpu::instruction_96_SUB()
     current_instruction_asm = std::format("SUB A, !HL");
 }
 
-void Cpu::instruction_97_SUB()
+template <typename Bus>
+void Cpu<Bus>::instruction_97_SUB()
 {
     /*
      * SUB A, A
@@ -2141,7 +2293,8 @@ void Cpu::instruction_97_SUB()
     current_instruction_asm = std::format("SUB A, A");
 }
 
-void Cpu::instruction_98_SBC()
+template <typename Bus>
+void Cpu<Bus>::instruction_98_SBC()
 {
     /*
      * SBC A, B
@@ -2161,7 +2314,8 @@ void Cpu::instruction_98_SBC()
     current_instruction_asm = std::format("SBC A, B");
 }
 
-void Cpu::instruction_99_SBC()
+template <typename Bus>
+void Cpu<Bus>::instruction_99_SBC()
 {
     /*
      * SBC A, C
@@ -2181,7 +2335,8 @@ void Cpu::instruction_99_SBC()
     current_instruction_asm = std::format("SBC A, C");
 }
 
-void Cpu::instruction_9A_SBC()
+template <typename Bus>
+void Cpu<Bus>::instruction_9A_SBC()
 {
     /*
      * SBC A, D
@@ -2201,7 +2356,8 @@ void Cpu::instruction_9A_SBC()
     current_instruction_asm = std::format("SBC A, D");
 }
 
-void Cpu::instruction_9B_SBC()
+template <typename Bus>
+void Cpu<Bus>::instruction_9B_SBC()
 {
     /*
      * SBC A, E
@@ -2221,7 +2377,8 @@ void Cpu::instruction_9B_SBC()
     current_instruction_asm = std::format("SBC A, E");
 }
 
-void Cpu::instruction_9C_SBC()
+template <typename Bus>
+void Cpu<Bus>::instruction_9C_SBC()
 {
     /*
      * SBC A, H
@@ -2241,7 +2398,8 @@ void Cpu::instruction_9C_SBC()
     current_instruction_asm = std::format("SBC A, H");
 }
 
-void Cpu::instruction_9D_SBC()
+template <typename Bus>
+void Cpu<Bus>::instruction_9D_SBC()
 {
     /*
      * SBC A, L
@@ -2261,7 +2419,8 @@ void Cpu::instruction_9D_SBC()
     current_instruction_asm = std::format("SBC A, L");
 }
 
-void Cpu::instruction_9E_SBC()
+template <typename Bus>
+void Cpu<Bus>::instruction_9E_SBC()
 {
     /*
      * SBC A, [HL]
@@ -2281,7 +2440,8 @@ void Cpu::instruction_9E_SBC()
     current_instruction_asm = std::format("SBC A, !HL");
 }
 
-void Cpu::instruction_9F_SBC()
+template <typename Bus>
+void Cpu<Bus>::instruction_9F_SBC()
 {
     /*
      * SBC A, A
@@ -2300,7 +2460,8 @@ void Cpu::instruction_9F_SBC()
     current_instruction_asm = std::format("SBC A, A");
 }
 
-void Cpu::instruction_A0_AND()
+template <typename Bus>
+void Cpu<Bus>::instruction_A0_AND()
 {
     /*
      * AND A, B
@@ -2316,7 +2477,8 @@ void Cpu::instruction_A0_AND()
     current_instruction_asm = std::format("AND A, B");
 }
 
-void Cpu::instruction_A1_AND()
+template <typename Bus>
+void Cpu<Bus>::instruction_A1_AND()
 {
     /*
      * AND A, C
@@ -2332,7 +2494,8 @@ void Cpu::instruction_A1_AND()
     current_instruction_asm = std::format("AND A, C");
 }
 
-void Cpu::instruction_A2_AND()
+template <typename Bus>
+void Cpu<Bus>::instruction_A2_AND()
 {
     /*
      * AND A, D
@@ -2348,7 +2511,8 @@ void Cpu::instruction_A2_AND()
     current_instruction_asm = std::format("AND A, D");
 }
 
-void Cpu::instruction_A3_AND()
+template <typename Bus>
+void Cpu<Bus>::instruction_A3_AND()
 {
     /*
      * AND A, E
@@ -2364,7 +2528,8 @@ void Cpu::instruction_A3_AND()
     current_instruction_asm = std::format("AND A, E");
 }
 
-void Cpu::instruction_A4_AND()
+template <typename Bus>
+void Cpu<Bus>::instruction_A4_AND()
 {
     /*
      * AND A, H
@@ -2380,7 +2545,8 @@ void Cpu::instruction_A4_AND()
     current_instruction_asm = std::format("AND A, H");
 }
 
-void Cpu::instruction_A5_AND()
+template <typename Bus>
+void Cpu<Bus>::instruction_A5_AND()
 {
     /*
      * AND A, L
@@ -2396,7 +2562,8 @@ void Cpu::instruction_A5_AND()
     current_instruction_asm = std::format("AND A, L");
 }
 
-void Cpu::instruction_A6_AND()
+template <typename Bus>
+void Cpu<Bus>::instruction_A6_AND()
 {
     /*
      * AND A, [HL]
@@ -2412,15 +2579,14 @@ void Cpu::instruction_A6_AND()
     current_instruction_asm = std::format("AND A, !HL");
 }
 
-void Cpu::instruction_A7_AND()
+template <typename Bus>
+void Cpu<Bus>::instruction_A7_AND()
 {
     /*
      * AND A, A
      * Flags: Z 0 1 0
      * Cycles: 4
      */
-    A &= A;
-
     set_Z(A == 0);
     set_N(0);
     set_H(1);
@@ -2428,7 +2594,8 @@ void Cpu::instruction_A7_AND()
     current_instruction_asm = std::format("AND A, A");
 }
 
-void Cpu::instruction_A8_XOR()
+template <typename Bus>
+void Cpu<Bus>::instruction_A8_XOR()
 {
     /*
      * XOR A, B
@@ -2444,7 +2611,8 @@ void Cpu::instruction_A8_XOR()
     current_instruction_asm = std::format("XOR A, B");
 }
 
-void Cpu::instruction_A9_XOR()
+template <typename Bus>
+void Cpu<Bus>::instruction_A9_XOR()
 {
     /*
      * XOR A, C
@@ -2460,7 +2628,8 @@ void Cpu::instruction_A9_XOR()
     current_instruction_asm = std::format("XOR A, C");
 }
 
-void Cpu::instruction_AA_XOR()
+template <typename Bus>
+void Cpu<Bus>::instruction_AA_XOR()
 {
     /*
      * XOR A, D
@@ -2476,7 +2645,8 @@ void Cpu::instruction_AA_XOR()
     current_instruction_asm = std::format("XOR A, D");
 }
 
-void Cpu::instruction_AB_XOR()
+template <typename Bus>
+void Cpu<Bus>::instruction_AB_XOR()
 {
     /*
      * XOR A, E
@@ -2492,7 +2662,8 @@ void Cpu::instruction_AB_XOR()
     current_instruction_asm = std::format("XOR A, E");
 }
 
-void Cpu::instruction_AC_XOR()
+template <typename Bus>
+void Cpu<Bus>::instruction_AC_XOR()
 {
     /*
      * XOR A, H
@@ -2508,7 +2679,8 @@ void Cpu::instruction_AC_XOR()
     current_instruction_asm = std::format("XOR A, H");
 }
 
-void Cpu::instruction_AD_XOR()
+template <typename Bus>
+void Cpu<Bus>::instruction_AD_XOR()
 {
     /*
      * XOR A, L
@@ -2524,7 +2696,8 @@ void Cpu::instruction_AD_XOR()
     current_instruction_asm = std::format("XOR A, L");
 }
 
-void Cpu::instruction_AE_XOR()
+template <typename Bus>
+void Cpu<Bus>::instruction_AE_XOR()
 {
     /*
      * XOR A, [HL]
@@ -2540,14 +2713,15 @@ void Cpu::instruction_AE_XOR()
     current_instruction_asm = std::format("XOR A, !HL");
 }
 
-void Cpu::instruction_AF_XOR()
+template <typename Bus>
+void Cpu<Bus>::instruction_AF_XOR()
 {
     /*
      * XOR A, A
      * Flags: 1 0 0 0
      * Cycles: 4
      */
-    A ^= A;
+    A = 0x00;
 
     set_Z(A == 0);
     set_N(0);
@@ -2556,7 +2730,8 @@ void Cpu::instruction_AF_XOR()
     current_instruction_asm = std::format("XOR A, A");
 }
 
-void Cpu::instruction_B0_OR()
+template <typename Bus>
+void Cpu<Bus>::instruction_B0_OR()
 {
     /*
      * OR A, B
@@ -2572,7 +2747,8 @@ void Cpu::instruction_B0_OR()
     current_instruction_asm = std::format("OR A, B");
 }
 
-void Cpu::instruction_B1_OR()
+template <typename Bus>
+void Cpu<Bus>::instruction_B1_OR()
 {
     /*
      * OR A, C
@@ -2588,7 +2764,8 @@ void Cpu::instruction_B1_OR()
     current_instruction_asm = std::format("OR A, C");
 }
 
-void Cpu::instruction_B2_OR()
+template <typename Bus>
+void Cpu<Bus>::instruction_B2_OR()
 {
     /*
      * OR A, D
@@ -2604,7 +2781,8 @@ void Cpu::instruction_B2_OR()
     current_instruction_asm = std::format("OR A, D");
 }
 
-void Cpu::instruction_B3_OR()
+template <typename Bus>
+void Cpu<Bus>::instruction_B3_OR()
 {
     /*
      * OR A, E
@@ -2620,7 +2798,8 @@ void Cpu::instruction_B3_OR()
     current_instruction_asm = std::format("OR A, E");
 }
 
-void Cpu::instruction_B4_OR()
+template <typename Bus>
+void Cpu<Bus>::instruction_B4_OR()
 {
     /*
      * OR A, H
@@ -2636,7 +2815,8 @@ void Cpu::instruction_B4_OR()
     current_instruction_asm = std::format("OR A, H");
 }
 
-void Cpu::instruction_B5_OR()
+template <typename Bus>
+void Cpu<Bus>::instruction_B5_OR()
 {
     /*
      * OR A, L
@@ -2652,7 +2832,8 @@ void Cpu::instruction_B5_OR()
     current_instruction_asm = std::format("OR A, L");
 }
 
-void Cpu::instruction_B6_OR()
+template <typename Bus>
+void Cpu<Bus>::instruction_B6_OR()
 {
     /*
      * OR A, [HL]
@@ -2668,15 +2849,14 @@ void Cpu::instruction_B6_OR()
     current_instruction_asm = std::format("OR A, !HL");
 }
 
-void Cpu::instruction_B7_OR()
+template <typename Bus>
+void Cpu<Bus>::instruction_B7_OR()
 {
     /*
      * OR A, A
      * Flags: Z 0 0 0
      * Cycles: 4
      */
-    A |= A;
-
     set_Z(A == 0);
     set_N(0);
     set_H(0);
@@ -2684,7 +2864,8 @@ void Cpu::instruction_B7_OR()
     current_instruction_asm = std::format("OR A, A");
 }
 
-void Cpu::instruction_B8_CP()
+template <typename Bus>
+void Cpu<Bus>::instruction_B8_CP()
 {
     /*
      * CP A, B
@@ -2701,7 +2882,8 @@ void Cpu::instruction_B8_CP()
     current_instruction_asm = std::format("CP A, B");
 }
 
-void Cpu::instruction_B9_CP()
+template <typename Bus>
+void Cpu<Bus>::instruction_B9_CP()
 {
     /*
      * CP A, C
@@ -2718,7 +2900,8 @@ void Cpu::instruction_B9_CP()
     current_instruction_asm = std::format("CP A, C");
 }
 
-void Cpu::instruction_BA_CP()
+template <typename Bus>
+void Cpu<Bus>::instruction_BA_CP()
 {
     /*
      * CP A, D
@@ -2735,7 +2918,8 @@ void Cpu::instruction_BA_CP()
     current_instruction_asm = std::format("CP A, D");
 }
 
-void Cpu::instruction_BB_CP()
+template <typename Bus>
+void Cpu<Bus>::instruction_BB_CP()
 {
     /*
      * CP A, E
@@ -2752,7 +2936,8 @@ void Cpu::instruction_BB_CP()
     current_instruction_asm = std::format("CP A, E");
 }
 
-void Cpu::instruction_BC_CP()
+template <typename Bus>
+void Cpu<Bus>::instruction_BC_CP()
 {
     /*
      * CP A, H
@@ -2769,7 +2954,8 @@ void Cpu::instruction_BC_CP()
     current_instruction_asm = std::format("CP A, H");
 }
 
-void Cpu::instruction_BD_CP()
+template <typename Bus>
+void Cpu<Bus>::instruction_BD_CP()
 {
     /*
      * CP A, L
@@ -2786,7 +2972,8 @@ void Cpu::instruction_BD_CP()
     current_instruction_asm = std::format("CP A, L");
 }
 
-void Cpu::instruction_BE_CP()
+template <typename Bus>
+void Cpu<Bus>::instruction_BE_CP()
 {
     /*
      * CP A, [HL]
@@ -2803,7 +2990,8 @@ void Cpu::instruction_BE_CP()
     current_instruction_asm = std::format("CP A, !HL");
 }
 
-void Cpu::instruction_BF_CP()
+template <typename Bus>
+void Cpu<Bus>::instruction_BF_CP()
 {
     /*
      * CP A, A
@@ -2817,7 +3005,8 @@ void Cpu::instruction_BF_CP()
     current_instruction_asm = std::format("CP A, A");
 }
 
-void Cpu::instruction_C0_RET()
+template <typename Bus>
+void Cpu<Bus>::instruction_C0_RET()
 {
     /*
      * RET NZ
@@ -2833,7 +3022,8 @@ void Cpu::instruction_C0_RET()
     current_instruction_asm = std::format("RET NZ");
 }
 
-void Cpu::instruction_C1_POP()
+template <typename Bus>
+void Cpu<Bus>::instruction_C1_POP()
 {
     /*
      * POP BC
@@ -2845,7 +3035,8 @@ void Cpu::instruction_C1_POP()
     current_instruction_asm = std::format("POP BC");
 }
 
-void Cpu::instruction_C2_JP()
+template <typename Bus>
+void Cpu<Bus>::instruction_C2_JP()
 {
     /*
      * JP NZ, a16
@@ -2863,7 +3054,8 @@ void Cpu::instruction_C2_JP()
     current_instruction_asm = std::format("JP NZ, {:04X}", a16);
 }
 
-void Cpu::instruction_C3_JP()
+template <typename Bus>
+void Cpu<Bus>::instruction_C3_JP()
 {
     /*
      * JP a16
@@ -2876,7 +3068,8 @@ void Cpu::instruction_C3_JP()
     current_instruction_asm = std::format("JP {:04X}", a16);
 }
 
-void Cpu::instruction_C4_CALL()
+template <typename Bus>
+void Cpu<Bus>::instruction_C4_CALL()
 {
     /*
      * CALL NZ, a16
@@ -2895,7 +3088,8 @@ void Cpu::instruction_C4_CALL()
     current_instruction_asm = std::format("CALL NZ, {:04X}", a16);
 }
 
-void Cpu::instruction_C5_PUSH()
+template <typename Bus>
+void Cpu<Bus>::instruction_C5_PUSH()
 {
     /*
      * PUSH BC
@@ -2907,7 +3101,8 @@ void Cpu::instruction_C5_PUSH()
     current_instruction_asm = std::format("PUSH BC");
 }
 
-void Cpu::instruction_C6_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_C6_ADD()
 {
     /*
      * ADD A, n8
@@ -2927,7 +3122,8 @@ void Cpu::instruction_C6_ADD()
     current_instruction_asm = std::format("ADD A, {:02X}", n8);
 }
 
-void Cpu::instruction_C7_RST()
+template <typename Bus>
+void Cpu<Bus>::instruction_C7_RST()
 {
     /*
      * RST $00
@@ -2940,7 +3136,8 @@ void Cpu::instruction_C7_RST()
     current_instruction_asm = std::format("RST 00");
 }
 
-void Cpu::instruction_C8_RET()
+template <typename Bus>
+void Cpu<Bus>::instruction_C8_RET()
 {
     /*
      * RET Z
@@ -2956,7 +3153,8 @@ void Cpu::instruction_C8_RET()
     current_instruction_asm = std::format("RET Z");
 }
 
-void Cpu::instruction_C9_RET()
+template <typename Bus>
+void Cpu<Bus>::instruction_C9_RET()
 {
     /*
      * RET
@@ -2968,7 +3166,8 @@ void Cpu::instruction_C9_RET()
     current_instruction_asm = std::format("RET ");
 }
 
-void Cpu::instruction_CA_JP()
+template <typename Bus>
+void Cpu<Bus>::instruction_CA_JP()
 {
     /*
      * JP Z, a16
@@ -2986,7 +3185,8 @@ void Cpu::instruction_CA_JP()
     current_instruction_asm = std::format("JP Z, {:04X}", a16);
 }
 
-void Cpu::instruction_CC_CALL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CC_CALL()
 {
     /*
      * CALL Z, a16
@@ -3005,7 +3205,8 @@ void Cpu::instruction_CC_CALL()
     current_instruction_asm = std::format("CALL Z, {:04X}", a16);
 }
 
-void Cpu::instruction_CD_CALL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CD_CALL()
 {
     /*
      * CALL a16
@@ -3019,7 +3220,8 @@ void Cpu::instruction_CD_CALL()
     current_instruction_asm = std::format("CALL {:04X}", a16);
 }
 
-void Cpu::instruction_CE_ADC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CE_ADC()
 {
     /*
      * ADC A, n8
@@ -3039,7 +3241,8 @@ void Cpu::instruction_CE_ADC()
     current_instruction_asm = std::format("ADC A, {:02X}", n8);
 }
 
-void Cpu::instruction_CF_RST()
+template <typename Bus>
+void Cpu<Bus>::instruction_CF_RST()
 {
     /*
      * RST $08
@@ -3052,7 +3255,8 @@ void Cpu::instruction_CF_RST()
     current_instruction_asm = std::format("RST 08");
 }
 
-void Cpu::instruction_D0_RET()
+template <typename Bus>
+void Cpu<Bus>::instruction_D0_RET()
 {
     /*
      * RET NC
@@ -3068,7 +3272,8 @@ void Cpu::instruction_D0_RET()
     current_instruction_asm = std::format("RET NC");
 }
 
-void Cpu::instruction_D1_POP()
+template <typename Bus>
+void Cpu<Bus>::instruction_D1_POP()
 {
     /*
      * POP DE
@@ -3080,7 +3285,8 @@ void Cpu::instruction_D1_POP()
     current_instruction_asm = std::format("POP DE");
 }
 
-void Cpu::instruction_D2_JP()
+template <typename Bus>
+void Cpu<Bus>::instruction_D2_JP()
 {
     /*
      * JP NC, a16
@@ -3098,7 +3304,8 @@ void Cpu::instruction_D2_JP()
     current_instruction_asm = std::format("JP NC, {:04X}", a16);
 }
 
-void Cpu::instruction_D4_CALL()
+template <typename Bus>
+void Cpu<Bus>::instruction_D4_CALL()
 {
     /*
      * CALL NC, a16
@@ -3117,7 +3324,8 @@ void Cpu::instruction_D4_CALL()
     current_instruction_asm = std::format("CALL NC, {:04X}", a16);
 }
 
-void Cpu::instruction_D5_PUSH()
+template <typename Bus>
+void Cpu<Bus>::instruction_D5_PUSH()
 {
     /*
      * PUSH DE
@@ -3129,7 +3337,8 @@ void Cpu::instruction_D5_PUSH()
     current_instruction_asm = std::format("PUSH DE");
 }
 
-void Cpu::instruction_D6_SUB()
+template <typename Bus>
+void Cpu<Bus>::instruction_D6_SUB()
 {
     /*
      * SUB A, n8
@@ -3149,7 +3358,8 @@ void Cpu::instruction_D6_SUB()
     current_instruction_asm = std::format("SUB A, n8");
 }
 
-void Cpu::instruction_D7_RST()
+template <typename Bus>
+void Cpu<Bus>::instruction_D7_RST()
 {
     /*
      * RST $10
@@ -3162,7 +3372,8 @@ void Cpu::instruction_D7_RST()
     current_instruction_asm = std::format("RST 10");
 }
 
-void Cpu::instruction_D8_RET()
+template <typename Bus>
+void Cpu<Bus>::instruction_D8_RET()
 {
     /*
      * RET C
@@ -3178,7 +3389,8 @@ void Cpu::instruction_D8_RET()
     current_instruction_asm = std::format("RET C");
 }
 
-void Cpu::instruction_D9_RETI()
+template <typename Bus>
+void Cpu<Bus>::instruction_D9_RETI()
 {
     /*
      * RETI
@@ -3191,7 +3403,8 @@ void Cpu::instruction_D9_RETI()
     current_instruction_asm = std::format("RETI ");
 }
 
-void Cpu::instruction_DA_JP()
+template <typename Bus>
+void Cpu<Bus>::instruction_DA_JP()
 {
     /*
      * JP C, a16
@@ -3209,7 +3422,8 @@ void Cpu::instruction_DA_JP()
     current_instruction_asm = std::format("JP C, {:04X}", a16);
 }
 
-void Cpu::instruction_DC_CALL()
+template <typename Bus>
+void Cpu<Bus>::instruction_DC_CALL()
 {
     /*
      * CALL C, a16
@@ -3228,7 +3442,8 @@ void Cpu::instruction_DC_CALL()
     current_instruction_asm = std::format("CALL C, {:04X}", a16);
 }
 
-void Cpu::instruction_DE_SBC()
+template <typename Bus>
+void Cpu<Bus>::instruction_DE_SBC()
 {
     /*
      * SBC A, n8
@@ -3248,7 +3463,8 @@ void Cpu::instruction_DE_SBC()
     current_instruction_asm = std::format("SBC A, {:02X}", n8);
 }
 
-void Cpu::instruction_DF_RST()
+template <typename Bus>
+void Cpu<Bus>::instruction_DF_RST()
 {
     /*
      * RST $18
@@ -3261,7 +3477,8 @@ void Cpu::instruction_DF_RST()
     current_instruction_asm = std::format("RST 18");
 }
 
-void Cpu::instruction_E0_LDH()
+template <typename Bus>
+void Cpu<Bus>::instruction_E0_LDH()
 {
     /*
      * LDH [a8], A
@@ -3274,7 +3491,8 @@ void Cpu::instruction_E0_LDH()
     current_instruction_asm = std::format("LDH !{:02X}, A", a8);
 }
 
-void Cpu::instruction_E1_POP()
+template <typename Bus>
+void Cpu<Bus>::instruction_E1_POP()
 {
     /*
      * POP HL
@@ -3286,7 +3504,8 @@ void Cpu::instruction_E1_POP()
     current_instruction_asm = std::format("POP HL");
 }
 
-void Cpu::instruction_E2_LDH()
+template <typename Bus>
+void Cpu<Bus>::instruction_E2_LDH()
 {
     /*
      * LDH [C], A
@@ -3298,7 +3517,8 @@ void Cpu::instruction_E2_LDH()
     current_instruction_asm = std::format("LDH !C, A");
 }
 
-void Cpu::instruction_E5_PUSH()
+template <typename Bus>
+void Cpu<Bus>::instruction_E5_PUSH()
 {
     /*
      * PUSH HL
@@ -3310,7 +3530,8 @@ void Cpu::instruction_E5_PUSH()
     current_instruction_asm = std::format("PUSH HL");
 }
 
-void Cpu::instruction_E6_AND()
+template <typename Bus>
+void Cpu<Bus>::instruction_E6_AND()
 {
     /*
      * AND A, n8
@@ -3327,7 +3548,8 @@ void Cpu::instruction_E6_AND()
     current_instruction_asm = std::format("AND A, {:02X}", n8);
 }
 
-void Cpu::instruction_E7_RST()
+template <typename Bus>
+void Cpu<Bus>::instruction_E7_RST()
 {
     /*
      * RST $20
@@ -3340,7 +3562,8 @@ void Cpu::instruction_E7_RST()
     current_instruction_asm = std::format("RST 20");
 }
 
-void Cpu::instruction_E8_ADD()
+template <typename Bus>
+void Cpu<Bus>::instruction_E8_ADD()
 {
     /*
      * ADD SP, e8
@@ -3359,7 +3582,8 @@ void Cpu::instruction_E8_ADD()
     current_instruction_asm = std::format("ADD SP, {:02X}", e8);
 }
 
-void Cpu::instruction_E9_JP()
+template <typename Bus>
+void Cpu<Bus>::instruction_E9_JP()
 {
     /*
      * JP HL
@@ -3371,7 +3595,8 @@ void Cpu::instruction_E9_JP()
     current_instruction_asm = std::format("JP HL");
 }
 
-void Cpu::instruction_EA_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_EA_LD()
 {
     /*
      * LD [a16], A
@@ -3384,7 +3609,8 @@ void Cpu::instruction_EA_LD()
     current_instruction_asm = std::format("LD !{:04X}, A", a16);
 }
 
-void Cpu::instruction_EE_XOR()
+template <typename Bus>
+void Cpu<Bus>::instruction_EE_XOR()
 {
     /*
      * XOR A, n8
@@ -3401,7 +3627,8 @@ void Cpu::instruction_EE_XOR()
     current_instruction_asm = std::format("XOR A, {:02X}", n8);
 }
 
-void Cpu::instruction_EF_RST()
+template <typename Bus>
+void Cpu<Bus>::instruction_EF_RST()
 {
     /*
      * RST $28
@@ -3414,7 +3641,8 @@ void Cpu::instruction_EF_RST()
     current_instruction_asm = std::format("RST 28");
 }
 
-void Cpu::instruction_F0_LDH()
+template <typename Bus>
+void Cpu<Bus>::instruction_F0_LDH()
 {
     /*
      * LDH A, [a8]
@@ -3427,7 +3655,8 @@ void Cpu::instruction_F0_LDH()
     current_instruction_asm = std::format("LDH A, !{:02X}", a8);
 }
 
-void Cpu::instruction_F1_POP()
+template <typename Bus>
+void Cpu<Bus>::instruction_F1_POP()
 {
     /*
      * POP AF
@@ -3439,7 +3668,8 @@ void Cpu::instruction_F1_POP()
     current_instruction_asm = std::format("POP AF");
 }
 
-void Cpu::instruction_F2_LDH()
+template <typename Bus>
+void Cpu<Bus>::instruction_F2_LDH()
 {
     /*
      * LDH A, [C]
@@ -3451,7 +3681,8 @@ void Cpu::instruction_F2_LDH()
     current_instruction_asm = std::format("LDH A, !C");
 }
 
-void Cpu::instruction_F3_DI()
+template <typename Bus>
+void Cpu<Bus>::instruction_F3_DI()
 {
     /*
      * DI
@@ -3463,7 +3694,8 @@ void Cpu::instruction_F3_DI()
     current_instruction_asm = std::format("DI ");
 }
 
-void Cpu::instruction_F5_PUSH()
+template <typename Bus>
+void Cpu<Bus>::instruction_F5_PUSH()
 {
     /*
      * PUSH AF
@@ -3475,7 +3707,8 @@ void Cpu::instruction_F5_PUSH()
     current_instruction_asm = std::format("PUSH AF");
 }
 
-void Cpu::instruction_F6_OR()
+template <typename Bus>
+void Cpu<Bus>::instruction_F6_OR()
 {
     /*
      * OR A, n8
@@ -3492,7 +3725,8 @@ void Cpu::instruction_F6_OR()
     current_instruction_asm = std::format("OR A, {:02X}", n8);
 }
 
-void Cpu::instruction_F7_RST()
+template <typename Bus>
+void Cpu<Bus>::instruction_F7_RST()
 {
     /*
      * RST $30
@@ -3505,7 +3739,8 @@ void Cpu::instruction_F7_RST()
     current_instruction_asm = std::format("RST 30");
 }
 
-void Cpu::instruction_F8_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_F8_LD()
 {
     /*
      * LD HL, SP, e8
@@ -3524,7 +3759,8 @@ void Cpu::instruction_F8_LD()
     current_instruction_asm = std::format("LD HL, SP, {:02X}", e8);
 }
 
-void Cpu::instruction_F9_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_F9_LD()
 {
     /*
      * LD SP, HL
@@ -3536,7 +3772,8 @@ void Cpu::instruction_F9_LD()
     current_instruction_asm = std::format("LD SP, HL");
 }
 
-void Cpu::instruction_FA_LD()
+template <typename Bus>
+void Cpu<Bus>::instruction_FA_LD()
 {
     /*
      * LD A, [a16]
@@ -3549,7 +3786,8 @@ void Cpu::instruction_FA_LD()
     current_instruction_asm = std::format("LD A, !{:04X}", a16);
 }
 
-void Cpu::instruction_FB_EI()
+template <typename Bus>
+void Cpu<Bus>::instruction_FB_EI()
 {
     /*
      * EI
@@ -3561,7 +3799,8 @@ void Cpu::instruction_FB_EI()
     current_instruction_asm = std::format("EI ");
 }
 
-void Cpu::instruction_FE_CP()
+template <typename Bus>
+void Cpu<Bus>::instruction_FE_CP()
 {
     /*
      * CP A, n8
@@ -3578,7 +3817,8 @@ void Cpu::instruction_FE_CP()
     current_instruction_asm = std::format("CP A, {:02X}", n8);
 }
 
-void Cpu::instruction_FF_RST()
+template <typename Bus>
+void Cpu<Bus>::instruction_FF_RST()
 {
     /*
      * RST $38
@@ -3596,8 +3836,8 @@ void Cpu::instruction_FF_RST()
  * CB-Prefixed Instructions
  * ============================================================================
  */
-
-void Cpu::instruction_CB_00_RLC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_00_RLC()
 {
     /*
      * RLC B
@@ -3614,7 +3854,8 @@ void Cpu::instruction_CB_00_RLC()
     current_instruction_asm = std::format("RLC B");
 }
 
-void Cpu::instruction_CB_01_RLC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_01_RLC()
 {
     /*
      * RLC C
@@ -3631,7 +3872,8 @@ void Cpu::instruction_CB_01_RLC()
     current_instruction_asm = std::format("RLC C");
 }
 
-void Cpu::instruction_CB_02_RLC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_02_RLC()
 {
     /*
      * RLC D
@@ -3648,7 +3890,8 @@ void Cpu::instruction_CB_02_RLC()
     current_instruction_asm = std::format("RLC D");
 }
 
-void Cpu::instruction_CB_03_RLC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_03_RLC()
 {
     /*
      * RLC E
@@ -3665,7 +3908,8 @@ void Cpu::instruction_CB_03_RLC()
     current_instruction_asm = std::format("RLC E");
 }
 
-void Cpu::instruction_CB_04_RLC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_04_RLC()
 {
     /*
      * RLC H
@@ -3682,7 +3926,8 @@ void Cpu::instruction_CB_04_RLC()
     current_instruction_asm = std::format("RLC H");
 }
 
-void Cpu::instruction_CB_05_RLC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_05_RLC()
 {
     /*
      * RLC L
@@ -3699,7 +3944,8 @@ void Cpu::instruction_CB_05_RLC()
     current_instruction_asm = std::format("RLC L");
 }
 
-void Cpu::instruction_CB_06_RLC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_06_RLC()
 {
     /*
      * RLC [HL]
@@ -3718,7 +3964,8 @@ void Cpu::instruction_CB_06_RLC()
     current_instruction_asm = std::format("RLC !HL");
 }
 
-void Cpu::instruction_CB_07_RLC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_07_RLC()
 {
     /*
      * RLC A
@@ -3735,7 +3982,8 @@ void Cpu::instruction_CB_07_RLC()
     current_instruction_asm = std::format("RLC A");
 }
 
-void Cpu::instruction_CB_08_RRC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_08_RRC()
 {
     /*
      * RRC B
@@ -3752,7 +4000,8 @@ void Cpu::instruction_CB_08_RRC()
     current_instruction_asm = std::format("RRC B");
 }
 
-void Cpu::instruction_CB_09_RRC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_09_RRC()
 {
     /*
      * RRC C
@@ -3769,7 +4018,8 @@ void Cpu::instruction_CB_09_RRC()
     current_instruction_asm = std::format("RRC C");
 }
 
-void Cpu::instruction_CB_0A_RRC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_0A_RRC()
 {
     /*
      * RRC D
@@ -3786,7 +4036,8 @@ void Cpu::instruction_CB_0A_RRC()
     current_instruction_asm = std::format("RRC D");
 }
 
-void Cpu::instruction_CB_0B_RRC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_0B_RRC()
 {
     /*
      * RRC E
@@ -3803,7 +4054,8 @@ void Cpu::instruction_CB_0B_RRC()
     current_instruction_asm = std::format("RRC E");
 }
 
-void Cpu::instruction_CB_0C_RRC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_0C_RRC()
 {
     /*
      * RRC H
@@ -3820,7 +4072,8 @@ void Cpu::instruction_CB_0C_RRC()
     current_instruction_asm = std::format("RRC H");
 }
 
-void Cpu::instruction_CB_0D_RRC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_0D_RRC()
 {
     /*
      * RRC L
@@ -3837,7 +4090,8 @@ void Cpu::instruction_CB_0D_RRC()
     current_instruction_asm = std::format("RRC L");
 }
 
-void Cpu::instruction_CB_0E_RRC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_0E_RRC()
 {
     /*
      * RRC [HL]
@@ -3856,7 +4110,8 @@ void Cpu::instruction_CB_0E_RRC()
     current_instruction_asm = std::format("RRC !HL");
 }
 
-void Cpu::instruction_CB_0F_RRC()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_0F_RRC()
 {
     /*
      * RRC A
@@ -3873,7 +4128,8 @@ void Cpu::instruction_CB_0F_RRC()
     current_instruction_asm = std::format("RRC A");
 }
 
-void Cpu::instruction_CB_10_RL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_10_RL()
 {
     /*
      * RL B
@@ -3890,7 +4146,8 @@ void Cpu::instruction_CB_10_RL()
     current_instruction_asm = std::format("RL B");
 }
 
-void Cpu::instruction_CB_11_RL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_11_RL()
 {
     /*
      * RL C
@@ -3907,7 +4164,8 @@ void Cpu::instruction_CB_11_RL()
     current_instruction_asm = std::format("RL C");
 }
 
-void Cpu::instruction_CB_12_RL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_12_RL()
 {
     /*
      * RL D
@@ -3924,7 +4182,8 @@ void Cpu::instruction_CB_12_RL()
     current_instruction_asm = std::format("RL D");
 }
 
-void Cpu::instruction_CB_13_RL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_13_RL()
 {
     /*
      * RL E
@@ -3941,7 +4200,8 @@ void Cpu::instruction_CB_13_RL()
     current_instruction_asm = std::format("RL E");
 }
 
-void Cpu::instruction_CB_14_RL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_14_RL()
 {
     /*
      * RL H
@@ -3958,7 +4218,8 @@ void Cpu::instruction_CB_14_RL()
     current_instruction_asm = std::format("RL H");
 }
 
-void Cpu::instruction_CB_15_RL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_15_RL()
 {
     /*
      * RL L
@@ -3975,7 +4236,8 @@ void Cpu::instruction_CB_15_RL()
     current_instruction_asm = std::format("RL L");
 }
 
-void Cpu::instruction_CB_16_RL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_16_RL()
 {
     /*
      * RL [HL]
@@ -3994,7 +4256,8 @@ void Cpu::instruction_CB_16_RL()
     current_instruction_asm = std::format("RL !HL");
 }
 
-void Cpu::instruction_CB_17_RL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_17_RL()
 {
     /*
      * RL A
@@ -4011,7 +4274,8 @@ void Cpu::instruction_CB_17_RL()
     current_instruction_asm = std::format("RL A");
 }
 
-void Cpu::instruction_CB_18_RR()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_18_RR()
 {
     /*
      * RR B
@@ -4028,7 +4292,8 @@ void Cpu::instruction_CB_18_RR()
     current_instruction_asm = std::format("RR B");
 }
 
-void Cpu::instruction_CB_19_RR()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_19_RR()
 {
     /*
      * RR C
@@ -4045,7 +4310,8 @@ void Cpu::instruction_CB_19_RR()
     current_instruction_asm = std::format("RR C");
 }
 
-void Cpu::instruction_CB_1A_RR()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_1A_RR()
 {
     /*
      * RR D
@@ -4062,7 +4328,8 @@ void Cpu::instruction_CB_1A_RR()
     current_instruction_asm = std::format("RR D");
 }
 
-void Cpu::instruction_CB_1B_RR()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_1B_RR()
 {
     /*
      * RR E
@@ -4079,7 +4346,8 @@ void Cpu::instruction_CB_1B_RR()
     current_instruction_asm = std::format("RR E");
 }
 
-void Cpu::instruction_CB_1C_RR()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_1C_RR()
 {
     /*
      * RR H
@@ -4096,7 +4364,8 @@ void Cpu::instruction_CB_1C_RR()
     current_instruction_asm = std::format("RR H");
 }
 
-void Cpu::instruction_CB_1D_RR()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_1D_RR()
 {
     /*
      * RR L
@@ -4113,7 +4382,8 @@ void Cpu::instruction_CB_1D_RR()
     current_instruction_asm = std::format("RR L");
 }
 
-void Cpu::instruction_CB_1E_RR()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_1E_RR()
 {
     /*
      * RR [HL]
@@ -4132,7 +4402,8 @@ void Cpu::instruction_CB_1E_RR()
     current_instruction_asm = std::format("RR !HL");
 }
 
-void Cpu::instruction_CB_1F_RR()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_1F_RR()
 {
     /*
      * RR A
@@ -4149,7 +4420,8 @@ void Cpu::instruction_CB_1F_RR()
     current_instruction_asm = std::format("RR A");
 }
 
-void Cpu::instruction_CB_20_SLA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_20_SLA()
 {
     /*
      * SLA B
@@ -4166,7 +4438,8 @@ void Cpu::instruction_CB_20_SLA()
     current_instruction_asm = std::format("SLA B");
 }
 
-void Cpu::instruction_CB_21_SLA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_21_SLA()
 {
     /*
      * SLA C
@@ -4183,7 +4456,8 @@ void Cpu::instruction_CB_21_SLA()
     current_instruction_asm = std::format("SLA C");
 }
 
-void Cpu::instruction_CB_22_SLA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_22_SLA()
 {
     /*
      * SLA D
@@ -4200,7 +4474,8 @@ void Cpu::instruction_CB_22_SLA()
     current_instruction_asm = std::format("SLA D");
 }
 
-void Cpu::instruction_CB_23_SLA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_23_SLA()
 {
     /*
      * SLA E
@@ -4217,7 +4492,8 @@ void Cpu::instruction_CB_23_SLA()
     current_instruction_asm = std::format("SLA E");
 }
 
-void Cpu::instruction_CB_24_SLA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_24_SLA()
 {
     /*
      * SLA H
@@ -4234,7 +4510,8 @@ void Cpu::instruction_CB_24_SLA()
     current_instruction_asm = std::format("SLA H");
 }
 
-void Cpu::instruction_CB_25_SLA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_25_SLA()
 {
     /*
      * SLA L
@@ -4251,7 +4528,8 @@ void Cpu::instruction_CB_25_SLA()
     current_instruction_asm = std::format("SLA L");
 }
 
-void Cpu::instruction_CB_26_SLA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_26_SLA()
 {
     /*
      * SLA [HL]
@@ -4270,7 +4548,8 @@ void Cpu::instruction_CB_26_SLA()
     current_instruction_asm = std::format("SLA !HL");
 }
 
-void Cpu::instruction_CB_27_SLA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_27_SLA()
 {
     /*
      * SLA A
@@ -4287,7 +4566,8 @@ void Cpu::instruction_CB_27_SLA()
     current_instruction_asm = std::format("SLA A");
 }
 
-void Cpu::instruction_CB_28_SRA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_28_SRA()
 {
     /*
      * SRA B
@@ -4304,7 +4584,8 @@ void Cpu::instruction_CB_28_SRA()
     current_instruction_asm = std::format("SRA B");
 }
 
-void Cpu::instruction_CB_29_SRA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_29_SRA()
 {
     /*
      * SRA C
@@ -4321,7 +4602,8 @@ void Cpu::instruction_CB_29_SRA()
     current_instruction_asm = std::format("SRA C");
 }
 
-void Cpu::instruction_CB_2A_SRA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_2A_SRA()
 {
     /*
      * SRA D
@@ -4338,7 +4620,8 @@ void Cpu::instruction_CB_2A_SRA()
     current_instruction_asm = std::format("SRA D");
 }
 
-void Cpu::instruction_CB_2B_SRA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_2B_SRA()
 {
     /*
      * SRA E
@@ -4355,7 +4638,8 @@ void Cpu::instruction_CB_2B_SRA()
     current_instruction_asm = std::format("SRA E");
 }
 
-void Cpu::instruction_CB_2C_SRA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_2C_SRA()
 {
     /*
      * SRA H
@@ -4372,7 +4656,8 @@ void Cpu::instruction_CB_2C_SRA()
     current_instruction_asm = std::format("SRA H");
 }
 
-void Cpu::instruction_CB_2D_SRA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_2D_SRA()
 {
     /*
      * SRA L
@@ -4389,7 +4674,8 @@ void Cpu::instruction_CB_2D_SRA()
     current_instruction_asm = std::format("SRA L");
 }
 
-void Cpu::instruction_CB_2E_SRA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_2E_SRA()
 {
     /*
      * SRA [HL]
@@ -4408,7 +4694,8 @@ void Cpu::instruction_CB_2E_SRA()
     current_instruction_asm = std::format("SRA !HL");
 }
 
-void Cpu::instruction_CB_2F_SRA()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_2F_SRA()
 {
     /*
      * SRA A
@@ -4425,7 +4712,8 @@ void Cpu::instruction_CB_2F_SRA()
     current_instruction_asm = std::format("SRA A");
 }
 
-void Cpu::instruction_CB_30_SWAP()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_30_SWAP()
 {
     /*
      * SWAP B
@@ -4441,7 +4729,8 @@ void Cpu::instruction_CB_30_SWAP()
     current_instruction_asm = std::format("SWAP B");
 }
 
-void Cpu::instruction_CB_31_SWAP()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_31_SWAP()
 {
     /*
      * SWAP C
@@ -4457,7 +4746,8 @@ void Cpu::instruction_CB_31_SWAP()
     current_instruction_asm = std::format("SWAP C");
 }
 
-void Cpu::instruction_CB_32_SWAP()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_32_SWAP()
 {
     /*
      * SWAP D
@@ -4473,7 +4763,8 @@ void Cpu::instruction_CB_32_SWAP()
     current_instruction_asm = std::format("SWAP D");
 }
 
-void Cpu::instruction_CB_33_SWAP()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_33_SWAP()
 {
     /*
      * SWAP E
@@ -4489,7 +4780,8 @@ void Cpu::instruction_CB_33_SWAP()
     current_instruction_asm = std::format("SWAP E");
 }
 
-void Cpu::instruction_CB_34_SWAP()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_34_SWAP()
 {
     /*
      * SWAP H
@@ -4505,7 +4797,8 @@ void Cpu::instruction_CB_34_SWAP()
     current_instruction_asm = std::format("SWAP H");
 }
 
-void Cpu::instruction_CB_35_SWAP()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_35_SWAP()
 {
     /*
      * SWAP L
@@ -4521,7 +4814,8 @@ void Cpu::instruction_CB_35_SWAP()
     current_instruction_asm = std::format("SWAP L");
 }
 
-void Cpu::instruction_CB_36_SWAP()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_36_SWAP()
 {
     /*
      * SWAP [HL]
@@ -4539,7 +4833,8 @@ void Cpu::instruction_CB_36_SWAP()
     current_instruction_asm = std::format("SWAP !HL");
 }
 
-void Cpu::instruction_CB_37_SWAP()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_37_SWAP()
 {
     /*
      * SWAP A
@@ -4555,7 +4850,8 @@ void Cpu::instruction_CB_37_SWAP()
     current_instruction_asm = std::format("SWAP A");
 }
 
-void Cpu::instruction_CB_38_SRL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_38_SRL()
 {
     /*
      * SRL B
@@ -4572,7 +4868,8 @@ void Cpu::instruction_CB_38_SRL()
     current_instruction_asm = std::format("SRL B");
 }
 
-void Cpu::instruction_CB_39_SRL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_39_SRL()
 {
     /*
      * SRL C
@@ -4589,7 +4886,8 @@ void Cpu::instruction_CB_39_SRL()
     current_instruction_asm = std::format("SRL C");
 }
 
-void Cpu::instruction_CB_3A_SRL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_3A_SRL()
 {
     /*
      * SRL D
@@ -4606,7 +4904,8 @@ void Cpu::instruction_CB_3A_SRL()
     current_instruction_asm = std::format("SRL D");
 }
 
-void Cpu::instruction_CB_3B_SRL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_3B_SRL()
 {
     /*
      * SRL E
@@ -4623,7 +4922,8 @@ void Cpu::instruction_CB_3B_SRL()
     current_instruction_asm = std::format("SRL E");
 }
 
-void Cpu::instruction_CB_3C_SRL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_3C_SRL()
 {
     /*
      * SRL H
@@ -4640,7 +4940,8 @@ void Cpu::instruction_CB_3C_SRL()
     current_instruction_asm = std::format("SRL H");
 }
 
-void Cpu::instruction_CB_3D_SRL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_3D_SRL()
 {
     /*
      * SRL L
@@ -4657,7 +4958,8 @@ void Cpu::instruction_CB_3D_SRL()
     current_instruction_asm = std::format("SRL L");
 }
 
-void Cpu::instruction_CB_3E_SRL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_3E_SRL()
 {
     /*
      * SRL [HL]
@@ -4676,7 +4978,8 @@ void Cpu::instruction_CB_3E_SRL()
     current_instruction_asm = std::format("SRL !HL");
 }
 
-void Cpu::instruction_CB_3F_SRL()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_3F_SRL()
 {
     /*
      * SRL A
@@ -4693,7 +4996,8 @@ void Cpu::instruction_CB_3F_SRL()
     current_instruction_asm = std::format("SRL A");
 }
 
-void Cpu::instruction_CB_40_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_40_BIT()
 {
     /*
      * BIT 0, B
@@ -4706,7 +5010,8 @@ void Cpu::instruction_CB_40_BIT()
     current_instruction_asm = std::format("BIT 0, B");
 }
 
-void Cpu::instruction_CB_41_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_41_BIT()
 {
     /*
      * BIT 0, C
@@ -4719,7 +5024,8 @@ void Cpu::instruction_CB_41_BIT()
     current_instruction_asm = std::format("BIT 0, C");
 }
 
-void Cpu::instruction_CB_42_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_42_BIT()
 {
     /*
      * BIT 0, D
@@ -4732,7 +5038,8 @@ void Cpu::instruction_CB_42_BIT()
     current_instruction_asm = std::format("BIT 0, D");
 }
 
-void Cpu::instruction_CB_43_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_43_BIT()
 {
     /*
      * BIT 0, E
@@ -4745,7 +5052,8 @@ void Cpu::instruction_CB_43_BIT()
     current_instruction_asm = std::format("BIT 0, E");
 }
 
-void Cpu::instruction_CB_44_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_44_BIT()
 {
     /*
      * BIT 0, H
@@ -4758,7 +5066,8 @@ void Cpu::instruction_CB_44_BIT()
     current_instruction_asm = std::format("BIT 0, H");
 }
 
-void Cpu::instruction_CB_45_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_45_BIT()
 {
     /*
      * BIT 0, L
@@ -4771,7 +5080,8 @@ void Cpu::instruction_CB_45_BIT()
     current_instruction_asm = std::format("BIT 0, L");
 }
 
-void Cpu::instruction_CB_46_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_46_BIT()
 {
     /*
      * BIT 0, [HL]
@@ -4784,7 +5094,8 @@ void Cpu::instruction_CB_46_BIT()
     current_instruction_asm = std::format("BIT 0, !HL");
 }
 
-void Cpu::instruction_CB_47_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_47_BIT()
 {
     /*
      * BIT 0, A
@@ -4797,7 +5108,8 @@ void Cpu::instruction_CB_47_BIT()
     current_instruction_asm = std::format("BIT 0, A");
 }
 
-void Cpu::instruction_CB_48_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_48_BIT()
 {
     /*
      * BIT 1, B
@@ -4810,7 +5122,8 @@ void Cpu::instruction_CB_48_BIT()
     current_instruction_asm = std::format("BIT 1, B");
 }
 
-void Cpu::instruction_CB_49_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_49_BIT()
 {
     /*
      * BIT 1, C
@@ -4823,7 +5136,8 @@ void Cpu::instruction_CB_49_BIT()
     current_instruction_asm = std::format("BIT 1, C");
 }
 
-void Cpu::instruction_CB_4A_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_4A_BIT()
 {
     /*
      * BIT 1, D
@@ -4836,7 +5150,8 @@ void Cpu::instruction_CB_4A_BIT()
     current_instruction_asm = std::format("BIT 1, D");
 }
 
-void Cpu::instruction_CB_4B_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_4B_BIT()
 {
     /*
      * BIT 1, E
@@ -4849,7 +5164,8 @@ void Cpu::instruction_CB_4B_BIT()
     current_instruction_asm = std::format("BIT 1, E");
 }
 
-void Cpu::instruction_CB_4C_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_4C_BIT()
 {
     /*
      * BIT 1, H
@@ -4862,7 +5178,8 @@ void Cpu::instruction_CB_4C_BIT()
     current_instruction_asm = std::format("BIT 1, H");
 }
 
-void Cpu::instruction_CB_4D_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_4D_BIT()
 {
     /*
      * BIT 1, L
@@ -4875,7 +5192,8 @@ void Cpu::instruction_CB_4D_BIT()
     current_instruction_asm = std::format("BIT 1, L");
 }
 
-void Cpu::instruction_CB_4E_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_4E_BIT()
 {
     /*
      * BIT 1, [HL]
@@ -4888,7 +5206,8 @@ void Cpu::instruction_CB_4E_BIT()
     current_instruction_asm = std::format("BIT 1, !HL");
 }
 
-void Cpu::instruction_CB_4F_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_4F_BIT()
 {
     /*
      * BIT 1, A
@@ -4901,7 +5220,8 @@ void Cpu::instruction_CB_4F_BIT()
     current_instruction_asm = std::format("BIT 1, A");
 }
 
-void Cpu::instruction_CB_50_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_50_BIT()
 {
     /*
      * BIT 2, B
@@ -4914,7 +5234,8 @@ void Cpu::instruction_CB_50_BIT()
     current_instruction_asm = std::format("BIT 2, B");
 }
 
-void Cpu::instruction_CB_51_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_51_BIT()
 {
     /*
      * BIT 2, C
@@ -4927,7 +5248,8 @@ void Cpu::instruction_CB_51_BIT()
     current_instruction_asm = std::format("BIT 2, C");
 }
 
-void Cpu::instruction_CB_52_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_52_BIT()
 {
     /*
      * BIT 2, D
@@ -4940,7 +5262,8 @@ void Cpu::instruction_CB_52_BIT()
     current_instruction_asm = std::format("BIT 2, D");
 }
 
-void Cpu::instruction_CB_53_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_53_BIT()
 {
     /*
      * BIT 2, E
@@ -4953,7 +5276,8 @@ void Cpu::instruction_CB_53_BIT()
     current_instruction_asm = std::format("BIT 2, E");
 }
 
-void Cpu::instruction_CB_54_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_54_BIT()
 {
     /*
      * BIT 2, H
@@ -4966,7 +5290,8 @@ void Cpu::instruction_CB_54_BIT()
     current_instruction_asm = std::format("BIT 2, H");
 }
 
-void Cpu::instruction_CB_55_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_55_BIT()
 {
     /*
      * BIT 2, L
@@ -4979,7 +5304,8 @@ void Cpu::instruction_CB_55_BIT()
     current_instruction_asm = std::format("BIT 2, L");
 }
 
-void Cpu::instruction_CB_56_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_56_BIT()
 {
     /*
      * BIT 2, [HL]
@@ -4992,7 +5318,8 @@ void Cpu::instruction_CB_56_BIT()
     current_instruction_asm = std::format("BIT 2, !HL");
 }
 
-void Cpu::instruction_CB_57_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_57_BIT()
 {
     /*
      * BIT 2, A
@@ -5005,7 +5332,8 @@ void Cpu::instruction_CB_57_BIT()
     current_instruction_asm = std::format("BIT 2, A");
 }
 
-void Cpu::instruction_CB_58_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_58_BIT()
 {
     /*
      * BIT 3, B
@@ -5018,7 +5346,8 @@ void Cpu::instruction_CB_58_BIT()
     current_instruction_asm = std::format("BIT 3, B");
 }
 
-void Cpu::instruction_CB_59_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_59_BIT()
 {
     /*
      * BIT 3, C
@@ -5031,7 +5360,8 @@ void Cpu::instruction_CB_59_BIT()
     current_instruction_asm = std::format("BIT 3, C");
 }
 
-void Cpu::instruction_CB_5A_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_5A_BIT()
 {
     /*
      * BIT 3, D
@@ -5044,7 +5374,8 @@ void Cpu::instruction_CB_5A_BIT()
     current_instruction_asm = std::format("BIT 3, D");
 }
 
-void Cpu::instruction_CB_5B_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_5B_BIT()
 {
     /*
      * BIT 3, E
@@ -5057,7 +5388,8 @@ void Cpu::instruction_CB_5B_BIT()
     current_instruction_asm = std::format("BIT 3, E");
 }
 
-void Cpu::instruction_CB_5C_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_5C_BIT()
 {
     /*
      * BIT 3, H
@@ -5070,7 +5402,8 @@ void Cpu::instruction_CB_5C_BIT()
     current_instruction_asm = std::format("BIT 3, H");
 }
 
-void Cpu::instruction_CB_5D_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_5D_BIT()
 {
     /*
      * BIT 3, L
@@ -5083,7 +5416,8 @@ void Cpu::instruction_CB_5D_BIT()
     current_instruction_asm = std::format("BIT 3, L");
 }
 
-void Cpu::instruction_CB_5E_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_5E_BIT()
 {
     /*
      * BIT 3, [HL]
@@ -5096,7 +5430,8 @@ void Cpu::instruction_CB_5E_BIT()
     current_instruction_asm = std::format("BIT 3, !HL");
 }
 
-void Cpu::instruction_CB_5F_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_5F_BIT()
 {
     /*
      * BIT 3, A
@@ -5109,7 +5444,8 @@ void Cpu::instruction_CB_5F_BIT()
     current_instruction_asm = std::format("BIT 3, A");
 }
 
-void Cpu::instruction_CB_60_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_60_BIT()
 {
     /*
      * BIT 4, B
@@ -5122,7 +5458,8 @@ void Cpu::instruction_CB_60_BIT()
     current_instruction_asm = std::format("BIT 4, B");
 }
 
-void Cpu::instruction_CB_61_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_61_BIT()
 {
     /*
      * BIT 4, C
@@ -5135,7 +5472,8 @@ void Cpu::instruction_CB_61_BIT()
     current_instruction_asm = std::format("BIT 4, C");
 }
 
-void Cpu::instruction_CB_62_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_62_BIT()
 {
     /*
      * BIT 4, D
@@ -5148,7 +5486,8 @@ void Cpu::instruction_CB_62_BIT()
     current_instruction_asm = std::format("BIT 4, D");
 }
 
-void Cpu::instruction_CB_63_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_63_BIT()
 {
     /*
      * BIT 4, E
@@ -5161,7 +5500,8 @@ void Cpu::instruction_CB_63_BIT()
     current_instruction_asm = std::format("BIT 4, E");
 }
 
-void Cpu::instruction_CB_64_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_64_BIT()
 {
     /*
      * BIT 4, H
@@ -5174,7 +5514,8 @@ void Cpu::instruction_CB_64_BIT()
     current_instruction_asm = std::format("BIT 4, H");
 }
 
-void Cpu::instruction_CB_65_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_65_BIT()
 {
     /*
      * BIT 4, L
@@ -5187,7 +5528,8 @@ void Cpu::instruction_CB_65_BIT()
     current_instruction_asm = std::format("BIT 4, L");
 }
 
-void Cpu::instruction_CB_66_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_66_BIT()
 {
     /*
      * BIT 4, [HL]
@@ -5200,7 +5542,8 @@ void Cpu::instruction_CB_66_BIT()
     current_instruction_asm = std::format("BIT 4, !HL");
 }
 
-void Cpu::instruction_CB_67_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_67_BIT()
 {
     /*
      * BIT 4, A
@@ -5213,7 +5556,8 @@ void Cpu::instruction_CB_67_BIT()
     current_instruction_asm = std::format("BIT 4, A");
 }
 
-void Cpu::instruction_CB_68_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_68_BIT()
 {
     /*
      * BIT 5, B
@@ -5226,7 +5570,8 @@ void Cpu::instruction_CB_68_BIT()
     current_instruction_asm = std::format("BIT 5, B");
 }
 
-void Cpu::instruction_CB_69_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_69_BIT()
 {
     /*
      * BIT 5, C
@@ -5239,7 +5584,8 @@ void Cpu::instruction_CB_69_BIT()
     current_instruction_asm = std::format("BIT 5, C");
 }
 
-void Cpu::instruction_CB_6A_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_6A_BIT()
 {
     /*
      * BIT 5, D
@@ -5252,7 +5598,8 @@ void Cpu::instruction_CB_6A_BIT()
     current_instruction_asm = std::format("BIT 5, D");
 }
 
-void Cpu::instruction_CB_6B_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_6B_BIT()
 {
     /*
      * BIT 5, E
@@ -5265,7 +5612,8 @@ void Cpu::instruction_CB_6B_BIT()
     current_instruction_asm = std::format("BIT 5, E");
 }
 
-void Cpu::instruction_CB_6C_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_6C_BIT()
 {
     /*
      * BIT 5, H
@@ -5278,7 +5626,8 @@ void Cpu::instruction_CB_6C_BIT()
     current_instruction_asm = std::format("BIT 5, H");
 }
 
-void Cpu::instruction_CB_6D_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_6D_BIT()
 {
     /*
      * BIT 5, L
@@ -5291,7 +5640,8 @@ void Cpu::instruction_CB_6D_BIT()
     current_instruction_asm = std::format("BIT 5, L");
 }
 
-void Cpu::instruction_CB_6E_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_6E_BIT()
 {
     /*
      * BIT 5, [HL]
@@ -5304,7 +5654,8 @@ void Cpu::instruction_CB_6E_BIT()
     current_instruction_asm = std::format("BIT 5, !HL");
 }
 
-void Cpu::instruction_CB_6F_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_6F_BIT()
 {
     /*
      * BIT 5, A
@@ -5317,7 +5668,8 @@ void Cpu::instruction_CB_6F_BIT()
     current_instruction_asm = std::format("BIT 5, A");
 }
 
-void Cpu::instruction_CB_70_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_70_BIT()
 {
     /*
      * BIT 6, B
@@ -5330,7 +5682,8 @@ void Cpu::instruction_CB_70_BIT()
     current_instruction_asm = std::format("BIT 6, B");
 }
 
-void Cpu::instruction_CB_71_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_71_BIT()
 {
     /*
      * BIT 6, C
@@ -5343,7 +5696,8 @@ void Cpu::instruction_CB_71_BIT()
     current_instruction_asm = std::format("BIT 6, C");
 }
 
-void Cpu::instruction_CB_72_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_72_BIT()
 {
     /*
      * BIT 6, D
@@ -5356,7 +5710,8 @@ void Cpu::instruction_CB_72_BIT()
     current_instruction_asm = std::format("BIT 6, D");
 }
 
-void Cpu::instruction_CB_73_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_73_BIT()
 {
     /*
      * BIT 6, E
@@ -5369,7 +5724,8 @@ void Cpu::instruction_CB_73_BIT()
     current_instruction_asm = std::format("BIT 6, E");
 }
 
-void Cpu::instruction_CB_74_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_74_BIT()
 {
     /*
      * BIT 6, H
@@ -5382,7 +5738,8 @@ void Cpu::instruction_CB_74_BIT()
     current_instruction_asm = std::format("BIT 6, H");
 }
 
-void Cpu::instruction_CB_75_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_75_BIT()
 {
     /*
      * BIT 6, L
@@ -5395,7 +5752,8 @@ void Cpu::instruction_CB_75_BIT()
     current_instruction_asm = std::format("BIT 6, L");
 }
 
-void Cpu::instruction_CB_76_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_76_BIT()
 {
     /*
      * BIT 6, [HL]
@@ -5408,7 +5766,8 @@ void Cpu::instruction_CB_76_BIT()
     current_instruction_asm = std::format("BIT 6, !HL");
 }
 
-void Cpu::instruction_CB_77_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_77_BIT()
 {
     /*
      * BIT 6, A
@@ -5421,7 +5780,8 @@ void Cpu::instruction_CB_77_BIT()
     current_instruction_asm = std::format("BIT 6, A");
 }
 
-void Cpu::instruction_CB_78_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_78_BIT()
 {
     /*
      * BIT 7, B
@@ -5434,7 +5794,8 @@ void Cpu::instruction_CB_78_BIT()
     current_instruction_asm = std::format("BIT 7, B");
 }
 
-void Cpu::instruction_CB_79_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_79_BIT()
 {
     /*
      * BIT 7, C
@@ -5447,7 +5808,8 @@ void Cpu::instruction_CB_79_BIT()
     current_instruction_asm = std::format("BIT 7, C");
 }
 
-void Cpu::instruction_CB_7A_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_7A_BIT()
 {
     /*
      * BIT 7, D
@@ -5460,7 +5822,8 @@ void Cpu::instruction_CB_7A_BIT()
     current_instruction_asm = std::format("BIT 7, D");
 }
 
-void Cpu::instruction_CB_7B_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_7B_BIT()
 {
     /*
      * BIT 7, E
@@ -5473,7 +5836,8 @@ void Cpu::instruction_CB_7B_BIT()
     current_instruction_asm = std::format("BIT 7, E");
 }
 
-void Cpu::instruction_CB_7C_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_7C_BIT()
 {
     /*
      * BIT 7, H
@@ -5486,7 +5850,8 @@ void Cpu::instruction_CB_7C_BIT()
     current_instruction_asm = std::format("BIT 7, H");
 }
 
-void Cpu::instruction_CB_7D_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_7D_BIT()
 {
     /*
      * BIT 7, L
@@ -5499,7 +5864,8 @@ void Cpu::instruction_CB_7D_BIT()
     current_instruction_asm = std::format("BIT 7, L");
 }
 
-void Cpu::instruction_CB_7E_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_7E_BIT()
 {
     /*
      * BIT 7, [HL]
@@ -5512,7 +5878,8 @@ void Cpu::instruction_CB_7E_BIT()
     current_instruction_asm = std::format("BIT 7, !HL");
 }
 
-void Cpu::instruction_CB_7F_BIT()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_7F_BIT()
 {
     /*
      * BIT 7, A
@@ -5525,7 +5892,8 @@ void Cpu::instruction_CB_7F_BIT()
     current_instruction_asm = std::format("BIT 7, A");
 }
 
-void Cpu::instruction_CB_80_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_80_RES()
 {
     /*
      * RES 0, B
@@ -5537,7 +5905,8 @@ void Cpu::instruction_CB_80_RES()
     current_instruction_asm = std::format("RES 0, B");
 }
 
-void Cpu::instruction_CB_81_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_81_RES()
 {
     /*
      * RES 0, C
@@ -5549,7 +5918,8 @@ void Cpu::instruction_CB_81_RES()
     current_instruction_asm = std::format("RES 0, C");
 }
 
-void Cpu::instruction_CB_82_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_82_RES()
 {
     /*
      * RES 0, D
@@ -5561,7 +5931,8 @@ void Cpu::instruction_CB_82_RES()
     current_instruction_asm = std::format("RES 0, D");
 }
 
-void Cpu::instruction_CB_83_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_83_RES()
 {
     /*
      * RES 0, E
@@ -5573,7 +5944,8 @@ void Cpu::instruction_CB_83_RES()
     current_instruction_asm = std::format("RES 0, E");
 }
 
-void Cpu::instruction_CB_84_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_84_RES()
 {
     /*
      * RES 0, H
@@ -5585,7 +5957,8 @@ void Cpu::instruction_CB_84_RES()
     current_instruction_asm = std::format("RES 0, H");
 }
 
-void Cpu::instruction_CB_85_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_85_RES()
 {
     /*
      * RES 0, L
@@ -5597,7 +5970,8 @@ void Cpu::instruction_CB_85_RES()
     current_instruction_asm = std::format("RES 0, L");
 }
 
-void Cpu::instruction_CB_86_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_86_RES()
 {
     /*
      * RES 0, [HL]
@@ -5610,7 +5984,8 @@ void Cpu::instruction_CB_86_RES()
     current_instruction_asm = std::format("RES 0, !HL");
 }
 
-void Cpu::instruction_CB_87_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_87_RES()
 {
     /*
      * RES 0, A
@@ -5622,7 +5997,8 @@ void Cpu::instruction_CB_87_RES()
     current_instruction_asm = std::format("RES 0, A");
 }
 
-void Cpu::instruction_CB_88_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_88_RES()
 {
     /*
      * RES 1, B
@@ -5634,7 +6010,8 @@ void Cpu::instruction_CB_88_RES()
     current_instruction_asm = std::format("RES 1, B");
 }
 
-void Cpu::instruction_CB_89_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_89_RES()
 {
     /*
      * RES 1, C
@@ -5646,7 +6023,8 @@ void Cpu::instruction_CB_89_RES()
     current_instruction_asm = std::format("RES 1, C");
 }
 
-void Cpu::instruction_CB_8A_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_8A_RES()
 {
     /*
      * RES 1, D
@@ -5658,7 +6036,8 @@ void Cpu::instruction_CB_8A_RES()
     current_instruction_asm = std::format("RES 1, D");
 }
 
-void Cpu::instruction_CB_8B_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_8B_RES()
 {
     /*
      * RES 1, E
@@ -5670,7 +6049,8 @@ void Cpu::instruction_CB_8B_RES()
     current_instruction_asm = std::format("RES 1, E");
 }
 
-void Cpu::instruction_CB_8C_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_8C_RES()
 {
     /*
      * RES 1, H
@@ -5682,7 +6062,8 @@ void Cpu::instruction_CB_8C_RES()
     current_instruction_asm = std::format("RES 1, H");
 }
 
-void Cpu::instruction_CB_8D_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_8D_RES()
 {
     /*
      * RES 1, L
@@ -5694,7 +6075,8 @@ void Cpu::instruction_CB_8D_RES()
     current_instruction_asm = std::format("RES 1, L");
 }
 
-void Cpu::instruction_CB_8E_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_8E_RES()
 {
     /*
      * RES 1, [HL]
@@ -5707,7 +6089,8 @@ void Cpu::instruction_CB_8E_RES()
     current_instruction_asm = std::format("RES 1, !HL");
 }
 
-void Cpu::instruction_CB_8F_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_8F_RES()
 {
     /*
      * RES 1, A
@@ -5719,7 +6102,8 @@ void Cpu::instruction_CB_8F_RES()
     current_instruction_asm = std::format("RES 1, A");
 }
 
-void Cpu::instruction_CB_90_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_90_RES()
 {
     /*
      * RES 2, B
@@ -5731,7 +6115,8 @@ void Cpu::instruction_CB_90_RES()
     current_instruction_asm = std::format("RES 2, B");
 }
 
-void Cpu::instruction_CB_91_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_91_RES()
 {
     /*
      * RES 2, C
@@ -5743,7 +6128,8 @@ void Cpu::instruction_CB_91_RES()
     current_instruction_asm = std::format("RES 2, C");
 }
 
-void Cpu::instruction_CB_92_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_92_RES()
 {
     /*
      * RES 2, D
@@ -5755,7 +6141,8 @@ void Cpu::instruction_CB_92_RES()
     current_instruction_asm = std::format("RES 2, D");
 }
 
-void Cpu::instruction_CB_93_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_93_RES()
 {
     /*
      * RES 2, E
@@ -5767,7 +6154,8 @@ void Cpu::instruction_CB_93_RES()
     current_instruction_asm = std::format("RES 2, E");
 }
 
-void Cpu::instruction_CB_94_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_94_RES()
 {
     /*
      * RES 2, H
@@ -5779,7 +6167,8 @@ void Cpu::instruction_CB_94_RES()
     current_instruction_asm = std::format("RES 2, H");
 }
 
-void Cpu::instruction_CB_95_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_95_RES()
 {
     /*
      * RES 2, L
@@ -5791,7 +6180,8 @@ void Cpu::instruction_CB_95_RES()
     current_instruction_asm = std::format("RES 2, L");
 }
 
-void Cpu::instruction_CB_96_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_96_RES()
 {
     /*
      * RES 2, [HL]
@@ -5804,7 +6194,8 @@ void Cpu::instruction_CB_96_RES()
     current_instruction_asm = std::format("RES 2, !HL");
 }
 
-void Cpu::instruction_CB_97_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_97_RES()
 {
     /*
      * RES 2, A
@@ -5816,7 +6207,8 @@ void Cpu::instruction_CB_97_RES()
     current_instruction_asm = std::format("RES 2, A");
 }
 
-void Cpu::instruction_CB_98_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_98_RES()
 {
     /*
      * RES 3, B
@@ -5828,7 +6220,8 @@ void Cpu::instruction_CB_98_RES()
     current_instruction_asm = std::format("RES 3, B");
 }
 
-void Cpu::instruction_CB_99_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_99_RES()
 {
     /*
      * RES 3, C
@@ -5840,7 +6233,8 @@ void Cpu::instruction_CB_99_RES()
     current_instruction_asm = std::format("RES 3, C");
 }
 
-void Cpu::instruction_CB_9A_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_9A_RES()
 {
     /*
      * RES 3, D
@@ -5852,7 +6246,8 @@ void Cpu::instruction_CB_9A_RES()
     current_instruction_asm = std::format("RES 3, D");
 }
 
-void Cpu::instruction_CB_9B_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_9B_RES()
 {
     /*
      * RES 3, E
@@ -5864,7 +6259,8 @@ void Cpu::instruction_CB_9B_RES()
     current_instruction_asm = std::format("RES 3, E");
 }
 
-void Cpu::instruction_CB_9C_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_9C_RES()
 {
     /*
      * RES 3, H
@@ -5876,7 +6272,8 @@ void Cpu::instruction_CB_9C_RES()
     current_instruction_asm = std::format("RES 3, H");
 }
 
-void Cpu::instruction_CB_9D_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_9D_RES()
 {
     /*
      * RES 3, L
@@ -5888,7 +6285,8 @@ void Cpu::instruction_CB_9D_RES()
     current_instruction_asm = std::format("RES 3, L");
 }
 
-void Cpu::instruction_CB_9E_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_9E_RES()
 {
     /*
      * RES 3, [HL]
@@ -5901,7 +6299,8 @@ void Cpu::instruction_CB_9E_RES()
     current_instruction_asm = std::format("RES 3, !HL");
 }
 
-void Cpu::instruction_CB_9F_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_9F_RES()
 {
     /*
      * RES 3, A
@@ -5913,7 +6312,8 @@ void Cpu::instruction_CB_9F_RES()
     current_instruction_asm = std::format("RES 3, A");
 }
 
-void Cpu::instruction_CB_A0_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_A0_RES()
 {
     /*
      * RES 4, B
@@ -5925,7 +6325,8 @@ void Cpu::instruction_CB_A0_RES()
     current_instruction_asm = std::format("RES 4, B");
 }
 
-void Cpu::instruction_CB_A1_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_A1_RES()
 {
     /*
      * RES 4, C
@@ -5937,7 +6338,8 @@ void Cpu::instruction_CB_A1_RES()
     current_instruction_asm = std::format("RES 4, C");
 }
 
-void Cpu::instruction_CB_A2_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_A2_RES()
 {
     /*
      * RES 4, D
@@ -5949,7 +6351,8 @@ void Cpu::instruction_CB_A2_RES()
     current_instruction_asm = std::format("RES 4, D");
 }
 
-void Cpu::instruction_CB_A3_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_A3_RES()
 {
     /*
      * RES 4, E
@@ -5961,7 +6364,8 @@ void Cpu::instruction_CB_A3_RES()
     current_instruction_asm = std::format("RES 4, E");
 }
 
-void Cpu::instruction_CB_A4_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_A4_RES()
 {
     /*
      * RES 4, H
@@ -5973,7 +6377,8 @@ void Cpu::instruction_CB_A4_RES()
     current_instruction_asm = std::format("RES 4, H");
 }
 
-void Cpu::instruction_CB_A5_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_A5_RES()
 {
     /*
      * RES 4, L
@@ -5985,7 +6390,8 @@ void Cpu::instruction_CB_A5_RES()
     current_instruction_asm = std::format("RES 4, L");
 }
 
-void Cpu::instruction_CB_A6_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_A6_RES()
 {
     /*
      * RES 4, [HL]
@@ -5998,7 +6404,8 @@ void Cpu::instruction_CB_A6_RES()
     current_instruction_asm = std::format("RES 4, !HL");
 }
 
-void Cpu::instruction_CB_A7_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_A7_RES()
 {
     /*
      * RES 4, A
@@ -6010,7 +6417,8 @@ void Cpu::instruction_CB_A7_RES()
     current_instruction_asm = std::format("RES 4, A");
 }
 
-void Cpu::instruction_CB_A8_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_A8_RES()
 {
     /*
      * RES 5, B
@@ -6022,7 +6430,8 @@ void Cpu::instruction_CB_A8_RES()
     current_instruction_asm = std::format("RES 5, B");
 }
 
-void Cpu::instruction_CB_A9_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_A9_RES()
 {
     /*
      * RES 5, C
@@ -6034,7 +6443,8 @@ void Cpu::instruction_CB_A9_RES()
     current_instruction_asm = std::format("RES 5, C");
 }
 
-void Cpu::instruction_CB_AA_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_AA_RES()
 {
     /*
      * RES 5, D
@@ -6046,7 +6456,8 @@ void Cpu::instruction_CB_AA_RES()
     current_instruction_asm = std::format("RES 5, D");
 }
 
-void Cpu::instruction_CB_AB_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_AB_RES()
 {
     /*
      * RES 5, E
@@ -6058,7 +6469,8 @@ void Cpu::instruction_CB_AB_RES()
     current_instruction_asm = std::format("RES 5, E");
 }
 
-void Cpu::instruction_CB_AC_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_AC_RES()
 {
     /*
      * RES 5, H
@@ -6070,7 +6482,8 @@ void Cpu::instruction_CB_AC_RES()
     current_instruction_asm = std::format("RES 5, H");
 }
 
-void Cpu::instruction_CB_AD_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_AD_RES()
 {
     /*
      * RES 5, L
@@ -6082,7 +6495,8 @@ void Cpu::instruction_CB_AD_RES()
     current_instruction_asm = std::format("RES 5, L");
 }
 
-void Cpu::instruction_CB_AE_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_AE_RES()
 {
     /*
      * RES 5, [HL]
@@ -6095,7 +6509,8 @@ void Cpu::instruction_CB_AE_RES()
     current_instruction_asm = std::format("RES 5, !HL");
 }
 
-void Cpu::instruction_CB_AF_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_AF_RES()
 {
     /*
      * RES 5, A
@@ -6107,7 +6522,8 @@ void Cpu::instruction_CB_AF_RES()
     current_instruction_asm = std::format("RES 5, A");
 }
 
-void Cpu::instruction_CB_B0_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_B0_RES()
 {
     /*
      * RES 6, B
@@ -6119,7 +6535,8 @@ void Cpu::instruction_CB_B0_RES()
     current_instruction_asm = std::format("RES 6, B");
 }
 
-void Cpu::instruction_CB_B1_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_B1_RES()
 {
     /*
      * RES 6, C
@@ -6131,7 +6548,8 @@ void Cpu::instruction_CB_B1_RES()
     current_instruction_asm = std::format("RES 6, C");
 }
 
-void Cpu::instruction_CB_B2_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_B2_RES()
 {
     /*
      * RES 6, D
@@ -6143,7 +6561,8 @@ void Cpu::instruction_CB_B2_RES()
     current_instruction_asm = std::format("RES 6, D");
 }
 
-void Cpu::instruction_CB_B3_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_B3_RES()
 {
     /*
      * RES 6, E
@@ -6155,7 +6574,8 @@ void Cpu::instruction_CB_B3_RES()
     current_instruction_asm = std::format("RES 6, E");
 }
 
-void Cpu::instruction_CB_B4_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_B4_RES()
 {
     /*
      * RES 6, H
@@ -6167,7 +6587,8 @@ void Cpu::instruction_CB_B4_RES()
     current_instruction_asm = std::format("RES 6, H");
 }
 
-void Cpu::instruction_CB_B5_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_B5_RES()
 {
     /*
      * RES 6, L
@@ -6179,7 +6600,8 @@ void Cpu::instruction_CB_B5_RES()
     current_instruction_asm = std::format("RES 6, L");
 }
 
-void Cpu::instruction_CB_B6_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_B6_RES()
 {
     /*
      * RES 6, [HL]
@@ -6192,7 +6614,8 @@ void Cpu::instruction_CB_B6_RES()
     current_instruction_asm = std::format("RES 6, !HL");
 }
 
-void Cpu::instruction_CB_B7_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_B7_RES()
 {
     /*
      * RES 6, A
@@ -6204,7 +6627,8 @@ void Cpu::instruction_CB_B7_RES()
     current_instruction_asm = std::format("RES 6, A");
 }
 
-void Cpu::instruction_CB_B8_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_B8_RES()
 {
     /*
      * RES 7, B
@@ -6216,7 +6640,8 @@ void Cpu::instruction_CB_B8_RES()
     current_instruction_asm = std::format("RES 7, B");
 }
 
-void Cpu::instruction_CB_B9_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_B9_RES()
 {
     /*
      * RES 7, C
@@ -6228,7 +6653,8 @@ void Cpu::instruction_CB_B9_RES()
     current_instruction_asm = std::format("RES 7, C");
 }
 
-void Cpu::instruction_CB_BA_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_BA_RES()
 {
     /*
      * RES 7, D
@@ -6240,7 +6666,8 @@ void Cpu::instruction_CB_BA_RES()
     current_instruction_asm = std::format("RES 7, D");
 }
 
-void Cpu::instruction_CB_BB_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_BB_RES()
 {
     /*
      * RES 7, E
@@ -6252,7 +6679,8 @@ void Cpu::instruction_CB_BB_RES()
     current_instruction_asm = std::format("RES 7, E");
 }
 
-void Cpu::instruction_CB_BC_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_BC_RES()
 {
     /*
      * RES 7, H
@@ -6264,7 +6692,8 @@ void Cpu::instruction_CB_BC_RES()
     current_instruction_asm = std::format("RES 7, H");
 }
 
-void Cpu::instruction_CB_BD_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_BD_RES()
 {
     /*
      * RES 7, L
@@ -6276,7 +6705,8 @@ void Cpu::instruction_CB_BD_RES()
     current_instruction_asm = std::format("RES 7, L");
 }
 
-void Cpu::instruction_CB_BE_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_BE_RES()
 {
     /*
      * RES 7, [HL]
@@ -6289,7 +6719,8 @@ void Cpu::instruction_CB_BE_RES()
     current_instruction_asm = std::format("RES 7, !HL");
 }
 
-void Cpu::instruction_CB_BF_RES()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_BF_RES()
 {
     /*
      * RES 7, A
@@ -6301,7 +6732,8 @@ void Cpu::instruction_CB_BF_RES()
     current_instruction_asm = std::format("RES 7, A");
 }
 
-void Cpu::instruction_CB_C0_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_C0_SET()
 {
     /*
      * SET 0, B
@@ -6313,7 +6745,8 @@ void Cpu::instruction_CB_C0_SET()
     current_instruction_asm = std::format("SET 0, B");
 }
 
-void Cpu::instruction_CB_C1_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_C1_SET()
 {
     /*
      * SET 0, C
@@ -6325,7 +6758,8 @@ void Cpu::instruction_CB_C1_SET()
     current_instruction_asm = std::format("SET 0, C");
 }
 
-void Cpu::instruction_CB_C2_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_C2_SET()
 {
     /*
      * SET 0, D
@@ -6337,7 +6771,8 @@ void Cpu::instruction_CB_C2_SET()
     current_instruction_asm = std::format("SET 0, D");
 }
 
-void Cpu::instruction_CB_C3_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_C3_SET()
 {
     /*
      * SET 0, E
@@ -6349,7 +6784,8 @@ void Cpu::instruction_CB_C3_SET()
     current_instruction_asm = std::format("SET 0, E");
 }
 
-void Cpu::instruction_CB_C4_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_C4_SET()
 {
     /*
      * SET 0, H
@@ -6361,7 +6797,8 @@ void Cpu::instruction_CB_C4_SET()
     current_instruction_asm = std::format("SET 0, H");
 }
 
-void Cpu::instruction_CB_C5_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_C5_SET()
 {
     /*
      * SET 0, L
@@ -6373,7 +6810,8 @@ void Cpu::instruction_CB_C5_SET()
     current_instruction_asm = std::format("SET 0, L");
 }
 
-void Cpu::instruction_CB_C6_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_C6_SET()
 {
     /*
      * SET 0, [HL]
@@ -6386,7 +6824,8 @@ void Cpu::instruction_CB_C6_SET()
     current_instruction_asm = std::format("SET 0, !HL");
 }
 
-void Cpu::instruction_CB_C7_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_C7_SET()
 {
     /*
      * SET 0, A
@@ -6398,7 +6837,8 @@ void Cpu::instruction_CB_C7_SET()
     current_instruction_asm = std::format("SET 0, A");
 }
 
-void Cpu::instruction_CB_C8_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_C8_SET()
 {
     /*
      * SET 1, B
@@ -6410,7 +6850,8 @@ void Cpu::instruction_CB_C8_SET()
     current_instruction_asm = std::format("SET 1, B");
 }
 
-void Cpu::instruction_CB_C9_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_C9_SET()
 {
     /*
      * SET 1, C
@@ -6422,7 +6863,8 @@ void Cpu::instruction_CB_C9_SET()
     current_instruction_asm = std::format("SET 1, C");
 }
 
-void Cpu::instruction_CB_CA_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_CA_SET()
 {
     /*
      * SET 1, D
@@ -6434,7 +6876,8 @@ void Cpu::instruction_CB_CA_SET()
     current_instruction_asm = std::format("SET 1, D");
 }
 
-void Cpu::instruction_CB_CB_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_CB_SET()
 {
     /*
      * SET 1, E
@@ -6446,7 +6889,8 @@ void Cpu::instruction_CB_CB_SET()
     current_instruction_asm = std::format("SET 1, E");
 }
 
-void Cpu::instruction_CB_CC_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_CC_SET()
 {
     /*
      * SET 1, H
@@ -6458,7 +6902,8 @@ void Cpu::instruction_CB_CC_SET()
     current_instruction_asm = std::format("SET 1, H");
 }
 
-void Cpu::instruction_CB_CD_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_CD_SET()
 {
     /*
      * SET 1, L
@@ -6470,7 +6915,8 @@ void Cpu::instruction_CB_CD_SET()
     current_instruction_asm = std::format("SET 1, L");
 }
 
-void Cpu::instruction_CB_CE_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_CE_SET()
 {
     /*
      * SET 1, [HL]
@@ -6483,7 +6929,8 @@ void Cpu::instruction_CB_CE_SET()
     current_instruction_asm = std::format("SET 1, !HL");
 }
 
-void Cpu::instruction_CB_CF_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_CF_SET()
 {
     /*
      * SET 1, A
@@ -6495,7 +6942,8 @@ void Cpu::instruction_CB_CF_SET()
     current_instruction_asm = std::format("SET 1, A");
 }
 
-void Cpu::instruction_CB_D0_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_D0_SET()
 {
     /*
      * SET 2, B
@@ -6507,7 +6955,8 @@ void Cpu::instruction_CB_D0_SET()
     current_instruction_asm = std::format("SET 2, B");
 }
 
-void Cpu::instruction_CB_D1_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_D1_SET()
 {
     /*
      * SET 2, C
@@ -6519,7 +6968,8 @@ void Cpu::instruction_CB_D1_SET()
     current_instruction_asm = std::format("SET 2, C");
 }
 
-void Cpu::instruction_CB_D2_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_D2_SET()
 {
     /*
      * SET 2, D
@@ -6531,7 +6981,8 @@ void Cpu::instruction_CB_D2_SET()
     current_instruction_asm = std::format("SET 2, D");
 }
 
-void Cpu::instruction_CB_D3_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_D3_SET()
 {
     /*
      * SET 2, E
@@ -6543,7 +6994,8 @@ void Cpu::instruction_CB_D3_SET()
     current_instruction_asm = std::format("SET 2, E");
 }
 
-void Cpu::instruction_CB_D4_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_D4_SET()
 {
     /*
      * SET 2, H
@@ -6555,7 +7007,8 @@ void Cpu::instruction_CB_D4_SET()
     current_instruction_asm = std::format("SET 2, H");
 }
 
-void Cpu::instruction_CB_D5_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_D5_SET()
 {
     /*
      * SET 2, L
@@ -6567,7 +7020,8 @@ void Cpu::instruction_CB_D5_SET()
     current_instruction_asm = std::format("SET 2, L");
 }
 
-void Cpu::instruction_CB_D6_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_D6_SET()
 {
     /*
      * SET 2, [HL]
@@ -6580,7 +7034,8 @@ void Cpu::instruction_CB_D6_SET()
     current_instruction_asm = std::format("SET 2, !HL");
 }
 
-void Cpu::instruction_CB_D7_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_D7_SET()
 {
     /*
      * SET 2, A
@@ -6592,7 +7047,8 @@ void Cpu::instruction_CB_D7_SET()
     current_instruction_asm = std::format("SET 2, A");
 }
 
-void Cpu::instruction_CB_D8_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_D8_SET()
 {
     /*
      * SET 3, B
@@ -6604,7 +7060,8 @@ void Cpu::instruction_CB_D8_SET()
     current_instruction_asm = std::format("SET 3, B");
 }
 
-void Cpu::instruction_CB_D9_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_D9_SET()
 {
     /*
      * SET 3, C
@@ -6616,7 +7073,8 @@ void Cpu::instruction_CB_D9_SET()
     current_instruction_asm = std::format("SET 3, C");
 }
 
-void Cpu::instruction_CB_DA_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_DA_SET()
 {
     /*
      * SET 3, D
@@ -6628,7 +7086,8 @@ void Cpu::instruction_CB_DA_SET()
     current_instruction_asm = std::format("SET 3, D");
 }
 
-void Cpu::instruction_CB_DB_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_DB_SET()
 {
     /*
      * SET 3, E
@@ -6640,7 +7099,8 @@ void Cpu::instruction_CB_DB_SET()
     current_instruction_asm = std::format("SET 3, E");
 }
 
-void Cpu::instruction_CB_DC_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_DC_SET()
 {
     /*
      * SET 3, H
@@ -6652,7 +7112,8 @@ void Cpu::instruction_CB_DC_SET()
     current_instruction_asm = std::format("SET 3, H");
 }
 
-void Cpu::instruction_CB_DD_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_DD_SET()
 {
     /*
      * SET 3, L
@@ -6664,7 +7125,8 @@ void Cpu::instruction_CB_DD_SET()
     current_instruction_asm = std::format("SET 3, L");
 }
 
-void Cpu::instruction_CB_DE_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_DE_SET()
 {
     /*
      * SET 3, [HL]
@@ -6677,7 +7139,8 @@ void Cpu::instruction_CB_DE_SET()
     current_instruction_asm = std::format("SET 3, !HL");
 }
 
-void Cpu::instruction_CB_DF_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_DF_SET()
 {
     /*
      * SET 3, A
@@ -6689,7 +7152,8 @@ void Cpu::instruction_CB_DF_SET()
     current_instruction_asm = std::format("SET 3, A");
 }
 
-void Cpu::instruction_CB_E0_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_E0_SET()
 {
     /*
      * SET 4, B
@@ -6701,7 +7165,8 @@ void Cpu::instruction_CB_E0_SET()
     current_instruction_asm = std::format("SET 4, B");
 }
 
-void Cpu::instruction_CB_E1_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_E1_SET()
 {
     /*
      * SET 4, C
@@ -6713,7 +7178,8 @@ void Cpu::instruction_CB_E1_SET()
     current_instruction_asm = std::format("SET 4, C");
 }
 
-void Cpu::instruction_CB_E2_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_E2_SET()
 {
     /*
      * SET 4, D
@@ -6725,7 +7191,8 @@ void Cpu::instruction_CB_E2_SET()
     current_instruction_asm = std::format("SET 4, D");
 }
 
-void Cpu::instruction_CB_E3_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_E3_SET()
 {
     /*
      * SET 4, E
@@ -6737,7 +7204,8 @@ void Cpu::instruction_CB_E3_SET()
     current_instruction_asm = std::format("SET 4, E");
 }
 
-void Cpu::instruction_CB_E4_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_E4_SET()
 {
     /*
      * SET 4, H
@@ -6749,7 +7217,8 @@ void Cpu::instruction_CB_E4_SET()
     current_instruction_asm = std::format("SET 4, H");
 }
 
-void Cpu::instruction_CB_E5_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_E5_SET()
 {
     /*
      * SET 4, L
@@ -6761,7 +7230,8 @@ void Cpu::instruction_CB_E5_SET()
     current_instruction_asm = std::format("SET 4, L");
 }
 
-void Cpu::instruction_CB_E6_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_E6_SET()
 {
     /*
      * SET 4, [HL]
@@ -6774,7 +7244,8 @@ void Cpu::instruction_CB_E6_SET()
     current_instruction_asm = std::format("SET 4, !HL");
 }
 
-void Cpu::instruction_CB_E7_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_E7_SET()
 {
     /*
      * SET 4, A
@@ -6786,7 +7257,8 @@ void Cpu::instruction_CB_E7_SET()
     current_instruction_asm = std::format("SET 4, A");
 }
 
-void Cpu::instruction_CB_E8_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_E8_SET()
 {
     /*
      * SET 5, B
@@ -6798,7 +7270,8 @@ void Cpu::instruction_CB_E8_SET()
     current_instruction_asm = std::format("SET 5, B");
 }
 
-void Cpu::instruction_CB_E9_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_E9_SET()
 {
     /*
      * SET 5, C
@@ -6810,7 +7283,8 @@ void Cpu::instruction_CB_E9_SET()
     current_instruction_asm = std::format("SET 5, C");
 }
 
-void Cpu::instruction_CB_EA_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_EA_SET()
 {
     /*
      * SET 5, D
@@ -6822,7 +7296,8 @@ void Cpu::instruction_CB_EA_SET()
     current_instruction_asm = std::format("SET 5, D");
 }
 
-void Cpu::instruction_CB_EB_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_EB_SET()
 {
     /*
      * SET 5, E
@@ -6834,7 +7309,8 @@ void Cpu::instruction_CB_EB_SET()
     current_instruction_asm = std::format("SET 5, E");
 }
 
-void Cpu::instruction_CB_EC_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_EC_SET()
 {
     /*
      * SET 5, H
@@ -6846,7 +7322,8 @@ void Cpu::instruction_CB_EC_SET()
     current_instruction_asm = std::format("SET 5, H");
 }
 
-void Cpu::instruction_CB_ED_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_ED_SET()
 {
     /*
      * SET 5, L
@@ -6858,7 +7335,8 @@ void Cpu::instruction_CB_ED_SET()
     current_instruction_asm = std::format("SET 5, L");
 }
 
-void Cpu::instruction_CB_EE_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_EE_SET()
 {
     /*
      * SET 5, [HL]
@@ -6871,7 +7349,8 @@ void Cpu::instruction_CB_EE_SET()
     current_instruction_asm = std::format("SET 5, !HL");
 }
 
-void Cpu::instruction_CB_EF_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_EF_SET()
 {
     /*
      * SET 5, A
@@ -6883,7 +7362,8 @@ void Cpu::instruction_CB_EF_SET()
     current_instruction_asm = std::format("SET 5, A");
 }
 
-void Cpu::instruction_CB_F0_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_F0_SET()
 {
     /*
      * SET 6, B
@@ -6895,7 +7375,8 @@ void Cpu::instruction_CB_F0_SET()
     current_instruction_asm = std::format("SET 6, B");
 }
 
-void Cpu::instruction_CB_F1_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_F1_SET()
 {
     /*
      * SET 6, C
@@ -6907,7 +7388,8 @@ void Cpu::instruction_CB_F1_SET()
     current_instruction_asm = std::format("SET 6, C");
 }
 
-void Cpu::instruction_CB_F2_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_F2_SET()
 {
     /*
      * SET 6, D
@@ -6919,7 +7401,8 @@ void Cpu::instruction_CB_F2_SET()
     current_instruction_asm = std::format("SET 6, D");
 }
 
-void Cpu::instruction_CB_F3_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_F3_SET()
 {
     /*
      * SET 6, E
@@ -6931,7 +7414,8 @@ void Cpu::instruction_CB_F3_SET()
     current_instruction_asm = std::format("SET 6, E");
 }
 
-void Cpu::instruction_CB_F4_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_F4_SET()
 {
     /*
      * SET 6, H
@@ -6943,7 +7427,8 @@ void Cpu::instruction_CB_F4_SET()
     current_instruction_asm = std::format("SET 6, H");
 }
 
-void Cpu::instruction_CB_F5_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_F5_SET()
 {
     /*
      * SET 6, L
@@ -6955,7 +7440,8 @@ void Cpu::instruction_CB_F5_SET()
     current_instruction_asm = std::format("SET 6, L");
 }
 
-void Cpu::instruction_CB_F6_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_F6_SET()
 {
     /*
      * SET 6, [HL]
@@ -6968,7 +7454,8 @@ void Cpu::instruction_CB_F6_SET()
     current_instruction_asm = std::format("SET 6, !HL");
 }
 
-void Cpu::instruction_CB_F7_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_F7_SET()
 {
     /*
      * SET 6, A
@@ -6980,7 +7467,8 @@ void Cpu::instruction_CB_F7_SET()
     current_instruction_asm = std::format("SET 6, A");
 }
 
-void Cpu::instruction_CB_F8_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_F8_SET()
 {
     /*
      * SET 7, B
@@ -6992,7 +7480,8 @@ void Cpu::instruction_CB_F8_SET()
     current_instruction_asm = std::format("SET 7, B");
 }
 
-void Cpu::instruction_CB_F9_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_F9_SET()
 {
     /*
      * SET 7, C
@@ -7004,7 +7493,8 @@ void Cpu::instruction_CB_F9_SET()
     current_instruction_asm = std::format("SET 7, C");
 }
 
-void Cpu::instruction_CB_FA_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_FA_SET()
 {
     /*
      * SET 7, D
@@ -7016,7 +7506,8 @@ void Cpu::instruction_CB_FA_SET()
     current_instruction_asm = std::format("SET 7, D");
 }
 
-void Cpu::instruction_CB_FB_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_FB_SET()
 {
     /*
      * SET 7, E
@@ -7028,7 +7519,8 @@ void Cpu::instruction_CB_FB_SET()
     current_instruction_asm = std::format("SET 7, E");
 }
 
-void Cpu::instruction_CB_FC_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_FC_SET()
 {
     /*
      * SET 7, H
@@ -7040,7 +7532,8 @@ void Cpu::instruction_CB_FC_SET()
     current_instruction_asm = std::format("SET 7, H");
 }
 
-void Cpu::instruction_CB_FD_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_FD_SET()
 {
     /*
      * SET 7, L
@@ -7052,7 +7545,8 @@ void Cpu::instruction_CB_FD_SET()
     current_instruction_asm = std::format("SET 7, L");
 }
 
-void Cpu::instruction_CB_FE_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_FE_SET()
 {
     /*
      * SET 7, [HL]
@@ -7065,7 +7559,8 @@ void Cpu::instruction_CB_FE_SET()
     current_instruction_asm = std::format("SET 7, !HL");
 }
 
-void Cpu::instruction_CB_FF_SET()
+template <typename Bus>
+void Cpu<Bus>::instruction_CB_FF_SET()
 {
     /*
      * SET 7, A

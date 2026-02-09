@@ -74,7 +74,7 @@ private:
     /**
      * Cpu object, linked to the bus.
      */
-    Cpu cpu{bus};
+    Cpu<decltype(bus)> cpu{bus};
 
     /**
      * Information about the current state, passed to the frontend for

@@ -11,26 +11,24 @@
 
 #pragma once
 
-#include "backend/Bus.hpp"
 #include "common/DebugInfo.hpp"
+#include "tests/CpuTest.hpp"
 #include <array>
 #include <string>
 
 namespace Gbpp::Backend
 {
 
+template <typename Bus>
 class Cpu
 {
 public:
+    friend class Test::CpuTest;
+
     /**
      * Constructor.
      */
     Cpu(Bus &bus_) : bus(bus_) {};
-
-    /**
-     * Run a single emulated instruction.
-     */
-    void emulate_instruction();
 
     /**
      * Disallow copy/move.
@@ -41,9 +39,61 @@ public:
     Cpu &operator=(Cpu &&) = delete;
 
     /**
+     * Run a single emulated instruction.
+     */
+    void emulate_instruction()
+    {
+        /**
+         * Do nothing if HALT/STOP has been called.
+         */
+        if (halted || stopped)
+        {
+            return;
+        }
+
+        /*
+         * Fetch opcode.
+         */
+        opcode = fetch_8();
+
+        /*
+         * Decode the instruction. Read an extra opcode byte for CB-prefixed
+         * instructions, but keep the opcode field as CB for debug info.
+         */
+        const auto &instruction =
+            (opcode == 0xCB) ? instruction_map_cb_prefixed[read_8(pc++)]
+                             : instruction_map[opcode];
+
+        /*
+         * Execute the instruction and increase cycle counts.
+         */
+        (this->*instruction.func)();
+        num_instructions_executed++;
+        num_cycles_elapsed += instruction.cycles;
+    }
+
+    /**
      * @return A CpuDebugInfo structure reflecting the current state.
      */
-    CpuDebugInfo get_debug_info() const;
+    CpuDebugInfo get_debug_info() const
+    {
+        return {.num_instructions_executed = num_instructions_executed,
+                .num_cycles_elapsed = num_cycles_elapsed,
+
+                .A = A,
+                .B = B,
+                .C = C,
+                .D = D,
+                .E = E,
+                .F = F,
+                .H = H,
+                .L = L,
+                .pc = pc,
+                .sp = sp,
+
+                .opcode = opcode,
+                .current_instruction_asm = current_instruction_asm};
+    };
 
 private:
     /**
@@ -210,3 +260,8 @@ private:
 };
 
 } // namespace Gbpp::Backend
+
+/**
+ * Include actual instruction implementations.
+ */
+#include "instructions.tpp"

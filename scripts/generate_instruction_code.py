@@ -13,7 +13,6 @@ FILE_HEADER_CPP = """\
  * @date   {date}
  */
 
-#include "Cpu.hpp"
 #include "common/logging.hpp"
 #include <format>
  
@@ -63,7 +62,8 @@ void instruction_ILLEGAL();
 
 # Function stub in .cpp file
 FUNCTION_STUB = """\
-void Cpu::instruction_{opcode:02X}_{mnemonic}() 
+template <typename Bus>
+void Cpu<Bus>::instruction_{opcode:02X}_{mnemonic}() 
 {{
     /*
      * {mnemonic} {operands}
@@ -91,7 +91,8 @@ void Cpu::instruction_CB_{opcode:02X}_{mnemonic}()
 """
 
 ILLEGAL_FUNCTION_STUB = """\
-void Cpu::instruction_ILLEGAL() 
+template <typename Bus>
+void Cpu<Bus>::instruction_ILLEGAL() 
 {
     /*
      * Catch-all for illegal opcodes. Log an error and do nothing.
@@ -188,7 +189,7 @@ def extract_opcodes(data: dict) -> tuple:
 
 
 def generate_function_stubs(unprefixed: list[Instruction], cb_prefixed: list[Instruction]):
-    with open("scripts/generated/instructions.cpp", "w") as file:
+    with open("scripts/generated/instructions.tpp", "w") as file:
         file.write(FILE_HEADER_CPP.format(description="CPU instruction implementations.",
                                       date=datetime.now().strftime("%Y-%m-%d")))
 
