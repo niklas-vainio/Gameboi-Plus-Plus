@@ -33,7 +33,6 @@ uint8_t Bus::read(const uint16_t address)
         /**
          * 0x8000-0x9FFF: VRAM
          */
-        LogWarning("Unimplemented VRAM read at address %04X", address);
         return 0xFF;
     }
     if (0xA000 <= address && address <= 0xBFFF)
@@ -41,7 +40,6 @@ uint8_t Bus::read(const uint16_t address)
         /**
          * 0xA000-0xBFFF: External ram
          */
-        LogWarning("Unimplemented ExRam read at address %04X", address);
         return 0xFF;
     }
     if (0xC000 <= address && address <= 0xDFFF)
@@ -63,15 +61,13 @@ uint8_t Bus::read(const uint16_t address)
         /**
          * 0xFE00-0xFE9F: OAM
          */
-        LogWarning("Unimplemented OAM read at address %04X", address);
         return 0xFF;
     }
     if (0xFEA0 <= address && address <= 0xFEFF)
     {
         /**
-         * 0xFEA0-0xFEFF: Illegal area
+         * 0xFEA0-0xFEFF: Illegal area - return zeros
          */
-        LogError("Read from illegal area at address %04X", address);
         return 0x00;
     }
     if ((0xFF00 <= address && address <= 0xFF7F) || address == 0xFFFF)
@@ -79,7 +75,6 @@ uint8_t Bus::read(const uint16_t address)
         /**
          * 0xFF00-0xFF7F and 0xFFFF: IO Registers (including interrupt enable)
          */
-        LogWarning("Unimplemented IO reg read at address %04X", address);
         return 0xFF;
     }
     if (0xFF80 <= address && address <= 0xFFFE)

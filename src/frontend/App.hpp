@@ -12,6 +12,7 @@
 #include "common/DebugInfo.hpp"
 #include "common/GameBoyConstants.hpp"
 #include "sdl/context.hpp"
+#include "sdl/runtime_texture.hpp"
 #include "sdl/time.hpp"
 #include <cstdint>
 #include <string>
@@ -82,12 +83,17 @@ private:
     Sdl::Context sdl_context{};
 
     /**
+     * Dynamic SDL textures for rendering.
+     */
+    Sdl::RuntimeTexture memory_viewer_texture{};
+
+    /**
      * The current set of user inputs, updated each frame.
      */
     ControlState control_state{};
 
     /**
-     * Timestamp of the start of the furrent frame.
+     * Timestamp of the start of the current frame.
      */
     Sdl::Time frame_start{};
 

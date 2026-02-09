@@ -9,24 +9,26 @@
 
 namespace Gbpp::Frontend::Sdl
 {
-void fill_screen(Context &context, const SDL_Color color)
+void fill_screen(Context &context, const Color color)
 {
     SDL_SetRenderDrawColor(
         context.renderer, color.r, color.g, color.b, color.a);
     SDL_RenderClear(context.renderer);
 }
 
-void fill_rect(Context &context, const SDL_FRect rect, const SDL_Color color)
+void fill_rect(Context &context, const Rect<float> rect, const Color color)
 {
     SDL_SetRenderDrawColor(
         context.renderer, color.r, color.g, color.b, color.a);
-    SDL_RenderFillRect(context.renderer, &rect);
+
+    const auto sdl_rect = rect.to_sdl();
+    SDL_RenderFillRect(context.renderer, &sdl_rect);
 }
 
 void draw_text(Context &context,
                const std::string &text,
                const Position<float> position,
-               const SDL_Color color,
+               const Color color,
                const uint32_t font_size)
 {
     TTF_Font *font = context.fonts[font_size];
@@ -38,6 +40,16 @@ void draw_text(Context &context,
     TTF_DrawRendererText(text_object, position.x, position.y);
 
     TTF_DestroyText(text_object);
+}
+
+void draw_runtime_texture(Context &context,
+                          RuntimeTexture &texture,
+                          const Rect<float> rect)
+{
+    const auto sdl_rect = rect.to_sdl();
+
+    SDL_RenderTexture(
+        context.renderer, texture.get_underlying_texture(), NULL, &sdl_rect);
 }
 
 void show(Context &context)

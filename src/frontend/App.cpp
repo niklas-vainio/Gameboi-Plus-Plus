@@ -34,6 +34,13 @@ bool App::init()
                          Font::size_map),
                false);
 
+    /**
+     * Initialize dynamic textures.
+     */
+    memory_viewer_texture.init(sdl_context,
+                               MemoryViewerPixelBuffer::width,
+                               MemoryViewerPixelBuffer::height);
+
     /*
      * Make sure control state flags are correctly initialied
      */
@@ -68,7 +75,23 @@ void App::handle_inputs()
 
 void App::draw_frame(const EmulatorDebugInfo &debug_info)
 {
-    Graphics::draw_frame(sdl_context, debug_info);
+    /*
+     * Populate runtime textures with data from the emulator.
+     */
+    {
+        auto pixels = memory_viewer_texture.lock();
+
+        for (auto x = 0; x < 256; x++)
+        {
+            for (auto y = 0; y < 256; y++)
+            {
+                const auto value = debug_info.memory_viewer_pixel_buffer(x, y);
+                pixels(x, y) = {.r = value, .g = value, .b = value, .a = 255};
+            }
+        }
+    }
+
+    Graphics::draw_frame(sdl_context, memory_viewer_texture, debug_info);
 }
 
 void App::wait_until_frame_over()
@@ -81,6 +104,7 @@ void App::quit()
     /*
      * Destroy render and window, then exit.
      */
+    memory_viewer_texture.destroy();
     Sdl::quit(sdl_context);
 }
 

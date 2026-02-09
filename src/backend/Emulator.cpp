@@ -53,6 +53,18 @@ void Emulator::emulate_instruction()
 void Emulator::update_debug_info()
 {
     debug_info.cpu = cpu.get_debug_info();
+
+    /*
+     * Populate the memory viewer with values from the bus.
+     */
+    for (auto y = 0; y <= 0xFF; y++)
+    {
+        for (auto x = 0; x < 0xFF; x++)
+        {
+            const auto address = static_cast<uint16_t>((y << 8) | x);
+            debug_info.memory_viewer_pixel_buffer(x, y) = bus.read(address);
+        }
+    }
 }
 
 } // namespace Gbpp::Backend

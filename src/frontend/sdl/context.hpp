@@ -40,7 +40,7 @@ struct Context
     SDL_Window *window{};
     SDL_Renderer *renderer{};
 
-    /*
+    /**
      * Configurations for TTF font rendering.
      */
     TTF_TextEngine *text_engine{};

@@ -263,7 +263,7 @@ void Cpu::instruction_10_STOP()
     LogWarning("STOP is not fully implemented!");
     const uint8_t n8 = fetch_8();
     stopped = true;
-    
+
     current_instruction_asm = std::format("STOP {:02X}", n8);
 }
 

@@ -23,7 +23,7 @@ void Cpu::emulate_instruction()
     {
         return;
     }
-    
+
     /*
      * Fetch opcode.
      */

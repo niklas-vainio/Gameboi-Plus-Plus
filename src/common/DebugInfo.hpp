@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "PixelBuffer.hpp"
 #include <cstdint>
 #include <string>
 
@@ -37,6 +38,11 @@ struct CpuDebugInfo
 struct EmulatorDebugInfo
 {
     CpuDebugInfo cpu{};
+
+    /**
+     * Pixel buffer containing a view of memory.
+     */
+    MemoryViewerPixelBuffer memory_viewer_pixel_buffer{};
 };
 
 } // namespace Gbpp

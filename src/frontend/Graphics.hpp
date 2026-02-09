@@ -11,6 +11,7 @@
 #include "common/DebugInfo.hpp"
 #include "common/GameBoyConstants.hpp"
 #include "sdl/graphics.hpp"
+#include "sdl/runtime_texture.hpp"
 
 namespace Gbpp::Frontend::Graphics
 {
@@ -57,10 +58,13 @@ inline constexpr auto padding = 10u;
 /**
  * Draw the current frame to the screen.
  *
- * @param[in] sdl_context   Current SDL context.
- * @param[in] debug_info    Current debug info from the backend.
+ * @param[in] sdl_context           Current SDL context.
+ * @param[in] memory_viewer_texture Texture for the memory viewer.
+ * @param[in] debug_info            Debug info from the backend.
  */
-void draw_frame(Sdl::Context &sdl_context, const EmulatorDebugInfo &debug_info);
+void draw_frame(Sdl::Context &sdl_context,
+                Sdl::RuntimeTexture &memory_viewer_texture,
+                const EmulatorDebugInfo &debug_info);
 
 /**
  * Draw the current status of the Cpu

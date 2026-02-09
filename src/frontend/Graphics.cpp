@@ -12,21 +12,28 @@
 namespace Gbpp::Frontend::Graphics
 {
 
-void draw_frame(Sdl::Context &sdl_context, const EmulatorDebugInfo &debug_info)
+void draw_frame(Sdl::Context &sdl_context,
+                Sdl::RuntimeTexture &memory_viewer_texture,
+                const EmulatorDebugInfo &debug_info)
 {
     Sdl::fill_screen(sdl_context, Sdl::BLACK);
 
     Sdl::fill_rect(sdl_context,
-                   {.x = 0,
-                    .y = 0,
-                    .w = Layout::game_boy_viwer_width,
-                    .h = Layout::game_boy_viwer_height},
+                   {.left = 0,
+                    .top = 0,
+                    .width = Layout::game_boy_viwer_width,
+                    .height = Layout::game_boy_viwer_height},
                    Sdl::BLUE);
 
-    Sdl::fill_rect(
-        sdl_context,
-        {.x = Layout::screen_width - 256, .y = 0, .w = 256, .h = 256},
-        Sdl::WHITE);
+    /**
+     * Draw debug area.
+     */
+    Sdl::draw_runtime_texture(sdl_context,
+                              memory_viewer_texture,
+                              {.left = Layout::screen_width - 256,
+                               .top = 0,
+                               .width = 256,
+                               .height = 256});
 
     draw_cpu_status(sdl_context, debug_info.cpu);
 

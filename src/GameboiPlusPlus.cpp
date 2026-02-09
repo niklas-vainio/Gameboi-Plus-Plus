@@ -65,7 +65,7 @@ bool GameboiPlusPlus::run_frame()
     /*
      * Render frame results.
      */
-    const auto debug_info = emulator.get_debug_info();
+    const auto &debug_info = emulator.get_debug_info();
     app.draw_frame(debug_info);
     app.wait_until_frame_over();
 
