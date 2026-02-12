@@ -8,9 +8,19 @@
 #include "GameboiPlusPlus.hpp"
 #include "common/logging.hpp"
 #include "common/unused.hpp"
+#include "tests/CpuTest.hpp"
 
 int main(int argc, const char **argv)
 {
+#ifdef CPU_TEST
+    /*
+     * Run CPU tests.
+     */
+    UNUSED(argc);
+    UNUSED(argv);
+    return Gbpp::Test::CpuTest{}.run() ? EXIT_SUCCESS : EXIT_FAILURE;
+#else
+
     /*
      * Parse args.
      */
@@ -36,4 +46,5 @@ int main(int argc, const char **argv)
     {
         return EXIT_FAILURE;
     }
+#endif
 }

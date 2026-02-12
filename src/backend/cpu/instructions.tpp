@@ -385,7 +385,7 @@ void Cpu<Bus>::instruction_17_RLA()
     set_N(0);
     set_H(0);
     set_C(bit_7);
-    current_instruction_asm = std::format("RLA ");
+    current_instruction_asm = std::format("RLA");
 }
 
 template <typename Bus>
@@ -509,7 +509,7 @@ void Cpu<Bus>::instruction_1F_RRA()
     set_N(0);
     set_H(0);
     set_C(bit_0);
-    current_instruction_asm = std::format("RRA ");
+    current_instruction_asm = std::format("RRA");
 }
 
 template <typename Bus>
@@ -774,7 +774,7 @@ void Cpu<Bus>::instruction_2F_CPL()
 
     set_N(1);
     set_H(1);
-    current_instruction_asm = std::format("CPL ");
+    current_instruction_asm = std::format("CPL");
 }
 
 template <typename Bus>
@@ -897,7 +897,7 @@ void Cpu<Bus>::instruction_37_SCF()
     set_N(0);
     set_H(0);
     set_C(1);
-    current_instruction_asm = std::format("SCF ");
+    current_instruction_asm = std::format("SCF");
 }
 
 template <typename Bus>
@@ -1023,8 +1023,8 @@ void Cpu<Bus>::instruction_3F_CCF()
      */
     set_N(0);
     set_H(0);
-    set_C(0);
-    current_instruction_asm = std::format("CCF ");
+    set_C(!get_C());
+    current_instruction_asm = std::format("CCF");
 }
 
 template <typename Bus>
@@ -1803,7 +1803,7 @@ void Cpu<Bus>::instruction_80_ADD()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
     set_C(result & 0x100);
@@ -1824,7 +1824,7 @@ void Cpu<Bus>::instruction_81_ADD()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
     set_C(result & 0x100);
@@ -1845,7 +1845,7 @@ void Cpu<Bus>::instruction_82_ADD()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
     set_C(result & 0x100);
@@ -1866,7 +1866,7 @@ void Cpu<Bus>::instruction_83_ADD()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
     set_C(result & 0x100);
@@ -1887,7 +1887,7 @@ void Cpu<Bus>::instruction_84_ADD()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
     set_C(result & 0x100);
@@ -1908,7 +1908,7 @@ void Cpu<Bus>::instruction_85_ADD()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
     set_C(result & 0x100);
@@ -1929,7 +1929,7 @@ void Cpu<Bus>::instruction_86_ADD()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
     set_C(result & 0x100);
@@ -1950,7 +1950,7 @@ void Cpu<Bus>::instruction_87_ADD()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) > 0x0f);
     set_C(result & 0x100);
@@ -1971,7 +1971,7 @@ void Cpu<Bus>::instruction_88_ADC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
     set_C(result & 0x100);
@@ -1992,7 +1992,7 @@ void Cpu<Bus>::instruction_89_ADC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
     set_C(result & 0x100);
@@ -2013,7 +2013,7 @@ void Cpu<Bus>::instruction_8A_ADC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
     set_C(result & 0x100);
@@ -2034,7 +2034,7 @@ void Cpu<Bus>::instruction_8B_ADC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
     set_C(result & 0x100);
@@ -2055,7 +2055,7 @@ void Cpu<Bus>::instruction_8C_ADC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
     set_C(result & 0x100);
@@ -2076,7 +2076,7 @@ void Cpu<Bus>::instruction_8D_ADC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
     set_C(result & 0x100);
@@ -2097,7 +2097,7 @@ void Cpu<Bus>::instruction_8E_ADC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
     set_C(result & 0x100);
@@ -2118,7 +2118,7 @@ void Cpu<Bus>::instruction_8F_ADC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (op2 & 0x0f) + get_C() > 0x0f);
     set_C(result & 0x100);
@@ -2139,7 +2139,7 @@ void Cpu<Bus>::instruction_90_SUB()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
     set_H((op1 & 0x0f) < (op2 & 0x0f));
     set_C(result & 0x8000);
@@ -2160,7 +2160,7 @@ void Cpu<Bus>::instruction_91_SUB()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
     set_H((op1 & 0x0f) < (op2 & 0x0f));
     set_C(result & 0x8000);
@@ -2181,7 +2181,7 @@ void Cpu<Bus>::instruction_92_SUB()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
     set_H((op1 & 0x0f) < (op2 & 0x0f));
     set_C(result & 0x8000);
@@ -2202,7 +2202,7 @@ void Cpu<Bus>::instruction_93_SUB()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
     set_H((op1 & 0x0f) < (op2 & 0x0f));
     set_C(result & 0x8000);
@@ -2223,7 +2223,7 @@ void Cpu<Bus>::instruction_94_SUB()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
     set_H((op1 & 0x0f) < (op2 & 0x0f));
     set_C(result & 0x8000);
@@ -2244,7 +2244,7 @@ void Cpu<Bus>::instruction_95_SUB()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
     set_H((op1 & 0x0f) < (op2 & 0x0f));
     set_C(result & 0x8000);
@@ -2265,7 +2265,7 @@ void Cpu<Bus>::instruction_96_SUB()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
     set_H((op1 & 0x0f) < (op2 & 0x0f));
     set_C(result & 0x8000);
@@ -2307,7 +2307,7 @@ void Cpu<Bus>::instruction_98_SBC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
     set_H((op1 & 0x0f) < (op2 & 0x0f) + get_C());
     set_C(result & 0x8000);
@@ -2324,13 +2324,13 @@ void Cpu<Bus>::instruction_99_SBC()
      */
     const uint8_t op1 = A;
     const uint8_t op2 = C;
-    const uint16_t result = op1 - op2;
+    const uint16_t result = op1 - op2 - get_C();
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
-    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_H((op1 & 0x0f) < (op2 & 0x0f) + get_C());
     set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, C");
 }
@@ -2345,13 +2345,13 @@ void Cpu<Bus>::instruction_9A_SBC()
      */
     const uint8_t op1 = A;
     const uint8_t op2 = D;
-    const uint16_t result = op1 - op2;
+    const uint16_t result = op1 - op2 - get_C();
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
-    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_H((op1 & 0x0f) < (op2 & 0x0f) + get_C());
     set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, D");
 }
@@ -2366,13 +2366,13 @@ void Cpu<Bus>::instruction_9B_SBC()
      */
     const uint8_t op1 = A;
     const uint8_t op2 = E;
-    const uint16_t result = op1 - op2;
+    const uint16_t result = op1 - op2 - get_C();
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
-    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_H((op1 & 0x0f) < (op2 & 0x0f) + get_C());
     set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, E");
 }
@@ -2387,13 +2387,13 @@ void Cpu<Bus>::instruction_9C_SBC()
      */
     const uint8_t op1 = A;
     const uint8_t op2 = H;
-    const uint16_t result = op1 - op2;
+    const uint16_t result = op1 - op2 - get_C();
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
-    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_H((op1 & 0x0f) < (op2 & 0x0f) + get_C());
     set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, H");
 }
@@ -2408,13 +2408,13 @@ void Cpu<Bus>::instruction_9D_SBC()
      */
     const uint8_t op1 = A;
     const uint8_t op2 = L;
-    const uint16_t result = op1 - op2;
+    const uint16_t result = op1 - op2 - get_C();
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
-    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_H((op1 & 0x0f) < (op2 & 0x0f) + get_C());
     set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, L");
 }
@@ -2429,13 +2429,13 @@ void Cpu<Bus>::instruction_9E_SBC()
      */
     const uint8_t op1 = A;
     const uint8_t op2 = read_8(get_HL());
-    const uint16_t result = op1 - op2;
+    const uint16_t result = op1 - op2 - get_C();
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
-    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_H((op1 & 0x0f) < (op2 & 0x0f) + get_C());
     set_C(result & 0x8000);
     current_instruction_asm = std::format("SBC A, !HL");
 }
@@ -2450,13 +2450,13 @@ void Cpu<Bus>::instruction_9F_SBC()
      */
     const uint8_t op1 = A;
     const uint8_t op2 = A;
-    const uint16_t result = op1 - op2;
+    const uint16_t result = op1 - op2 - get_C();
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
-    set_H((op1 & 0x0f) < (op2 & 0x0f));
+    set_H((op1 & 0x0f) < (op2 & 0x0f) + get_C());
     current_instruction_asm = std::format("SBC A, A");
 }
 
@@ -3115,7 +3115,7 @@ void Cpu<Bus>::instruction_C6_ADD()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (n8 & 0x0f) > 0x0f);
     set_C(result & 0x100);
@@ -3163,7 +3163,7 @@ void Cpu<Bus>::instruction_C9_RET()
      */
     pc = pop_16();
 
-    current_instruction_asm = std::format("RET ");
+    current_instruction_asm = std::format("RET");
 }
 
 template <typename Bus>
@@ -3234,7 +3234,7 @@ void Cpu<Bus>::instruction_CE_ADC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(0);
     set_H((op1 & 0x0f) + (n8 & 0x0f) + get_C() > 0x0f);
     set_C(result & 0x100);
@@ -3351,7 +3351,7 @@ void Cpu<Bus>::instruction_D6_SUB()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
     set_H((op1 & 0x0f) < (n8 & 0x0f));
     set_C(result & 0x8000);
@@ -3398,9 +3398,9 @@ void Cpu<Bus>::instruction_D9_RETI()
      * Cycles: 16
      */
     pc = pop_16();
-    interrupts_enbled = false;
+    interrupts_enbled = true;
 
-    current_instruction_asm = std::format("RETI ");
+    current_instruction_asm = std::format("RETI");
 }
 
 template <typename Bus>
@@ -3456,7 +3456,7 @@ void Cpu<Bus>::instruction_DE_SBC()
 
     A = result;
 
-    set_Z(result == 0);
+    set_Z(A == 0);
     set_N(1);
     set_H((op1 & 0x0f) < (n8 & 0x0f) + get_C());
     set_C(result & 0x8000);
@@ -3578,7 +3578,7 @@ void Cpu<Bus>::instruction_E8_ADD()
     set_Z(0);
     set_N(0);
     set_H((old_sp & 0x0f) + (e8 & 0x0f) > 0x0f);
-    set_C(old_sp + e8 > 0xff);
+    set_C((old_sp & 0xff) + e8 > 0xff);
     current_instruction_asm = std::format("ADD SP, {:02X}", e8);
 }
 
@@ -3622,7 +3622,7 @@ void Cpu<Bus>::instruction_EE_XOR()
 
     set_Z(A == 0);
     set_N(0);
-    set_H(1);
+    set_H(0);
     set_C(0);
     current_instruction_asm = std::format("XOR A, {:02X}", n8);
 }
@@ -3691,7 +3691,7 @@ void Cpu<Bus>::instruction_F3_DI()
      */
     interrupts_enbled = false;
 
-    current_instruction_asm = std::format("DI ");
+    current_instruction_asm = std::format("DI");
 }
 
 template <typename Bus>
@@ -3720,7 +3720,7 @@ void Cpu<Bus>::instruction_F6_OR()
 
     set_Z(A == 0);
     set_N(0);
-    set_H(1);
+    set_H(0);
     set_C(0);
     current_instruction_asm = std::format("OR A, {:02X}", n8);
 }
@@ -3748,14 +3748,12 @@ void Cpu<Bus>::instruction_F8_LD()
      * Cycles: 12
      */
     const uint8_t e8 = fetch_8();
-    const uint16_t old_HL = get_HL();
-
     set_HL(sp + static_cast<int8_t>(e8));
 
     set_Z(0);
     set_N(0);
-    set_H((old_HL & 0x0f) + (e8 & 0x0f) > 0x0f);
-    set_C(old_HL + e8 > 0xff);
+    set_H((sp & 0x0f) + (e8 & 0x0f) > 0x0f);
+    set_C((sp & 0xff) + e8 > 0xff);
     current_instruction_asm = std::format("LD HL, SP, {:02X}", e8);
 }
 
@@ -3794,9 +3792,9 @@ void Cpu<Bus>::instruction_FB_EI()
      * Flags: - - - -
      * Cycles: 4
      */
-    interrupts_enbled = true;
+    enable_interrupts_next_instruction = true;
 
-    current_instruction_asm = std::format("EI ");
+    current_instruction_asm = std::format("EI");
 }
 
 template <typename Bus>
@@ -3937,7 +3935,7 @@ void Cpu<Bus>::instruction_CB_05_RLC()
     const bool bit_7 = L >> 7;
     L = (L << 1) | bit_7;
 
-    set_Z(B == 0);
+    set_Z(L == 0);
     set_N(0);
     set_H(0);
     set_C(bit_7);
@@ -4824,7 +4822,7 @@ void Cpu<Bus>::instruction_CB_36_SWAP()
      */
     const uint8_t value = read_8(get_HL());
     const uint8_t result = ((value & 0xf0) >> 4) | ((value & 0x0f) << 4);
-    write_8(get_HL(), value);
+    write_8(get_HL(), result);
 
     set_Z(result == 0);
     set_N(0);

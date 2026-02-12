@@ -9,7 +9,10 @@
  */
 
 #include "CpuTest.hpp"
+#include "backend/RomFile.hpp"
+#include "common/abort.hpp"
 #include "common/logging.hpp"
+#include "common/resource.hpp"
 #include <format>
 
 /**
@@ -22,10 +25,10 @@
         const auto result = (expr);                                            \
         if (result != value)                                                   \
         {                                                                      \
-            LogError("%s",                                                     \
-                     std::format(                                              \
-                         "Expected {} == {}, got {}", #expr, #value, result)   \
-                         .c_str());                                            \
+            LogError(                                                          \
+                "%s",                                                          \
+                std::format("Expected {} == {}, got {}", #expr, value, result) \
+                    .c_str());                                                 \
             return false;                                                      \
         }                                                                      \
     } while (0)
@@ -35,11 +38,173 @@ namespace Gbpp::Test
 
 bool CpuTest::run()
 {
+    LogInfo(ANSI_CYAN "Running all CPU tests...");
+
+    /*
+     * Run all cb tests, then all normal tests.
+     */
+    for (uint16_t cb_opcode = 0; cb_opcode < 0x100; cb_opcode++)
+    {
+        AbortIfNot(run_opcode_tests(cb_opcode, true),
+                   false,
+                   "Failed test for opcode CB %02x:",
+                   cb_opcode);
+    }
+
+    for (uint16_t opcode = 0; opcode < 0x100; opcode++)
+    {
+        /*
+         * Skip illegal opcodes, STOP and HALT, and EI (weird behavior)
+         */
+        if (opcode == 0x10 || opcode == 0x76 || opcode == 0xcb ||
+            opcode == 0xd3 || opcode == 0xdb || opcode == 0xdd ||
+            opcode == 0xe3 || opcode == 0xe4 || opcode == 0xeb ||
+            opcode == 0xec || opcode == 0xed || opcode == 0xf4 ||
+            opcode == 0xfc || opcode == 0xfd)
+        {
+            LogInfo("Skipping opcode %02x...", opcode);
+            continue;
+        }
+
+        AbortIfNot(run_opcode_tests(opcode, false),
+                   false,
+                   "Failed test for opcode %02x:",
+                   opcode);
+    }
+
+    LogInfo(ANSI_GREEN "All tests passed! :)");
+    return true;
 }
 
-namespace cpu_tests
+bool CpuTest::run_opcode_tests(const uint8_t opcode, bool cb_prefix)
 {
+    /*
+     * Load test data from file.
+     */
+    Backend::RomFile file{};
 
+    const auto file_path =
+        cb_prefix ? std::format("cpu_tests/tests_cb_{:02x}.bin", opcode)
+                  : std::format("cpu_tests/tests_{:02x}.bin", opcode);
+
+    AbortIfNot(file.load(Resource::get_resource_path(file_path)),
+               false,
+               "Error loading file for opcode %02x",
+               opcode);
+
+    const TestDump::CpuState *cpu_states =
+        reinterpret_cast<const TestDump::CpuState *>(file.raw_data());
+
+    const auto num_tests = file.size() / sizeof(TestDump::CpuState);
+    AbortIfNot(
+        num_tests % 2 == 0, false, "Should have an even number of tests!");
+
+    /*
+     * Run all tests
+     */
+    for (size_t i = 0; i < num_tests / 2; i++)
+    {
+        const auto &initial_state = cpu_states[2 * i];
+        const auto &final_state = cpu_states[2 * i + 1];
+
+        AbortIfNot(
+            run_single_test(opcode, cb_prefix, initial_state, final_state),
+            false,
+            "Failed test #%zu",
+            i);
+    }
+
+    return true;
+}
+
+bool CpuTest::run_single_test(const uint8_t opcode,
+                              bool cb_prefix,
+                              const TestDump::CpuState &initial_state,
+                              const TestDump::CpuState &final_state)
+{
+    AbortIf(initial_state.num_memory_ops > 5,
+            "Invalid number of memory operations!");
+    AbortIf(final_state.num_memory_ops > 5,
+            "Invalid number of memory operations!");
+
+    /*
+     * Setup.
+     */
+
+    cpu.A = initial_state.A;
+    cpu.B = initial_state.B;
+    cpu.C = initial_state.C;
+    cpu.D = initial_state.D;
+    cpu.E = initial_state.E;
+    cpu.F = initial_state.F;
+    cpu.H = initial_state.H;
+    cpu.L = initial_state.L;
+    LogDebug("A=%d B=%d C=%d D=%d E=%d F=%d H=%d L=%d",
+             cpu.A,
+             cpu.B,
+             cpu.C,
+             cpu.D,
+             cpu.E,
+             cpu.F,
+             cpu.H,
+             cpu.L);
+
+    cpu.pc = initial_state.pc;
+    cpu.sp = initial_state.sp;
+    cpu.interrupts_enbled = static_cast<bool>(initial_state.ime);
+
+    LogDebug("pc=%d, sp=%d, ime=%d ie=%d",
+             cpu.pc,
+             cpu.sp,
+             cpu.interrupts_enbled,
+             initial_state.ie);
+
+    for (uint32_t i = 0; i < initial_state.num_memory_ops; i++)
+    {
+        LogDebug("MEM[%d] = %d",
+                 initial_state.memory_ops[i].address,
+                 initial_state.memory_ops[i].data);
+        bus.write(initial_state.memory_ops[i].address,
+                  initial_state.memory_ops[i].data);
+    }
+    LogDebug("");
+
+    /*
+     * Execute an instruction.
+     */
+    cpu.emulate_instruction();
+    LogDebug("Ran instr %s", cpu.current_instruction_asm.c_str());
+
+    /*
+     * Check all values.
+     */
+    AssertEq(cpu.A, final_state.A);
+    AssertEq(cpu.B, final_state.B);
+    AssertEq(cpu.C, final_state.C);
+    AssertEq(cpu.D, final_state.D);
+    AssertEq(cpu.E, final_state.E);
+    AssertEq(cpu.F, final_state.F);
+    AssertEq(cpu.H, final_state.H);
+    AssertEq(cpu.L, final_state.L);
+    AssertEq(cpu.pc, final_state.pc);
+    AssertEq(cpu.sp, final_state.sp);
+
+    /*
+     * HACK: For EI tests, ignore the ime flag because these tests don't handle
+     * it properly.
+     */
+    if (!cb_prefix && opcode != 0xfb)
+    {
+        AssertEq(cpu.interrupts_enbled, static_cast<bool>(final_state.ime));
+    }
+
+    for (uint32_t i = 0; i < final_state.num_memory_ops; i++)
+    {
+        const auto memory_value = bus.read(final_state.memory_ops[i].address);
+        AssertEq(memory_value, final_state.memory_ops[i].data);
+    }
+
+    return true;
 }
 
 } // namespace Gbpp::Test

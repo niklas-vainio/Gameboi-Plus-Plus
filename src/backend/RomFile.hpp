@@ -42,7 +42,7 @@ public:
      */
     uint8_t operator[](std::size_t i) const
     {
-        LogDebug("Reading from ROM at address %04X", i);
+        LogDebug("Reading from ROM at address %04zX", i);
         return loaded ? data.at(i) : 0xff;
     }
 
@@ -53,6 +53,14 @@ public:
     std::size_t size() const
     {
         return data.size();
+    }
+
+    /**
+     * @return A raw read-only pointer to the underlying data.
+     */
+    constexpr const void *raw_data() const
+    {
+        return data.data();
     }
 
 private:

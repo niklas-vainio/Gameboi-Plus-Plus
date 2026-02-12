@@ -22,16 +22,22 @@
 #define ANSI_WHITE "\e[0;37m"
 #define ANSI_GRAY "\e[0;90m"
 
+#define NOOP (void)0
+
 /**
- * Log a formatted message with the [INFO] prefix.
+ * Log a formatted message with the [DEBUG] prefix.
  */
+#ifdef DEBUG
 #define LogDebug(fmt, ...)                                                     \
-    // do                                                                         \
-    // {                                                                          \
-    //     std::printf(ANSI_GRAY "[DEBUG] %s:%d    " fmt "\n",                    \
-    //                 __FILE_NAME__,                                             \
-    //                 __LINE__ __VA_OPT__(, ) __VA_ARGS__);                      \
-    // } while (0)
+    do                                                                         \
+    {                                                                          \
+        std::printf(ANSI_GRAY "[DEBUG] %s:%d    " fmt "\n",                    \
+                    __FILE_NAME__,                                             \
+                    __LINE__ __VA_OPT__(, ) __VA_ARGS__);                      \
+    } while (0)
+#else
+#define LogDebug(fmt, ...) NOOP
+#endif
 
 /**
  * Log a formatted message with the [INFO] prefix.

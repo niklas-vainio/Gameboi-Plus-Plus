@@ -83,10 +83,11 @@ DEPS := $(patsubst $(SRC_DIR)/%.cpp,$(DEP_DIR)/%.d,$(SRCS))
 #    make run ARGS="..."     -> builds and runs it with args
 #    make clean              -> removes everything non-SDL in build/ 
 #    make clean-full	     -> removes build/
+#	 make cpu-test			 -> builds and runs a CPU instruction test
 .PHONY: all
 all: $(BIN)
 
-.PHONY: run clean
+.PHONY: run clean cpu-test
 run: $(BIN)
 	./$(BIN) $(ARGS)
 
@@ -100,6 +101,15 @@ clean:
 
 clean-full:
 	rm -rf $(BUILD_DIR)
+
+	.PHONY: cpu_test
+
+cpu-test: CXXFLAGS += -DCPU_TEST
+cpu-test: cpu-test-build
+	./$(BIN)
+
+.PHONY: cpu-test-build
+cpu-test-build: $(BIN)
 
 # ---- SDL3 and SDL3_ttf stamp files ----
 SDL_BUILT := $(SDL_BUILD_DIR)/.built

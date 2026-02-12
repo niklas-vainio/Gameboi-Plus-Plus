@@ -12,9 +12,16 @@
 #pragma once
 
 #include "common/DebugInfo.hpp"
-#include "tests/CpuTest.hpp"
 #include <array>
 #include <string>
+
+/**
+ * Forward declaration of the text fixture, so it can access private state.
+ */
+namespace Gbpp::Test
+{
+class CpuTest;
+}
 
 namespace Gbpp::Backend
 {
@@ -23,7 +30,7 @@ template <typename Bus>
 class Cpu
 {
 public:
-    friend class Test::CpuTest;
+    friend class Gbpp::Test::CpuTest;
 
     /**
      * Constructor.
@@ -43,12 +50,18 @@ public:
      */
     void emulate_instruction()
     {
-        /**
+        /*
          * Do nothing if HALT/STOP has been called.
          */
         if (halted || stopped)
         {
             return;
+        }
+
+        if (enable_interrupts_next_instruction)
+        {
+            interrupts_enbled = true;
+            enable_interrupts_next_instruction = false;
         }
 
         /*
@@ -153,7 +166,7 @@ private:
     }
     void push_16(uint16_t value)
     {
-        sp += 2;
+        sp -= 2;
         write_16(sp, value);
     }
 
@@ -218,9 +231,15 @@ private:
     std::string current_instruction_asm = "???";
 
     /**
-     * Store whether interrupts are currently enabled;
+     * Store whether interrupts are currently enabled.
      */
     bool interrupts_enbled{};
+
+    /**
+     * Store whether to enable interrupts on the next cycle (after an EI
+     * instruction).
+     */
+    bool enable_interrupts_next_instruction{};
 
     /**
      * Store whether the CPU is currently halted or stopped (via the HALT/STOP
